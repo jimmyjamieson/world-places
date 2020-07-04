@@ -13,6 +13,10 @@ export class ContinentEntity {
   name!: string;
 
   @ApiProperty()
+  @Column({ length: 20 })
+  code!: string;
+
+  @ApiProperty()
   @Column({ length: 500 })
   nativeName!: string;
 }

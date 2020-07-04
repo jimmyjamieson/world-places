@@ -27,6 +27,13 @@ const ContinentsForm = ({ onSuccess, onError }) => {
     <form onSubmit={handleSubmit}>
       <input
         type="text"
+        name="code"
+        placeholder="Code"
+        onChange={handleInput}
+        required
+      />
+      <input
+        type="text"
         name="name"
         placeholder="Name"
         onChange={handleInput}
