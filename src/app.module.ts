@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContinentsModule } from './continents/continents.module';
 import { CountriesModule } from './countries/countries.module';
 import { RegionsModule } from './regions/regions.module';
@@ -11,6 +13,10 @@ import { LanguagesModule } from './languages/languages.module';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
+      autoSchemaFile: 'schema.gql',
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './data/db',
