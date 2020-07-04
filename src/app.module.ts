@@ -13,10 +13,6 @@ import { LanguagesModule } from './languages/languages.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      installSubscriptionHandlers: true,
-      autoSchemaFile: 'schema.gql',
-    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './data/db',
@@ -29,6 +25,9 @@ import { LanguagesModule } from './languages/languages.module';
     CitiesModule,
     CurrenciesModule,
     LanguagesModule,
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'schema.gql',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
