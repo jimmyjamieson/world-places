@@ -1,4 +1,5 @@
 .App {
+  display: grid;
   min-height: 100%;
 }
 
@@ -24,4 +25,8 @@
 
 .App-content {
   padding: 1rem;
+}
+
+.App-footer {
+
 }

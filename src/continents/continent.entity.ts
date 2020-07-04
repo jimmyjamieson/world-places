@@ -15,8 +15,4 @@ export class ContinentEntity {
   @ApiProperty()
   @Column({ length: 500 })
   nativeName!: string;
-
-  @ApiProperty()
-  @Column('text')
-  description: string;
 }

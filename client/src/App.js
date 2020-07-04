@@ -23,29 +23,34 @@ function App() {
           <Link to="/languages">Languages</Link>
           <Link to="/currencies">Currencies</Link>
         </header>
-        <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route path="/continents">
-            <ContinentsPage />
-          </Route>
-          <Route path="/countries">
-            <CountriesPage />
-          </Route>
-          <Route path="/regions">
-            <RegionsPage />
-          </Route>
-          <Route path="/cities">
-            <CitiesPage />
-          </Route>
-          <Route path="/languages">
-            <LanguagesPage />
-          </Route>
-          <Route path="/currencies">
-            <CurrenciesPage />
-          </Route>
-        </Switch>
+        <article className="App-content">
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/continents">
+              <ContinentsPage />
+            </Route>
+            <Route path="/countries">
+              <CountriesPage />
+            </Route>
+            <Route path="/regions">
+              <RegionsPage />
+            </Route>
+            <Route path="/cities">
+              <CitiesPage />
+            </Route>
+            <Route path="/languages">
+              <LanguagesPage />
+            </Route>
+            <Route path="/currencies">
+              <CurrenciesPage />
+            </Route>
+          </Switch>
+        </article>
+        <footer className="App-footer">
+          <button>RE-EXPORT DATA</button>
+        </footer>
       </div>
     </Router>
   );
