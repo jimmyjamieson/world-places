@@ -22,7 +22,7 @@ import { LanguagesModule } from './languages/languages.module';
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
+      rootPath: join(__dirname, '..', 'client/build'),
     }),
     ContinentsModule,
     CountriesModule,
