@@ -1,22 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { Entity } from 'typeorm';
+import { BaseEntity } from '../_base/base.entity';
 
 @Entity()
-export class ContinentEntity {
+export class ContinentEntity extends BaseEntity  {
 
-  @ApiProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @ApiProperty()
-  @Column({ length: 500 })
-  name!: string;
-
-  @ApiProperty()
-  @Column({ length: 20 })
-  code!: string;
-
-  @ApiProperty()
-  @Column({ length: 500 })
-  nativeName!: string;
 }

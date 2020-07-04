@@ -46,6 +46,13 @@ const ContinentsForm = ({ onSuccess, onError }) => {
         onChange={handleInput}
         required
       />
+      <input
+        type="text"
+        name="coords"
+        placeholder="2.194216,5.2010515"
+        onChange={handleInput}
+        required
+      />
       <button type="submit">Save</button>
     </form>
   );
