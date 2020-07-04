@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+// import { GraphQLModule } from '@nestjs/graphql';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -19,15 +21,18 @@ import { LanguagesModule } from './languages/languages.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
     ContinentsModule,
     CountriesModule,
     RegionsModule,
     CitiesModule,
     CurrenciesModule,
     LanguagesModule,
-    GraphQLModule.forRoot({
+    /*GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
-    }),
+    }),*/
   ],
   controllers: [AppController],
   providers: [AppService],
