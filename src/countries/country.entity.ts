@@ -5,7 +5,7 @@ import { ContinentEntity } from '../continents/continent.entity';
 
 @Entity()
 export class CountryEntity extends BaseEntity  {
-  @ApiProperty()
+  @ApiProperty({ type: () => ContinentEntity })
   @ManyToOne(type => ContinentEntity, continent => continent.countries)
   continent: ContinentEntity;
 }

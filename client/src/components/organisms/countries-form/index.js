@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { saveContinent } from '../../../utils/api';
+import { saveCountry } from '../../../utils/api';
 import FormModal from '../../molecules/form-modal';
 import TextField from '@material-ui/core/TextField';
 import handleApiError from '../../../utils/handle-api-error';
 
-const ContinentsForm = ({ onSuccess, open, close }) => {
+const CountriesForm = ({ onSuccess, open, close }) => {
   const [fields, setField] = useState({});
   const [message, setMessage] = useState('');
 
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      await saveContinent(fields);
+      await saveCountry(fields);
       setField({})
       setMessage(null)
       onSuccess();
@@ -76,8 +76,17 @@ const ContinentsForm = ({ onSuccess, open, close }) => {
         onChange={handleInput}
         required
       />
+      <TextField
+        type="text"
+        name="continent"
+        label="Continent"
+        variant="outlined"
+        fullWidth
+        onChange={handleInput}
+        required
+      />
     </FormModal>
   );
 };
 
-export default ContinentsForm;
+export default CountriesForm;

@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
-const Modal = ({ open, children, name, actions, close, handleSubmit }) => {
+const FormModal = ({ open, children, name, actions, close, handleSubmit }) => {
   return (
     <Dialog open={open}>
       <AppBar position="relative">
@@ -37,4 +37,4 @@ const Modal = ({ open, children, name, actions, close, handleSubmit }) => {
   );
 };
 
-export default Modal;
+export default FormModal;
