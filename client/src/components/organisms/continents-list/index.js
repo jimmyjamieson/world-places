@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { deleteContinent } from '../../../utils/api';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles({
   toolbar: {
@@ -64,7 +65,7 @@ const ContinentsList = ({ list, onDeleteSuccess }) => {
               <TableCell component="th" align="right">
                 COORDS
               </TableCell>
-              <TableCell>DELETE</TableCell>
+              <TableCell  align="right">DELETE</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -76,8 +77,10 @@ const ContinentsList = ({ list, onDeleteSuccess }) => {
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.nativeName}</TableCell>
                   <TableCell align="right">{item.coords}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleDelete(item.id)}>x</IconButton>
+                  <TableCell align="right">
+                    <IconButton onClick={() => handleDelete(item.id)}>
+                      <DeleteForever />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))
