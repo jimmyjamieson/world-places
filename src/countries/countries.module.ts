@@ -9,6 +9,7 @@ import { CountriesService } from './countries.service';
     TypeOrmModule.forFeature([CountryEntity])
   ],
   controllers: [CountriesController],
+  exports: [CountriesService],
   providers: [CountriesService]
 })
 export class CountriesModule {}

@@ -8,7 +8,7 @@ const api = axios.create({
 // Continents
 
 export const getContinents = () => {
-  return api('continents');
+  return api('continents?join=countries');
 };
 
 export const saveContinent = (input = {}) => {
@@ -22,7 +22,7 @@ export const deleteContinent = (id) => {
 // Countries
 
 export const getCountries = () => {
-  return api('countries');
+  return api('countries?join=relation');
 };
 
 export const saveCountry = (input = {}) => {

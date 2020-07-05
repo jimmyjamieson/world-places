@@ -15,9 +15,20 @@ import { LanguagesModule } from './languages/languages.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
+    /*TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './data/db',
+      entities: [__dirname + '/!**!/!*.entity{.ts,.js}'],
+      synchronize: true,
+    }),*/
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5000,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'postgres',
+      dropSchema: false,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
@@ -30,6 +41,7 @@ import { LanguagesModule } from './languages/languages.module';
     CitiesModule,
     CurrenciesModule,
     LanguagesModule,
+    // todo: make it work
     /*GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
     }),*/

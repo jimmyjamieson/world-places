@@ -1,0 +1,16 @@
+version: "3.6"
+services:
+  postgres:
+    container_name: world-places-db
+    image: postgres:12
+    ports:
+        - 5000:5432
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+volumes:
+  db_data:
