@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { saveCountry } from '../../../utils/api';
 import FormModal from '../../molecules/form-modal';
 import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import handleApiError from '../../../utils/handle-api-error';
+import SelectContinents from '../../fields/select-continents';
 
 const CountriesForm = ({ onSuccess, open, close }) => {
   const [fields, setField] = useState({});
@@ -12,12 +14,12 @@ const CountriesForm = ({ onSuccess, open, close }) => {
     event.preventDefault();
     try {
       await saveCountry(fields);
-      setField({})
-      setMessage(null)
+      setField({});
+      setMessage(null);
       onSuccess();
     } catch (error) {
-      const err = await handleApiError(error)
-      setMessage(err.message)
+      const err = await handleApiError(error);
+      setMessage(err.message);
     }
   };
 
@@ -30,6 +32,7 @@ const CountriesForm = ({ onSuccess, open, close }) => {
     });
   };
 
+  console.log('fields', fields)
 
   return (
     <FormModal
@@ -43,7 +46,7 @@ const CountriesForm = ({ onSuccess, open, close }) => {
         name="code"
         label="Code"
         variant="outlined"
-        defaultValue={ fields.code }
+        defaultValue={fields.code}
         onChange={handleInput}
         fullWidth
         required
@@ -76,15 +79,7 @@ const CountriesForm = ({ onSuccess, open, close }) => {
         onChange={handleInput}
         required
       />
-      <TextField
-        type="text"
-        name="continent"
-        label="Continent"
-        variant="outlined"
-        fullWidth
-        onChange={handleInput}
-        required
-      />
+      <SelectContinents onChange={ handleInput } />
     </FormModal>
   );
 };

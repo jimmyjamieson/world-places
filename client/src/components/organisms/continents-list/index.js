@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import { deleteContinent } from '../../../utils/api';
 import DeleteForever from '@material-ui/icons/DeleteForever';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   toolbar: {
@@ -62,6 +63,7 @@ const ContinentsList = ({ list, onDeleteSuccess }) => {
               <TableCell component="th">CODE</TableCell>
               <TableCell component="th">NAME</TableCell>
               <TableCell component="th">NATIVE</TableCell>
+              <TableCell component="th">COUNTRIES</TableCell>
               <TableCell component="th" align="right">
                 COORDS
               </TableCell>
@@ -76,6 +78,7 @@ const ContinentsList = ({ list, onDeleteSuccess }) => {
                   <TableCell>{item.code}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.nativeName}</TableCell>
+                  <TableCell>{item?.countries.length}</TableCell>
                   <TableCell align="right">{item.coords}</TableCell>
                   <TableCell align="right">
                     <IconButton onClick={() => handleDelete(item.id)}>
@@ -86,7 +89,7 @@ const ContinentsList = ({ list, onDeleteSuccess }) => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan="7">
+                <TableCell colSpan="8">
                   No data. Make sure to re-import data from the json file
                 </TableCell>
               </TableRow>
