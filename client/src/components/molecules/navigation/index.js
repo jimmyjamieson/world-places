@@ -1,17 +1,20 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Divider } from '@material-ui/core';
+import { Button, Divider, Toolbar } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   drawerPaper: {
-    position: 'relative',
+    position: 'absolute',
+    [theme.breakpoints.up('md')]: {
+      position: 'relative',
+    },
     whiteSpace: 'nowrap',
-    width: 320,
+    width: 240,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -23,10 +26,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
+    width: theme.spacing(0),
   },
   paper: {
     padding: theme.spacing(2),
@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
 }));
-
 
 const Navigation = ({ open, handleDrawerClose }) => {
   const classes = useStyles();
@@ -47,9 +46,11 @@ const Navigation = ({ open, handleDrawerClose }) => {
       }}
       open={open}
     >
-      <IconButton onClick={handleDrawerClose}>
-        <ChevronLeftIcon />
-      </IconButton>
+      <Toolbar>
+        <IconButton onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+      </Toolbar>
       <Divider />
       <Button component={NavLink} to="/">
         Home
@@ -73,7 +74,7 @@ const Navigation = ({ open, handleDrawerClose }) => {
         Currencies
       </Button>
     </Drawer>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;

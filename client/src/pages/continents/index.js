@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import ContinentsList from '../../components/organisms/continents-list';
 import ContinentsForm from '../../components/organisms/continents-form';
 import { getContinents } from '../../utils/api';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const ContinentsPage = () => {
 
@@ -18,6 +19,9 @@ const ContinentsPage = () => {
 
   return (
     <Fragment>
+      <Toolbar color="primary" variant="dense">
+        blah
+      </Toolbar>
       { error && error }
       <ContinentsForm
         onSuccess={ () => updateContinents() }

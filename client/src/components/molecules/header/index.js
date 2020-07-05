@@ -11,28 +11,38 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: 36,
+  appBarOpen: {
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: 0,
+    },
+  },
+  appBarHidden: {
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: 240,
+    },
+  },
+  menuButtonOpen: {
+
   },
   menuButtonHidden: {
-    display: 'none',
+
   },
   title: {
     flexGrow: 1,
   },
 }));
 
-const Header = ({ open, handleDrawerOpen }) => {
+const Header = ({ open, toggleDrawer }) => {
   const classes = useStyles();
   return (
-    <AppBar position="absolute">
+    <AppBar position="absolute" className={clsx(classes.appBarOpen, open && classes.appBarHidden)}>
       <Toolbar>
         <IconButton
           edge="start"
           color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+          aria-label="menu"
+          onClick={toggleDrawer}
+          className={clsx(classes.menuButtonOpen, open && classes.menuButtonHidden)}
         >
           <MenuIcon />
         </IconButton>
