@@ -12,3 +12,7 @@ export const getContinents = () => {
 export const saveContinent = (input = {}) => {
   return api.post('continents', input)
 }
+
+export const deleteContinent = (id) => {
+  return api.delete(`continents/${id}`)
+}

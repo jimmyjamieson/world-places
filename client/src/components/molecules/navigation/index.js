@@ -73,6 +73,10 @@ const Navigation = ({ open, handleDrawerClose }) => {
       <Button component={NavLink} to="/currencies" color="inherit">
         Currencies
       </Button>
+      <Divider />
+      <Button component={NavLink} to="/currencies" color="inherit">
+        Download
+      </Button>
     </Drawer>
   );
 };
