@@ -1,39 +1,50 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { NavLink } from 'react-router-dom';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import clsx from 'clsx';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: 'none',
   },
   title: {
     flexGrow: 1,
   },
 }));
 
-const Header = () => {
+const Header = ({ open, handleDrawerOpen }) => {
   const classes = useStyles();
-  return(
-    <AppBar>
-      <IconButton edge="start" color="inherit" aria-label="menu" className={classes.menuButton}>
-        <MenuIcon />
-      </IconButton>
-      <Typography variant="h6" className={classes.title}>
-        World Places
-      </Typography>
+  return (
+    <AppBar position="absolute">
       <Toolbar>
-        <NavLink to="/"><Button color="inherit">Home</Button></NavLink>
-        <NavLink to="/continents"><Button color="inherit">Continents</Button></NavLink>
-        <NavLink to="/countries"><Button color="inherit">Countries</Button></NavLink>
-        <NavLink to="/regions"><Button color="inherit">Regions</Button></NavLink>
-        <NavLink to="/cities"><Button color="inherit">Cities</Button></NavLink>
-        <NavLink to="/languages"><Button color="inherit">Languages</Button></NavLink>
-        <NavLink to="/currencies"><Button color="inherit">Currencies</Button></NavLink>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={classes.title}>
+          World Places
+        </Typography>
+        <a target="_blank" href="https://github.com/jimmyjamieson/world-places">
+          <GitHubIcon />
+        </a>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
