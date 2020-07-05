@@ -79,7 +79,7 @@ const CountriesForm = ({ onSuccess, open, close }) => {
         onChange={handleInput}
         required
       />
-      <SelectContinents onChange={ handleInput } />
+      <SelectContinents name="continent" onChange={ handleInput } />
     </FormModal>
   );
 };
