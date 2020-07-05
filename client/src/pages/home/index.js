@@ -9,7 +9,6 @@ import {
   Button,
 } from '@material-ui/core';
 import logo from './../../logo.svg';
-import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   return (
