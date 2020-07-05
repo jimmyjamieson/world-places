@@ -7,7 +7,14 @@ import { CountriesService } from './countries.service';
 @Crud({
   model: {
     type: CountryEntity
-  }
+  },
+  query: {
+    join: {
+      continent: {
+        eager: true,
+      },
+    },
+  },
 })
 
 @ApiTags('Countries')
