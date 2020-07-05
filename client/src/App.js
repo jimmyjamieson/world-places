@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import './App.css';
 import HomePage from './pages/home';
 import ContinentsPage from './pages/continents';
 import CountriesPage from './pages/countries';
@@ -9,20 +11,20 @@ import RegionsPage from './pages/regions';
 import CitiesPage from './pages/cities';
 import LanguagesPage from './pages/languages';
 import CurrenciesPage from './pages/currencies';
+import Header from './components/molecules/header';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  }
+}));
 
 function App() {
+  const classes = useStyles();
   return (
     <Router>
-      <div className="App">
-        <header className="App-header">
-          <Link to="/">Home</Link>
-          <Link to="/continents">Continents</Link>
-          <Link to="/countries">Countries</Link>
-          <Link to="/regions">Regions</Link>
-          <Link to="/cities">Cities</Link>
-          <Link to="/languages">Languages</Link>
-          <Link to="/currencies">Currencies</Link>
-        </header>
+      <div className={classes.root}>
+        <Header />
         <article className="App-content">
           <Switch>
             <Route exact path="/">
@@ -49,7 +51,7 @@ function App() {
           </Switch>
         </article>
         <footer className="App-footer">
-          <button>RE-EXPORT DATA</button>
+          <button>EXPORT DATA TO JSON</button> <button>IMPORT JSON TO DATABASE</button>
         </footer>
       </div>
     </Router>
