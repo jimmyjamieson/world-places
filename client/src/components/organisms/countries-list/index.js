@@ -12,7 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import { deleteContinent } from '../../../utils/api';
+import { deleteCountry } from '../../../utils/api';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles({
@@ -31,7 +31,7 @@ const CountriesList = ({ list, onDeleteSuccess }) => {
   const handleDelete = async (id) => {
     try{
       console.log('id', id)
-      await deleteContinent(id)
+      await deleteCountry(id)
       onDeleteSuccess()
     } catch (e) {
 
