@@ -10,6 +10,6 @@ import { CountriesService } from './countries.service';
   ],
   controllers: [CountriesController],
   exports: [CountriesService],
-  providers: [CountriesService]
+  providers: [CountriesService],
 })
 export class CountriesModule {}

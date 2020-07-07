@@ -3,10 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { CsvParser, ParsedData } from 'nest-csv-parser';
 import { CountryEntity } from '../countries/country.entity';
 import removeUnicode from '../utils/remove-unicode';
+import { CountriesService } from '../countries/countries.service';
 
 @Injectable()
 export class ImportService {
-  constructor(private readonly csvParser: CsvParser) {}
+  constructor(
+    private readonly csvParser: CsvParser,
+    private readonly countriesService: CountriesService
+  ) {}
 
   async importCountries() {
     const stream = await createReadStream('import/countries.csv');
@@ -44,7 +48,10 @@ export class ImportService {
         languages__iso639_1
       } = country;
 
-      const continent = 'get_id_from contentName'
+      const continent = this.countriesService.findOne({ where: {
+        id : 1
+        }})
+      console.log('continent', continent)
       const currency = 'get_id_from currencyCode'
       const language = 'get_id_from languages__iso639_1'
 
@@ -68,6 +75,6 @@ export class ImportService {
       });
     });
 
-    return { countries, data: list };
+    return { countries };
   }
 }
