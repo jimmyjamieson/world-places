@@ -9,11 +9,12 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
-const FormModal = ({ open, children, name, actions, close, handleSubmit }) => {
+const FormModal = ({ open, children, name, close, handleSubmit }) => {
   return (
     <Dialog open={open}>
       <AppBar position="relative">
         <Toolbar>
+          <Typography variant="h6">{name}</Typography>
           <IconButton
             edge="start"
             color="inherit"
@@ -22,7 +23,6 @@ const FormModal = ({ open, children, name, actions, close, handleSubmit }) => {
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6">{name}</Typography>
         </Toolbar>
       </AppBar>
       <form onSubmit={handleSubmit}>

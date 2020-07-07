@@ -38,7 +38,7 @@ const CountriesForm = ({ onSuccess, open, close }) => {
     <FormModal
       open={open}
       close={close}
-      name="Add Continent"
+      name="Add Country"
       handleSubmit={handleSubmit}
     >
       {message && message}

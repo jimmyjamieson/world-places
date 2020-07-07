@@ -12,6 +12,8 @@ import { RegionsModule } from './regions/regions.module';
 import { CitiesModule } from './cities/cities.module';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { LanguagesModule } from './languages/languages.module';
+import { ImportModule } from './import/import.module';
+import { ExportModule } from './export/export.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { LanguagesModule } from './languages/languages.module';
     CitiesModule,
     CurrenciesModule,
     LanguagesModule,
+    ImportModule,
+    ExportModule,
     // todo: make it work
     /*GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
