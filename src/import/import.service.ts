@@ -4,13 +4,19 @@ import { CsvParser, ParsedData } from 'nest-csv-parser';
 import { CountryEntity } from '../countries/country.entity';
 import removeUnicode from '../utils/remove-unicode';
 import { CountriesService } from '../countries/countries.service';
+import { ContinentsService } from '../continents/continents.service';
 
 @Injectable()
 export class ImportService {
   constructor(
     private readonly csvParser: CsvParser,
-    private readonly countriesService: CountriesService
+    private readonly countriesService: CountriesService,
+    private readonly continentsService: ContinentsService,
   ) {}
+
+  async getContinent(id: number | string) {
+    await this.continentsService.findOne(1)
+  }
 
   async importCountries() {
     const stream = await createReadStream('import/countries.csv');
@@ -45,15 +51,14 @@ export class ImportService {
         timezones__001: timezone,
         nativename: nativeName,
         currencies__code: currencyCode,
-        languages__iso639_1
+        languages__iso639_1,
       } = country;
 
-      const continent = this.countriesService.findOne({ where: {
-        id : 1
-        }})
-      console.log('continent', continent)
-      const currency = 'get_id_from currencyCode'
-      const language = 'get_id_from languages__iso639_1'
+      const continent = this.getContinent(1)
+
+      console.log('continent', continent);
+      const currency = 'get_id_from currencyCode';
+      const language = 'get_id_from languages__iso639_1';
 
       countries.push({
         name,
@@ -71,7 +76,7 @@ export class ImportService {
         geocoords,
         timezone,
         currency,
-        language
+        language,
       });
     });
 
