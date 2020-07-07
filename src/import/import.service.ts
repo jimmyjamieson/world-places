@@ -13,14 +13,25 @@ export class ImportService {
     const countriesData: ParsedData<any> = await this.csvParser.parse(
       stream,
       CountryEntity,
+      null,
+      null,
+      {
+        strict: true,
+        separator: ',',
+        mapHeaders: ({ header, index }) => header.toLowerCase(),
+      },
     );
 
-    const countries = countriesData.list.map(country => {
+    const countries = await countriesData.list.map((country: CountryEntity) => {
+      console.log(country, country?.name)
+      // @ts-ignore
       const { name } = country;
+      // if (!name) return null
       return {
-        name,
+        name : 'bob',
       };
     });
+
 
     return countriesData;
   }
