@@ -4,6 +4,6 @@ import { BaseEntity } from './base.entity';
 
 export class LocationEntity extends BaseEntity  {
   @ApiProperty()
-  @Column()
-  coords!: string;
+  @Column({ nullable: true })
+  coords: string;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, CreateDateColumn, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export abstract class BaseEntity {
 
@@ -8,14 +8,14 @@ export abstract class BaseEntity {
   id: number;
 
   @ApiProperty()
-  @Column({ length: 500, unique: true })
+  @Column({ length: 500 })
   name!: string;
 
   @ApiProperty()
-  @Column({ length: 500, unique: true })
+  @Column({ length: 500 })
   nativeName: string;
 
   @ApiProperty()
-  @Column({ length: 20, unique: true })
+  @Column({ length: 20, nullable: true })
   code: string;
 }

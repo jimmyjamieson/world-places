@@ -8,6 +8,7 @@ import { CountriesService } from '../countries/countries.service';
 import { ContinentsService } from '../continents/continents.service';
 import { CurrencyEntity } from '../currencies/currencies.entity';
 import { CurrenciesService } from '../currencies/currencies.service';
+import { ContinentEntity } from '../continents/continent.entity';
 
 @Injectable()
 export class ImportService {
@@ -57,9 +58,9 @@ export class ImportService {
     await Promise.all(
       currencies.map(async currency => {
         try {
-          const cur = await this.entityManager.save(CurrencyEntity, currency)
+          await this.entityManager.save(CurrencyEntity, currency)
         }catch (e) {
-          console.log('error', e)
+          throw new Error(e)
         }
       }),
     );
@@ -67,11 +68,70 @@ export class ImportService {
     return currencies;
   }
 
+  async importContinents() {
+    const continents = [
+      {
+        code: 'AF',
+        name: 'Africa',
+        nativeName: 'Alkebulan',
+        geocoords: '2.194216,5.2010515'
+      },
+      {
+        code: 'AN',
+        name: 'Antarctica',
+        nativeName: 'Antarctica',
+        geocoords: '-68.1483765,-47.5215509'
+      },
+      {
+        code: 'AS',
+        name: 'Asia',
+        nativeName: 'Asia',
+        geocoords: '23.8402413,62.5723401'
+      },
+      {
+        code: 'EU',
+        name: 'Europe',
+        nativeName: 'Europe',
+        geocoords: '48.1327673,4.1753323'
+      },
+      {
+        code: 'NA',
+        name: 'North America',
+        nativeName: 'North America',
+        geocoords: '31.8020063,-146.3208868'
+      },
+      {
+        code: 'OC',
+        name: 'Oceania',
+        nativeName: 'Oceania',
+        geocoords: '8.6094367,91.4571963'
+      },
+      {
+        code: 'SA',
+        name: 'South America',
+        nativeName: 'South America',
+        geocoords: '15.6283945,-100.463162'
+      },
+    ]
+
+    await Promise.all(
+      continents.map(async continent => {
+        try {
+          await this.entityManager.save(ContinentEntity, continent)
+        }catch (e) {
+          throw new Error(e)
+        }
+      }),
+    );
+
+    return continents
+  }
+
   async importCountries() {
     const csv = await this.importFile(CountryEntity, 'import/countries.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
-    return await Promise.all(
+    const countries = await Promise.all(
       list.map(async country => {
         const name = country[Object.keys(country)[0]]; // TODO: weird fix until unicode removal works for that extra space
         const {
@@ -97,6 +157,12 @@ export class ImportService {
           },
         });
 
+        const currency = await this.currenciesService.findOne({
+          where: {
+            code: currencyCode,
+          },
+        });
+
         return {
           name,
           nativeName,
@@ -109,15 +175,31 @@ export class ImportService {
           timezone,
           domain,
           continent: continent?.id,
+          currency: currency?.id,
           subContinent,
+          geocoords,
         };
       }),
     );
+
+    await Promise.all(
+      countries.map(async country => {
+        try {
+          console.log('country', country)
+          await this.entityManager.save(CountryEntity, country)
+        }catch (e) {
+          throw new Error(e)
+        }
+      }),
+    );
+
+    return countries
   }
 
   async importAll() {
     const currencies = await this.importCurrencies();
-    // const countries = await this.importCountries()
-    return { imported: { currencies } };
+    const continents = await this.importContinents();
+    const countries = await this.importCountries();
+    return { imported: { currencies, continents, countries } };
   }
 }
