@@ -1,4 +1,4 @@
-import { Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../_base/base.entity';
 import { CountryEntity } from '../countries/country.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -7,12 +7,13 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CurrencyEntity extends BaseEntity  {
 
   @ApiProperty()
-  @PrimaryGeneratedColumn()
   number: number;
 
   @ApiProperty()
-  @PrimaryGeneratedColumn()
   decimals: number;
+
+  @ApiProperty()
+  symbol: string;
 
   @ApiProperty({ type: () => [ CountryEntity ] })
   @OneToMany(type => CountryEntity, country => country.continent)

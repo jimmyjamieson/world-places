@@ -74,43 +74,49 @@ export class ImportService {
         code: 'AF',
         name: 'Africa',
         nativeName: 'Alkebulan',
-        geocoords: '2.194216,5.2010515'
+        coords: '2.194216,5.2010515'
       },
       {
         code: 'AN',
         name: 'Antarctica',
         nativeName: 'Antarctica',
-        geocoords: '-68.1483765,-47.5215509'
+        coords: '-68.1483765,-47.5215509'
       },
       {
         code: 'AS',
         name: 'Asia',
         nativeName: 'Asia',
-        geocoords: '23.8402413,62.5723401'
+        coords: '23.8402413,62.5723401'
       },
       {
         code: 'EU',
         name: 'Europe',
         nativeName: 'Europe',
-        geocoords: '48.1327673,4.1753323'
+        coords: '48.1327673,4.1753323'
       },
       {
         code: 'NA',
         name: 'North America',
         nativeName: 'North America',
-        geocoords: '31.8020063,-146.3208868'
+        coords: '31.8020063,-146.3208868'
       },
       {
         code: 'OC',
         name: 'Oceania',
         nativeName: 'Oceania',
-        geocoords: '8.6094367,91.4571963'
+        coords: '8.6094367,91.4571963'
       },
       {
         code: 'SA',
         name: 'South America',
         nativeName: 'South America',
-        geocoords: '15.6283945,-100.463162'
+        coords: '15.6283945,-100.463162'
+      },
+      {
+        code: 'AM',
+        name: 'Americas',
+        nativeName: 'Americas',
+        coords: '0.7304993,165.3611447'
       },
     ]
 
@@ -143,7 +149,8 @@ export class ImportService {
           capital,
           region: continentName,
           subregion: subContinent,
-          latlng: geocoords,
+          latlng__001: lat,
+          latlng__002: lng,
           demonym,
           area,
           timezones__001: timezone,
@@ -177,7 +184,7 @@ export class ImportService {
           continent: continent?.id,
           currency: currency?.id,
           subContinent,
-          geocoords,
+          coords: `${lat},${lng}`,
         };
       }),
     );
