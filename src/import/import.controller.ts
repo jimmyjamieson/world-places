@@ -9,7 +9,7 @@ export class ImportController {
 
   @Get()
   async importAll(): Promise<any> {
-    return this.importService.importCountries()
+    return this.importService.importAll()
   }
 
 }

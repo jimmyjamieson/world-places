@@ -30,7 +30,7 @@ export class ImportService {
 
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
-    const countries = await Promise.all(
+    return await Promise.all(
       list.map(async country => {
         const name = country[Object.keys(country)[0]]; // TODO: weird fix until unicode removal works for that extra space
         const {
@@ -73,6 +73,11 @@ export class ImportService {
       }),
     );
 
-    return { countries };
   }
+
+  async importAll() {
+    const countries = await this.importCountries()
+    return { countries }
+  }
+
 }
