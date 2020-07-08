@@ -4,10 +4,12 @@ import { ImportService } from './import.service';
 import { ImportController } from './import.controller';
 import { CountriesModule } from '../countries/countries.module';
 import { ContinentsModule } from '../continents/continents.module';
+import { CurrenciesModule } from '../currencies/currencies.module';
 
 @Module({
   imports: [
     CsvModule,
+    CurrenciesModule,
     ContinentsModule,
     CountriesModule
   ],

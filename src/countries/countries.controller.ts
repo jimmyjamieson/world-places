@@ -23,7 +23,7 @@ export class CountriesController implements CrudController<CountryEntity>{
   constructor(
     public readonly service: CountriesService
   ) {}
-
+/*
   @Get('/test')
   async Test(): Promise<any> {
     return this.service.findOne({
@@ -31,5 +31,5 @@ export class CountriesController implements CrudController<CountryEntity>{
         code: 'MT'
       }
     })
-  }
+  }*/
 }

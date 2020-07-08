@@ -3,8 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { CsvParser, ParsedData } from 'nest-csv-parser';
 import { CountryEntity } from '../countries/country.entity';
 import removeUnicode from '../utils/remove-unicode';
+import {getManager} from "typeorm";
 import { CountriesService } from '../countries/countries.service';
 import { ContinentsService } from '../continents/continents.service';
+import { CurrencyEntity } from '../currencies/currencies.entity';
+import { CurrenciesService } from '../currencies/currencies.service';
 
 @Injectable()
 export class ImportService {
@@ -12,13 +15,16 @@ export class ImportService {
     private readonly csvParser: CsvParser,
     private readonly countriesService: CountriesService,
     private readonly continentsService: ContinentsService,
+    private readonly currenciesService: CurrenciesService,
   ) {}
 
-  async importCountries() {
-    const stream = await createReadStream('import/countries.csv');
+  entityManager = getManager();
+
+  async importFile(entity, file) {
+    const stream = await createReadStream(file);
     const csv: ParsedData<any> = await this.csvParser.parse(
       stream,
-      CountryEntity,
+      entity,
       null,
       null,
       {
@@ -27,7 +33,42 @@ export class ImportService {
         mapHeaders: ({ header, index }) => header.toLowerCase(),
       },
     );
+    return csv;
+  }
 
+  async importCurrencies() {
+    const csv = await this.importFile(CurrencyEntity, 'import/currencies.csv');
+    const { list } = csv;
+
+    const currencies = await Promise.all(
+      list.map(async currency => {
+        const { name, code, number, decimals } = currency;
+
+        return {
+          name,
+          nativeName: name,
+          code,
+          number,
+          decimals,
+        };
+      }),
+    );
+
+    await Promise.all(
+      currencies.map(async currency => {
+        try {
+          const cur = await this.entityManager.save(CurrencyEntity, currency)
+        }catch (e) {
+          console.log('error', e)
+        }
+      }),
+    );
+
+    return currencies;
+  }
+
+  async importCountries() {
+    const csv = await this.importFile(CountryEntity, 'import/countries.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     return await Promise.all(
@@ -72,12 +113,11 @@ export class ImportService {
         };
       }),
     );
-
   }
 
   async importAll() {
-    const countries = await this.importCountries()
-    return { imported: { countries } }
+    const currencies = await this.importCurrencies();
+    // const countries = await this.importCountries()
+    return { imported: { currencies } };
   }
-
 }

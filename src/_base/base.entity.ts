@@ -13,13 +13,9 @@ export abstract class BaseEntity {
 
   @ApiProperty()
   @Column({ length: 500, unique: true })
-  nativeName!: string;
+  nativeName: string;
 
   @ApiProperty()
   @Column({ length: 20, unique: true })
-  code!: string;
-
-  @ApiProperty()
-  @Column()
-  coords!: string;
+  code: string;
 }
