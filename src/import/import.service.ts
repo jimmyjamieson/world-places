@@ -32,12 +32,12 @@ export class ImportService {
       },
     );
 
-    const list = await removeUnicode(csv.list);
+    const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
-    let countries = [];
-    list.map(country => {
-      const name = country[Object.keys(country)[0]]; // weird fix until unicode removal works for that extra space
+    const countries = await Promise.all(list.map(async (country) => {
+      const name = country[Object.keys(country)[0]]; // TODO: weird fix until unicode removal works for that extra space
       const {
+        nativename: nativeName,
         topleveldomain__001: domain,
         alpha2code: code,
         alpha3code: code_alpha_3,
@@ -49,37 +49,33 @@ export class ImportService {
         demonym,
         area,
         timezones__001: timezone,
-        nativename: nativeName,
         currencies__code: currencyCode,
         languages__iso639_1,
-      } = country;
+      } = await country;
 
-      const continent = this.getContinent(1)
+      const continent = await this.continentsService.findOne({
+        where: {
+          name: continentName
+        }
+      })
 
-      console.log('continent', continent);
-      const currency = 'get_id_from currencyCode';
-      const language = 'get_id_from languages__iso639_1';
-
-      countries.push({
+      return {
         name,
         nativeName,
         demonym,
-        area,
-        domain,
         code,
         code_alpha_3,
-        telephone,
+        area,
         capital,
-        continentName,
-        continent,
-        subContinent,
-        geocoords,
+        telephone,
         timezone,
-        currency,
-        language,
-      });
-    });
+        domain,
+        continent: continent?.id,
+        subContinent,
+      }
 
-    return { countries };
+    }));
+
+    return { countries, list };
   }
 }
