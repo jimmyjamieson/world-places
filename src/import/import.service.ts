@@ -14,10 +14,6 @@ export class ImportService {
     private readonly continentsService: ContinentsService,
   ) {}
 
-  async getContinent(id: number | string) {
-    await this.continentsService.findOne(1)
-  }
-
   async importCountries() {
     const stream = await createReadStream('import/countries.csv');
     const csv: ParsedData<any> = await this.csvParser.parse(
@@ -34,48 +30,49 @@ export class ImportService {
 
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
-    const countries = await Promise.all(list.map(async (country) => {
-      const name = country[Object.keys(country)[0]]; // TODO: weird fix until unicode removal works for that extra space
-      const {
-        nativename: nativeName,
-        topleveldomain__001: domain,
-        alpha2code: code,
-        alpha3code: code_alpha_3,
-        callingcodes__001: telephone,
-        capital,
-        region: continentName,
-        subregion: subContinent,
-        latlng: geocoords,
-        demonym,
-        area,
-        timezones__001: timezone,
-        currencies__code: currencyCode,
-        languages__iso639_1,
-      } = await country;
+    const countries = await Promise.all(
+      list.map(async country => {
+        const name = country[Object.keys(country)[0]]; // TODO: weird fix until unicode removal works for that extra space
+        const {
+          nativename: nativeName,
+          topleveldomain__001: domain,
+          alpha2code: code,
+          alpha3code: code_alpha_3,
+          callingcodes__001: telephone,
+          capital,
+          region: continentName,
+          subregion: subContinent,
+          latlng: geocoords,
+          demonym,
+          area,
+          timezones__001: timezone,
+          currencies__code: currencyCode,
+          languages__iso639_1,
+        } = await country;
 
-      const continent = await this.continentsService.findOne({
-        where: {
-          name: continentName
-        }
-      })
+        const continent = await this.continentsService.findOne({
+          where: {
+            name: continentName,
+          },
+        });
 
-      return {
-        name,
-        nativeName,
-        demonym,
-        code,
-        code_alpha_3,
-        area,
-        capital,
-        telephone,
-        timezone,
-        domain,
-        continent: continent?.id,
-        subContinent,
-      }
+        return {
+          name,
+          nativeName,
+          demonym,
+          code,
+          code_alpha_3,
+          area,
+          capital,
+          telephone,
+          timezone,
+          domain,
+          continent: continent?.id,
+          subContinent,
+        };
+      }),
+    );
 
-    }));
-
-    return { countries, list };
+    return { countries };
   }
 }
