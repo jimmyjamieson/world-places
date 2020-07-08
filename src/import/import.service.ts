@@ -77,7 +77,7 @@ export class ImportService {
 
   async importAll() {
     const countries = await this.importCountries()
-    return { countries }
+    return { imported: { countries } }
   }
 
 }
