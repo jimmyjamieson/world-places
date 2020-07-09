@@ -3,12 +3,17 @@ import { Injectable } from '@nestjs/common';
 import { CsvParser, ParsedData } from 'nest-csv-parser';
 import { Country } from '../countries/country.entity';
 import removeUnicode from '../utils/remove-unicode';
-import {getManager} from "typeorm";
+import { getManager } from 'typeorm';
 import { CountriesService } from '../countries/countries.service';
 import { ContinentsService } from '../continents/continents.service';
 import { Currency } from '../currencies/currencies.entity';
 import { CurrenciesService } from '../currencies/currencies.service';
 import { Continent } from '../continents/continent.entity';
+import { Region } from '../regions/region.entity';
+import { Language } from '../languages/languages.entity';
+import { LanguagesService } from '../languages/languages.service';
+import { City } from '../cities/cities.entity';
+import { RegionsService } from '../regions/regions.service';
 
 @Injectable()
 export class ImportService {
@@ -16,7 +21,9 @@ export class ImportService {
     private readonly csvParser: CsvParser,
     private readonly countriesService: CountriesService,
     private readonly continentsService: ContinentsService,
+    private readonly regionsService: RegionsService,
     private readonly currenciesService: CurrenciesService,
+    private readonly languagesService: LanguagesService,
   ) {}
 
   entityManager = getManager();
@@ -58,9 +65,9 @@ export class ImportService {
     await Promise.all(
       currencies.map(async currency => {
         try {
-          await this.entityManager.save(Currency, currency)
-        }catch (e) {
-          throw new Error(e)
+          await this.entityManager.save(Currency, currency);
+        } catch (e) {
+          throw new Error(e);
         }
       }),
     );
@@ -68,7 +75,34 @@ export class ImportService {
     return currencies;
   }
 
-  async importLanguages() {}
+  async importLanguages() {
+    const csv = await this.importFile(Currency, 'import/languages.csv');
+    const { list } = csv;
+
+    const languages = await Promise.all(
+      list.map(async currency => {
+        const { code, name, nativeName } = currency;
+
+        return {
+          name,
+          nativeName,
+          code,
+        };
+      }),
+    );
+
+    await Promise.all(
+      languages.map(async language => {
+        try {
+          await this.entityManager.save(Language, language);
+        } catch (e) {
+          throw new Error(e);
+        }
+      }),
+    );
+
+    return languages;
+  }
 
   async importContinents() {
     const continents = [
@@ -76,63 +110,63 @@ export class ImportService {
         code: 'AF',
         name: 'Africa',
         nativeName: 'Alkebulan',
-        coords: '2.194216,5.2010515'
+        coords: '2.194216,5.2010515',
       },
       {
         code: 'AN',
         name: 'Antarctica',
         nativeName: 'Antarctica',
-        coords: '-68.1483765,-47.5215509'
+        coords: '-68.1483765,-47.5215509',
       },
       {
         code: 'AS',
         name: 'Asia',
         nativeName: 'Asia',
-        coords: '23.8402413,62.5723401'
+        coords: '23.8402413,62.5723401',
       },
       {
         code: 'EU',
         name: 'Europe',
         nativeName: 'Europe',
-        coords: '48.1327673,4.1753323'
+        coords: '48.1327673,4.1753323',
       },
       {
         code: 'NA',
         name: 'North America',
         nativeName: 'North America',
-        coords: '31.8020063,-146.3208868'
+        coords: '31.8020063,-146.3208868',
       },
       {
         code: 'OC',
         name: 'Oceania',
         nativeName: 'Oceania',
-        coords: '8.6094367,91.4571963'
+        coords: '8.6094367,91.4571963',
       },
       {
         code: 'SA',
         name: 'South America',
         nativeName: 'South America',
-        coords: '15.6283945,-100.463162'
+        coords: '15.6283945,-100.463162',
       },
       {
         code: 'AM',
         name: 'Americas',
         nativeName: 'Americas',
-        coords: '0.7304993,165.3611447'
+        coords: '0.7304993,165.3611447',
       },
-    ]
+    ];
 
     await Promise.all(
       continents.map(async continent => {
         try {
-          await this.entityManager.save(Continent, continent)
-        }catch (e) {
-          throw new Error(e)
+          await this.entityManager.save(Continent, continent);
+        } catch (e) {
+          throw new Error(e);
         }
       }),
     );
 
-    return continents
+    return continents;
   }
 
   async importCountries() {
@@ -157,7 +191,7 @@ export class ImportService {
           area,
           timezones__001: timezone,
           currencies__code: currencyCode,
-          languages__iso639_1,
+          languages__iso639_1: languageCode,
         } = await country;
 
         const continent = await this.continentsService.findOne({
@@ -169,6 +203,12 @@ export class ImportService {
         const currency = await this.currenciesService.findOne({
           where: {
             code: currencyCode,
+          },
+        });
+
+        const language = await this.languagesService.findOne({
+          where: {
+            code: languageCode,
           },
         });
 
@@ -185,6 +225,7 @@ export class ImportService {
           domain,
           continent: continent?.id,
           currency: currency?.id,
+          language: language?.id,
           subContinent,
           coords: `${lat},${lng}`,
         };
@@ -194,15 +235,15 @@ export class ImportService {
     await Promise.all(
       countries.map(async country => {
         try {
-          console.log('country', country)
-          await this.entityManager.save(Country, country)
-        }catch (e) {
-          throw new Error(e)
+          console.log('country', country);
+          await this.entityManager.save(Country, country);
+        } catch (e) {
+          throw new Error(e);
         }
       }),
     );
 
-    return countries
+    return countries;
   }
 
   async importRegions() {
@@ -211,14 +252,19 @@ export class ImportService {
 
     const regions = await Promise.all(
       list.map(async region => {
-        const { name, code, number, decimals } = region;
+        const { name, state_code: code, country_code } = region;
+
+        const country = await this.continentsService.findOne({
+          where: {
+            name: country_code,
+          },
+        });
 
         return {
           name,
           nativeName: name,
           code,
-          number,
-          decimals,
+          country,
         };
       }),
     );
@@ -226,9 +272,9 @@ export class ImportService {
     await Promise.all(
       regions.map(async region => {
         try {
-          await this.entityManager.save(Currency, region)
-        }catch (e) {
-          throw new Error(e)
+          await this.entityManager.save(Region, region);
+        } catch (e) {
+          throw new Error(e);
         }
       }),
     );
@@ -236,12 +282,59 @@ export class ImportService {
     return regions;
   }
 
-  async importCities() {}
+  async importCities() {
+    const csv = await this.importFile(Currency, 'import/cities.csv');
+    const { list } = csv;
+
+    const cities = await Promise.all(
+      list.map(async city => {
+        const { code, name, region_code, latitude, longitude } = city;
+
+        const region = await this.regionsService.findOne({
+          where: {
+            code: region_code,
+          },
+        });
+
+        return {
+          name,
+          nativeName: name,
+          code,
+          coords: `${latitude},${longitude}`,
+          region: region?.id,
+        };
+      }),
+    );
+
+    await Promise.all(
+      cities.map(async city => {
+        try {
+          await this.entityManager.save(City, city);
+        } catch (e) {
+          throw new Error(e);
+        }
+      }),
+    );
+
+    return cities;
+  }
 
   async importCsv() {
+    const languages = await this.importLanguages();
     const currencies = await this.importCurrencies();
     const continents = await this.importContinents();
     const countries = await this.importCountries();
-    return { imported: { currencies, continents, countries } };
+    const regions = await this.importRegions();
+    const cities = await this.importCities();
+    return {
+      imported: {
+        currencies,
+        languages,
+        continents,
+        countries,
+        regions,
+        cities,
+      },
+    };
   }
 }
