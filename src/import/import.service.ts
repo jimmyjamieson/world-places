@@ -254,7 +254,7 @@ export class ImportService {
       list.map(async region => {
         const { name, state_code: code, country_code } = region;
 
-        const country = await this.continentsService.findOne({
+        const country = await this.countriesService.findOne({
           where: {
             name: country_code,
           },
@@ -284,11 +284,11 @@ export class ImportService {
 
   async importCities() {
     const csv = await this.importFile(Currency, 'import/cities.csv');
-    const { list } = csv;
+    const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     const cities = await Promise.all(
       list.map(async city => {
-        const { code, name, region_code, latitude, longitude } = city;
+        const { name, region_code, latitude, longitude } = city;
 
         const region = await this.regionsService.findOne({
           where: {
@@ -299,7 +299,6 @@ export class ImportService {
         return {
           name,
           nativeName: name,
-          code,
           coords: `${latitude},${longitude}`,
           region: region?.id,
         };

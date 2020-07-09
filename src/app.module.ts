@@ -45,7 +45,6 @@ import { ExportModule } from './export/export.module';
     LanguagesModule,
     ImportModule,
     ExportModule,
-    // todo: make it work
     /*GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
     }),*/
