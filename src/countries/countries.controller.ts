@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { CountryEntity } from './country.entity';
+import { Country } from './country.entity';
 import { CountriesService } from './countries.service';
 
 @Crud({
   model: {
-    type: CountryEntity
+    type: Country
   },
   query: {
     join: {
@@ -22,7 +22,7 @@ import { CountriesService } from './countries.service';
 
 @ApiTags('Countries')
 @Controller('countries')
-export class CountriesController implements CrudController<CountryEntity>{
+export class CountriesController implements CrudController<Country>{
   constructor(
     public readonly service: CountriesService
   ) {}

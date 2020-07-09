@@ -1,16 +1,16 @@
 import { Entity, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { ContinentEntity } from '../continents/continent.entity';
-import { CurrencyEntity } from '../currencies/currencies.entity';
+import { Continent } from '../continents/continent.entity';
+import { Currency } from '../currencies/currencies.entity';
 import { LocationEntity } from '../_base/location.entity';
 
 @Entity()
-export class CountryEntity extends LocationEntity  {
-  @ApiProperty({ type: () => ContinentEntity })
-  @ManyToOne(type => ContinentEntity, continent => continent.countries)
-  continent: ContinentEntity;
+export class Country extends LocationEntity  {
+  @ApiProperty({ type: () => Continent })
+  @ManyToOne(type => Continent, continent => continent.countries)
+  continent: Continent;
 
-  @ApiProperty({ type: () => CurrencyEntity })
-  @ManyToOne(type => CurrencyEntity, currency => currency.countries)
-  currency: CurrencyEntity;
+  @ApiProperty({ type: () => Currency })
+  @ManyToOne(type => Currency, currency => currency.countries)
+  currency: Currency;
 }

@@ -1,10 +1,10 @@
 import { Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../_base/base.entity';
-import { CountryEntity } from '../countries/country.entity';
+import { Country } from '../countries/country.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class CurrencyEntity extends BaseEntity  {
+export class Currency extends BaseEntity  {
 
   @ApiProperty()
   number: number;
@@ -15,7 +15,7 @@ export class CurrencyEntity extends BaseEntity  {
   @ApiProperty()
   symbol: string;
 
-  @ApiProperty({ type: () => [ CountryEntity ] })
-  @OneToMany(type => CountryEntity, country => country.continent)
-  countries: CurrencyEntity[];
+  @ApiProperty({ type: () => [ Country ] })
+  @OneToMany(type => Country, country => country.continent)
+  countries: Country[];
 }
