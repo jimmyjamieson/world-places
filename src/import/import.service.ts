@@ -62,15 +62,7 @@ export class ImportService {
       }),
     );
 
-    await Promise.all(
-      currencies.map(async currency => {
-        try {
-          await this.entityManager.save(Currency, currency);
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(Currency, [ ...currencies ]);
 
     return currencies;
   }
@@ -91,15 +83,7 @@ export class ImportService {
       }),
     );
 
-    await Promise.all(
-      languages.map(async language => {
-        try {
-          await this.entityManager.save(Language, language);
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(Language, [ ...languages ]);
 
     return languages;
   }
@@ -156,15 +140,7 @@ export class ImportService {
       },
     ];
 
-    await Promise.all(
-      continents.map(async continent => {
-        try {
-          await this.entityManager.save(Continent, continent);
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(Continent, [ ...continents ]);
 
     return continents;
   }
@@ -232,15 +208,7 @@ export class ImportService {
       }),
     );
 
-    await Promise.all(
-      countries.map(async country => {
-        try {
-          await this.entityManager.save(Country, country);
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(Country, [ ...countries ]);
 
     return countries;
   }
@@ -259,8 +227,6 @@ export class ImportService {
           },
         });
 
-        console.log('country', country)
-
         return {
           name,
           nativeName: name,
@@ -270,15 +236,7 @@ export class ImportService {
       }),
     );
 
-    await Promise.all(
-      regions.map(async region => {
-        try {
-          await this.entityManager.save(Region, region);
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(Region, [ ...regions ]);
 
     return regions;
   }
@@ -298,8 +256,6 @@ export class ImportService {
           },
         });
 
-        console.log('region', region)
-
         return {
           name,
           nativeName: name,
@@ -309,15 +265,7 @@ export class ImportService {
       }),
     );
 
-    await Promise.all(
-      cities.map(async city => {
-        try {
-          await setTimeout(() => this.entityManager.save(City, city), 1000)
-        } catch (e) {
-          throw new Error(e);
-        }
-      }),
-    );
+    await this.entityManager.save(City, [ ...cities ])
 
     return cities;
   }
