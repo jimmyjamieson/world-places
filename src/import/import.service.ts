@@ -238,7 +238,7 @@ export class ImportService {
 
   async importCities() {}
 
-  async importAll() {
+  async importCsv() {
     const currencies = await this.importCurrencies();
     const continents = await this.importContinents();
     const countries = await this.importCountries();

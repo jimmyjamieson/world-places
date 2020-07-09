@@ -7,9 +7,9 @@ export class ImportController {
     private importService: ImportService
   ) {}
 
-  @Get()
-  async importAll(): Promise<any> {
-    return this.importService.importAll()
+  @Get('csv')
+  async importCsv(): Promise<any> {
+    return this.importService.importCsv()
   }
 
 }
