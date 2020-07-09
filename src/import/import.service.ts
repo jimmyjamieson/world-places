@@ -77,7 +77,7 @@ export class ImportService {
 
   async importLanguages() {
     const csv = await this.importFile(Currency, 'import/languages.csv');
-    const { list } = csv;
+    const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     const languages = await Promise.all(
       list.map(async currency => {
@@ -85,7 +85,7 @@ export class ImportService {
 
         return {
           name,
-          nativeName,
+          nativeName: nativeName || name,
           code,
         };
       }),
@@ -235,7 +235,6 @@ export class ImportService {
     await Promise.all(
       countries.map(async country => {
         try {
-          console.log('country', country);
           await this.entityManager.save(Country, country);
         } catch (e) {
           throw new Error(e);
@@ -256,15 +255,17 @@ export class ImportService {
 
         const country = await this.countriesService.findOne({
           where: {
-            name: country_code,
+            code: country_code,
           },
         });
+
+        console.log('country', country)
 
         return {
           name,
           nativeName: name,
           code,
-          country,
+          country: country?.id,
         };
       }),
     );
@@ -283,6 +284,7 @@ export class ImportService {
   }
 
   async importCities() {
+    console.log('starting import cities')
     const csv = await this.importFile(Currency, 'import/cities.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
@@ -296,6 +298,8 @@ export class ImportService {
           },
         });
 
+        console.log('region', region)
+
         return {
           name,
           nativeName: name,
@@ -308,7 +312,7 @@ export class ImportService {
     await Promise.all(
       cities.map(async city => {
         try {
-          await this.entityManager.save(City, city);
+          await setTimeout(() => this.entityManager.save(City, city), 1000)
         } catch (e) {
           throw new Error(e);
         }

@@ -16,6 +16,9 @@ import { CountriesService } from './countries.service';
       currency: {
         eager: true,
       },
+      regions: {
+        eager: true
+      }
     },
   },
 })
