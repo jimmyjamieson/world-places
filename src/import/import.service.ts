@@ -36,6 +36,7 @@ export class ImportService {
   }
 
   async importCurrencies() {
+    console.log('importCurrencies')
     await createReadStream('import/currencies.csv')
       .pipe(
         csv({
@@ -58,6 +59,7 @@ export class ImportService {
   }
 
   async importLanguages() {
+    console.log('importLanguages')
     await createReadStream('import/languages.csv')
       .pipe(
         csv({
@@ -78,11 +80,13 @@ export class ImportService {
   }
 
   async importContinents() {
+    console.log('importContinents')
     await this.entityManager.save(Continent, [...continents]);
     await setTimeout(() => this.importCountries(), 5000)
   }
 
   async importCountries() {
+    console.log('importCountries')
     const continents = await this.getAllContinents();
     const currencies = await this.getAllCurrencies();
     const languages = await this.getAllLanguages();
@@ -95,12 +99,13 @@ export class ImportService {
         }),
       )
       .on('data', data => {
+        console.log(data)
         const name = data[Object.keys(data)[0]]; // TODO: weird fix until unicode removal works for that extra space
         const {
           nativename: nativeName,
           topleveldomain__001: domain,
-          alpha2code: code,
-          alpha3code: code_alpha_3,
+          alpha2Code: code,
+          alpha3Code: code_alpha_3,
           callingcodes__001: telephone,
           capital,
           region: continentName,
@@ -143,6 +148,7 @@ export class ImportService {
   }
 
   async importRegions() {
+    console.log('importRegions')
     const countries = await this.getAllCountries();
 
     await createReadStream('import/regions.csv')
@@ -154,7 +160,7 @@ export class ImportService {
       )
       .on('data', data => {
         const { name, state_code: code, country_code } = data;
-        const country = countries.find(item => item.code === country_code)
+        const country = countries.find(item => item?.code.includes(country_code))
         const obj = {
           name,
           nativeName: name,
@@ -167,6 +173,7 @@ export class ImportService {
   }
 
   async importCities() {
+    console.log('importCities')
     const regions = await this.getAllRegions();
 
     await createReadStream('import/cities.csv')
@@ -187,7 +194,7 @@ export class ImportService {
         };
         // @ts-ignore
         this.entityManager.save(City, obj);
-      });
+      }).on('end', () => console.log('completed'));
   }
 
   async importCsv() {
