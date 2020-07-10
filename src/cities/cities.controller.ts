@@ -8,6 +8,13 @@ import { CitiesService } from './cities.service';
   model: {
     type: City
   },
+  query: {
+    join: {
+      region: {
+        eager: true,
+      },
+    },
+  },
 })
 
 @ApiTags('Cities')

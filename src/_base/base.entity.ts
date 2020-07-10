@@ -5,7 +5,7 @@ export abstract class BaseEntity {
 
   @ApiProperty()
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number | string;
 
   @ApiProperty()
   @Column({ length: 500 })

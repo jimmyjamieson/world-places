@@ -7,7 +7,17 @@ import { RegionsService } from './regions.service';
 @Crud({
   model: {
     type: Region
-  }
+  },
+  query: {
+    join: {
+      country: {
+        eager: true,
+      },
+      cities: {
+        eager: true,
+      },
+    },
+  },
 })
 
 @ApiTags('Regions')
