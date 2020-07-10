@@ -122,8 +122,8 @@ export class ImportService {
           telephone: telephone && telephone.trim(),
           timezone: timezone.trim(),
           domain: domain && domain.trim(),
-          region: region && region.trim(),
-          subRegion: subRegion && subRegion.trim(),
+          continent: region && region.trim(),
+          subContinent: subRegion && subRegion.trim(),
           currency: currency?.id,
           language: language?.id,
           coords: `${lat && lat.trim()},${lng && lng.trim()}`,
@@ -145,12 +145,13 @@ export class ImportService {
         }),
       )
       .on('data', data => {
-        const { name, state_code: code, country_code } = data;
+        const { name, state_code: regionCode, country_code } = data;
         const country = countries.find(item => item?.code.includes(country_code))
         const obj = {
           name: name.trim(),
           nativeName: name.trim(),
-          code: code.trim(),
+          code: regionCode.trim(),
+          countryCode: country?.code,
           country: country?.id,
         };
         // @ts-ignore
@@ -160,6 +161,7 @@ export class ImportService {
 
   async importCities() {
     console.log('importCities')
+    const countries = await this.getAllCountries();
     const regions = await this.getAllRegions();
 
     await createReadStream('import/cities.csv')
@@ -170,8 +172,10 @@ export class ImportService {
         }),
       )
       .on('data', data => {
-        const { name, region_code, latitude, longitude } = data;
-        const region = regions.find(item => item.code.includes(region_code));
+        const { name, region_code, country_code, latitude, longitude } = data;
+        const region = regions.find(item => (item.code.includes(region_code) && item.countryCode.includes(country_code) ) );
+
+        console.log('region', region)
         const obj = {
           name: name.trim(),
           nativeName: name.trim(),

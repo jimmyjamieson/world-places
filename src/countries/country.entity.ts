@@ -8,10 +8,10 @@ import { Region } from '../regions/region.entity';
 @Entity()
 export class Country extends LocationEntity  {
   @ApiProperty()
-  region: string;
+  continent: string;
 
   @ApiProperty()
-  subRegion: string;
+  subContinent: string;
 
   @ApiProperty({ type: () => [ Region ] })
   @OneToMany(type => Region, region => region.country)
