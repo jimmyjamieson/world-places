@@ -8,11 +8,11 @@ export class Currency extends BaseEntity  {
 
   @ApiProperty()
   @Column({ nullable: true })
-  number: number;
+  number: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  decimals: number;
+  decimals: string;
 
   @ApiProperty()
   @Column({ length: 20, nullable: true })
