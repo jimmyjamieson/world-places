@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Currency } from '../currencies/currencies.entity';
 import { LocationEntity } from '../_base/location.entity';
@@ -8,9 +8,11 @@ import { Region } from '../regions/region.entity';
 @Entity()
 export class Country extends LocationEntity  {
   @ApiProperty()
+  @Column({ length: 255, nullable: true })
   continent: string;
 
   @ApiProperty()
+  @Column({ length: 255, nullable: true })
   subContinent: string;
 
   @ApiProperty({ type: () => [ Region ] })
