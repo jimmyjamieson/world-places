@@ -16,6 +16,6 @@ export class Currency extends BaseEntity  {
   symbol: string;
 
   @ApiProperty({ type: () => [ Country ] })
-  @OneToMany(type => Country, country => country.continent)
+  @OneToMany(type => Country, country => country.currency)
   countries: Country[];
 }

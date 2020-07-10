@@ -7,7 +7,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Language extends BaseEntity  {
 
   @ApiProperty({ type: () => [ Country ] })
-  @OneToMany(type => Country, country => country.continent)
+  @OneToMany(type => Country, country => country.language)
   countries: Country[];
 
   @ApiProperty()

@@ -6,7 +6,6 @@ import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ContinentsModule } from './continents/continents.module';
 import { CountriesModule } from './countries/countries.module';
 import { RegionsModule } from './regions/regions.module';
 import { CitiesModule } from './cities/cities.module';
@@ -37,7 +36,6 @@ import { ExportModule } from './export/export.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/build'),
     }),
-    ContinentsModule,
     CountriesModule,
     RegionsModule,
     CitiesModule,

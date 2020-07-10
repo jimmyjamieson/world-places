@@ -4,20 +4,15 @@ import csv from 'csv-parser';
 import { Country } from '../countries/country.entity';
 import { getManager } from 'typeorm';
 import { Currency } from '../currencies/currencies.entity';
-import { Continent } from '../continents/continent.entity';
 import { Region } from '../regions/region.entity';
 import { Language } from '../languages/languages.entity';
 import { City } from '../cities/cities.entity';
-import { continents } from './data';
 
 @Injectable()
 export class ImportService {
   constructor() {}
 
   entityManager = getManager();
-  async getAllContinents() {
-    return await this.entityManager.find(Continent);
-  }
   async getAllCountries() {
     return await this.entityManager.find(Country);
   }
@@ -76,18 +71,11 @@ export class ImportService {
           code_iso_3: code2,
         };
         this.entityManager.save(Language, obj);
-      }).on('end', () => setTimeout(() => this.importContinents(), 5000));
-  }
-
-  async importContinents() {
-    console.log('importContinents')
-    await this.entityManager.save(Continent, [...continents]);
-    await setTimeout(() => this.importCountries(), 5000)
+      }).on('end', () => setTimeout(() => this.importCountries(), 5000));
   }
 
   async importCountries() {
     console.log('importCountries')
-    const continents = await this.getAllContinents();
     const currencies = await this.getAllCurrencies();
     const languages = await this.getAllLanguages();
 
@@ -108,8 +96,8 @@ export class ImportService {
           alpha3Code: code_alpha_3,
           callingcodes__001: telephone,
           capital,
-          region: continentName,
-          subregion: subContinent,
+          region,
+          subRegion: subRegion,
           latlng__001: lat,
           latlng__002: lng,
           demonym,
@@ -119,7 +107,6 @@ export class ImportService {
           language_code_1: languageCode,
         } = data;
 
-        const continent = continents.find(item => item.name.includes(continentName));
         const currency = currencies.find(item => item.code.includes(currencyCode));
         const language = languages.find(
           item => item.code.includes(languageCode),
@@ -136,10 +123,10 @@ export class ImportService {
           telephone,
           timezone,
           domain,
-          continent: continent?.id,
+          region,
+          subRegion,
           currency: currency?.id,
           language: language?.id,
-          subContinent,
           coords: `${lat},${lng}`,
         };
         // @ts-ignore
