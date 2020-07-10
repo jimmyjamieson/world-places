@@ -111,13 +111,13 @@ export class ImportService {
           area,
           timezones__001: timezone,
           currencies__code: currencyCode,
-          languages__iso639_1: languageCode,
+          language_code_1: languageCode,
         } = data;
 
         const continent = continents.find(item => item.name === continentName);
         const currency = currencies.find(item => item.code === currencyCode);
         const language = languages.find(
-          item => item.code_iso_3 === languageCode,
+          item => item.code.includes(languageCode),
         );
 
         const obj = {
