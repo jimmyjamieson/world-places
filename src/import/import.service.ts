@@ -1,6 +1,7 @@
 import { createReadStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { CsvParser, ParsedData } from 'nest-csv-parser';
+import csv from 'csv-parser'
 import { Country } from '../countries/country.entity';
 import removeUnicode from '../utils/remove-unicode';
 import { getManager } from 'typeorm';
@@ -68,7 +69,7 @@ export class ImportService {
   }
 
   async importLanguages() {
-    const csv = await this.importFile(Currency, 'import/languages.csv');
+    const csv = await this.importFile(Language, 'import/languages.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     const languages = await Promise.all(
@@ -214,7 +215,7 @@ export class ImportService {
   }
 
   async importRegions() {
-    const csv = await this.importFile(Country, 'import/regions.csv');
+    const csv = await this.importFile(Region, 'import/regions.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     const regions = await Promise.all(
@@ -242,12 +243,49 @@ export class ImportService {
   }
 
   async importCities() {
-    console.log('starting import cities')
-    const csv = await this.importFile(Currency, 'import/cities.csv');
+
+    const results = []
+    await createReadStream('import/cities.csv')
+      .pipe(csv({
+        strict: true,
+        separator: ',',
+      }))
+      .on('data', (data) => {
+        const { name, region_code, latitude, longitude } = data
+        const obj = {
+          name,
+          nativeName: name,
+          code: region_code,
+          coords: `${latitude},${longitude}`
+        }
+        this.entityManager.save(City, obj)
+      })
+      .on('end', () => {
+        console.log('complete')
+        return results
+      });
+    /*const data: ParsedData<any> = await this.csvParser.parse(
+      stream,
+      City,
+      null,
+      null,
+      {
+        strict: true,
+        separator: ',',
+        mapHeaders: ({ header, index }) => header.toLowerCase(),
+      },
+    );*/
+    return results;
+
+
+    // old
+    /*console.log('starting import cities')
+    const csv = await this.importFile(City, 'import/cities.csv');
     const list = await removeUnicode(csv.list); // TODO: Fix unicode name issue
 
     const cities = await Promise.all(
       list.map(async city => {
+        console.log('city', city)
         const { name, region_code, latitude, longitude } = city;
 
         const region = await this.regionsService.findOne({
@@ -265,25 +303,26 @@ export class ImportService {
       }),
     );
 
-    await this.entityManager.save(City, [ ...cities ])
+    console.log('save cities')
+    // await this.entityManager.save(City, [ ...cities ])
 
-    return cities;
+    return cities;*/
   }
 
   async importCsv() {
-    const languages = await this.importLanguages();
+    /*const languages = await this.importLanguages();
     const currencies = await this.importCurrencies();
     const continents = await this.importContinents();
     const countries = await this.importCountries();
-    const regions = await this.importRegions();
+    const regions = await this.importRegions();*/
     const cities = await this.importCities();
     return {
       imported: {
-        currencies,
+        /*currencies,
         languages,
         continents,
         countries,
-        regions,
+        regions,*/
         cities,
       },
     };
