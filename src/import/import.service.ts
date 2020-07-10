@@ -42,11 +42,11 @@ export class ImportService {
       .on('data', data => {
         const { name, code, number, decimals } = data;
         const obj = {
-          name,
-          nativeName: name,
-          code,
-          number,
-          decimals,
+          name: name.trim(),
+          nativeName: name.trim(),
+          code: code.trim(),
+          number: number.trim(),
+          decimals: decimals.trim(),
         };
         this.entityManager.save(Currency, obj);
       })
@@ -65,10 +65,10 @@ export class ImportService {
       .on('data', data => {
         const { code, name, nativeName, code2 } = data;
         const obj = {
-          name,
-          nativeName: nativeName || name,
-          code,
-          code_iso_3: code2,
+          name: name.trim(),
+          nativeName: (nativeName || name).trim(),
+          code: code.trim(),
+          code_iso_3: code2.trim(),
         };
         this.entityManager.save(Language, obj);
       }).on('end', () => setTimeout(() => this.importCountries(), 5000));
@@ -87,7 +87,6 @@ export class ImportService {
         }),
       )
       .on('data', data => {
-        console.log(data)
         const name = data[Object.keys(data)[0]]; // TODO: weird fix until unicode removal works for that extra space
         const {
           nativename: nativeName,
@@ -113,21 +112,21 @@ export class ImportService {
         );
 
         const obj = {
-          name,
-          nativeName: nativeName || name,
-          demonym,
-          code,
-          code_alpha_3,
-          area,
-          capital,
-          telephone,
-          timezone,
-          domain,
-          region,
-          subRegion,
+          name: name.trim(),
+          nativeName: (nativeName || name).trim(),
+          demonym: demonym.trim(),
+          code: code.trim(),
+          code_alpha_3: code_alpha_3.trim(),
+          area: area.trim(),
+          capital: capital.trim(),
+          telephone: telephone && telephone.trim(),
+          timezone: timezone.trim(),
+          domain: domain && domain.trim(),
+          region: region && region.trim(),
+          subRegion: subRegion && subRegion.trim(),
           currency: currency?.id,
           language: language?.id,
-          coords: `${lat},${lng}`,
+          coords: `${lat && lat.trim()},${lng && lng.trim()}`,
         };
         // @ts-ignore
         this.entityManager.save(Country, obj);
@@ -149,9 +148,9 @@ export class ImportService {
         const { name, state_code: code, country_code } = data;
         const country = countries.find(item => item?.code.includes(country_code))
         const obj = {
-          name,
-          nativeName: name,
-          code,
+          name: name.trim(),
+          nativeName: name.trim(),
+          code: code.trim(),
           country: country?.id,
         };
         // @ts-ignore
@@ -174,14 +173,14 @@ export class ImportService {
         const { name, region_code, latitude, longitude } = data;
         const region = regions.find(item => item.code.includes(region_code));
         const obj = {
-          name,
-          nativeName: name,
+          name: name.trim(),
+          nativeName: name.trim(),
           region: region?.id,
-          coords: `${latitude},${longitude}`,
+          coords: `${latitude.trim()},${longitude.trim()}`,
         };
         // @ts-ignore
         this.entityManager.save(City, obj);
-      }).on('end', () => console.log('completed'));
+      }).on('end', () => setTimeout(() => console.log('Completed'), 120000));
   }
 
   async importCsv() {
