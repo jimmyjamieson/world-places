@@ -175,7 +175,6 @@ export class ImportService {
         const { name, region_code, country_code, latitude, longitude } = data;
         const region = regions.find(item => (item.code.includes(region_code) && item.countryCode.includes(country_code) ) );
 
-        console.log('region', region)
         const obj = {
           name: name.trim(),
           nativeName: name.trim(),
