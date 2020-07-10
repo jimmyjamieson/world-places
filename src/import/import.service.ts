@@ -96,7 +96,7 @@ export class ImportService {
           callingcodes__001: telephone,
           capital,
           region,
-          subRegion: subRegion,
+          subregion: subRegion,
           latlng__001: lat,
           latlng__002: lng,
           demonym,
@@ -188,6 +188,6 @@ export class ImportService {
 
   async importCsv() {
     await this.startImportCsv();
-    return { success: true };
+    return { success: true, message: 'Importing will happen in the background' };
   }
 }
