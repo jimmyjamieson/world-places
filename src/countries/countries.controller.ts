@@ -10,9 +10,6 @@ import { CountriesService } from './countries.service';
   },
   query: {
     join: {
-      continent: {
-        eager: true,
-      },
       currency: {
         eager: true,
       },
@@ -35,13 +32,9 @@ export class CountriesController implements CrudController<Country>{
   constructor(
     public readonly service: CountriesService
   ) {}
-/*
-  @Get('/test')
+
+  /*@Get('/export')
   async Test(): Promise<any> {
-    return this.service.findOne({
-      where: {
-        code: 'MT'
-      }
-    })
+    return this.service.find()
   }*/
 }
