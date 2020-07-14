@@ -1,8 +1,9 @@
-import { writeFile } from 'fs'
+import { writeFile, readFileSync } from 'fs'
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
 import { getRepository } from 'typeorm';
 import { Country } from '../countries/country.entity';
+import { Currency } from '../currencies/currencies.entity';
 
 @Injectable()
 export class ImportService {
@@ -32,6 +33,11 @@ export class ImportService {
   }
 
   async importJson() {
-    return null
+    console.log('importCurrencies')
+    const data = await readFileSync('data/data.json')
+    const json = JSON.parse(data)
+    console.log('JSON', json)
+
+      return { success: true }
   }
 }
