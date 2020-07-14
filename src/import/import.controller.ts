@@ -12,13 +12,13 @@ export class ImportController {
   ) {}
 
   @Get()
-  async import(): Promise<any> {
+  async importJson(): Promise<any> {
     return this.importService.importJson()
   }
 
   @Get('export')
-  async export(): Promise<any> {
-    return 'exported'
+  async exportJson(): Promise<any> {
+    return this.importService.exportJson()
   }
 
   @Get('csv')

@@ -1,6 +1,6 @@
+import { writeFile } from 'fs'
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { getRepository } from 'typeorm';
 import { Country } from '../countries/country.entity';
 
@@ -22,11 +22,16 @@ export class ImportService {
   }
 
   async exportJson() {
-    return null;
+    const countries = await this.getAllCountries();
+    await writeFile('./data/data.json', JSON.stringify(countries), 'utf8', function(error) {
+      if (error) {
+        return { error: error.toString() }
+      }
+    })
+    return { success: true }
   }
 
   async importJson() {
-    const countries = await this.getAllCountries();
-    return { countries };
+    return null
   }
 }
