@@ -2,16 +2,18 @@ import { createReadStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import csv from 'csv-parser';
 import { Country } from '../countries/country.entity';
-import { getManager } from 'typeorm';
+import { getManager, getRepository } from 'typeorm';
 import { Currency } from '../currencies/currencies.entity';
 import { Region } from '../regions/region.entity';
 import { Language } from '../languages/languages.entity';
 import { City } from '../cities/cities.entity';
+import { CountriesService } from '../countries/countries.service';
 
 @Injectable()
 export class ImportCsvService {
-  constructor() {}
+  constructor(public readonly countryService: CountriesService) {}
 
+  countryRepository = getRepository(Country);
   entityManager = getManager();
   async getAllCountries() {
     return await this.entityManager.find(Country);
@@ -28,6 +30,14 @@ export class ImportCsvService {
 
   async startImportCsv() {
     await this.importCurrencies()
+  }
+
+  async clearDatabase() {
+    console.log('clear db');
+    await this.countryRepository.query(
+      `TRUNCATE country, language, currency, region, city CASCADE`,
+    );
+    console.log('clear db done');
   }
 
   async importCurrencies() {
@@ -187,6 +197,7 @@ export class ImportCsvService {
   }
 
   async importCsv() {
+    await this.clearDatabase()
     await this.startImportCsv();
     return { success: true, message: 'Importing will happen in the background' };
   }

@@ -3,7 +3,7 @@ import { writeFile } from "fs";
 const writeToJson = async(data, path) => {
   await writeFile(
     path,
-    JSON.stringify(data),
+    JSON.stringify({data : data }),
     'utf8',
     function(error) {
       if (error) {

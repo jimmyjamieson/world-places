@@ -1,6 +1,7 @@
-import npm from 'npm'
-import { spawn } from 'child_process';
-import { createReadStream } from 'fs';
+import JSONStream from 'JSONStream';
+import devnull from 'dev-null';
+import es from 'event-stream';
+import { createReadStream, createWriteStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
 import { getRepository } from 'typeorm';
@@ -85,30 +86,30 @@ export class ImportService {
   }
 
   async clearDatabase() {
-
-    console.log('clear db')
-    await this.countryRepository.query(`TRUNCATE country, language, currency, region, city CASCADE`)
-    console.log('clear db done')
+    console.log('clear db');
+    await this.countryRepository.query(
+      `TRUNCATE country, language, currency, region, city CASCADE`,
+    );
+    console.log('clear db done');
   }
 
   async importJson() {
-
-    await this.clearDatabase()
+    await this.clearDatabase();
 
     const currencies = await readFromJson('data/currencies.json');
     const languages = await readFromJson('data/languages.json');
     const countries = await readFromJson('data/countries.json');
     const regions = await readFromJson('data/regions.json');
 
-    await this.currencyRepository.save([...currencies]);
-    await this.languageRepository.save([...languages]);
+    await this.currencyRepository.save([...currencies.data]);
+    await this.languageRepository.save([...languages.data]);
 
-    const formattedCountries = countries.map(country => {
+    const formattedCountries = countries.data.map(country => {
       const { currency, language, ...rest } = country;
       const getCurrency =
-        currencies.find(item => item.code === currency?.code) || undefined;
+        currencies.data.find(item => item.code === currency?.code) || undefined;
       const getLanguage =
-        languages.find(item => item.code === language?.code) || undefined;
+        languages.data.find(item => item.code === language?.code) || undefined;
 
       return {
         ...rest,
@@ -119,10 +120,10 @@ export class ImportService {
 
     await this.countryRepository.save([...formattedCountries]);
 
-    const formattedRegions = regions.map(region => {
+    const formattedRegions = regions.data.map(region => {
       const { country, ...rest } = region;
       const getCountry =
-        countries.find(item => item.code === country?.code) || undefined;
+        countries.data.find(item => item.code === country?.code) || undefined;
 
       return {
         ...rest,
@@ -132,26 +133,26 @@ export class ImportService {
 
     await this.regionRepository.save([...formattedRegions]);
 
-    await createReadStream('data/cities.json', {
+    const stream = await createReadStream('data/cities.json', {
       flags: 'r',
       encoding: 'utf-8',
-    }).on('data', data => {
-      const list = JSON.parse(data);
-      console.log('data', list);
-    });
+    })
+      .on('data', data => {
+        this.cityRepository.save(data)
+      })
+      .on('end', () => console.log('end'));
 
-    /*cities.forEach(city => {
-      const { region, ...rest } = city;
-      const getRegion =
-        regions.find(item => item.id === region?.id) || undefined;
-
-      const data = {
-        ...rest,
-        region: getRegion?.id,
-      };
-
-      this.cityRepository.save(data);
-    });*/
+    stream.pipe(JSONStream.parse('data.*')).pipe(
+      es.map(function(data, cb) {
+        const { region, ...rest } = data;
+        const formattedData = {
+          ...rest,
+          region: region?.id,
+        };
+        cb(null, formattedData);
+        return;
+      }),
+    );
 
     return { ok: true };
   }
