@@ -9,6 +9,7 @@ import { Language } from '../languages/languages.entity';
 import { Region } from '../regions/region.entity';
 import { City } from '../cities/cities.entity';
 import { Currency } from '../currencies/currencies.entity';
+import readFromJson from '../utils/read-json';
 
 @Injectable()
 export class ImportService {
@@ -18,7 +19,7 @@ export class ImportService {
   languageRepository = getRepository(Language);
   currencyRepository = getRepository(Currency);
   regionRepository = getRepository(Region);
-  cityRepository = getRepository(City)
+  cityRepository = getRepository(City);
 
   async getAll() {
     return this.countryRepository
@@ -31,15 +32,25 @@ export class ImportService {
   }
 
   async getCountries() {
-    return this.countryRepository.createQueryBuilder('country').getMany();
+    return this.countryRepository
+      .createQueryBuilder('country')
+      .leftJoinAndSelect('country.currency', 'currency')
+      .leftJoinAndSelect('country.language', 'language')
+      .getMany();
   }
 
   async getRegions() {
-    return this.regionRepository.createQueryBuilder('region').getMany();
+    return this.regionRepository
+      .createQueryBuilder('region')
+      .leftJoinAndSelect('region.country', 'country')
+      .getMany();
   }
 
   async getCities() {
-    return this.cityRepository.createQueryBuilder('city').getMany();
+    return this.cityRepository
+      .createQueryBuilder('city')
+      .leftJoinAndSelect('city.region', 'region')
+      .getMany();
   }
 
   async getLanguages() {
@@ -52,56 +63,78 @@ export class ImportService {
 
   async exportJson() {
     const all = await this.getAll();
-    await writeToJson(all, './data/all.json')
+    await writeToJson(all, './data/all.json');
 
     const countries = await this.getCountries();
-    await writeToJson(countries, './data/countries.json')
+    await writeToJson(countries, './data/countries.json');
 
     const regions = await this.getRegions();
-    await writeToJson(regions, './data/regions.json')
+    await writeToJson(regions, './data/regions.json');
 
     const cities = await this.getCities();
-    await writeToJson(cities, './data/cities.json')
+    await writeToJson(cities, './data/cities.json');
 
     const languages = await this.getLanguages();
-    await writeToJson(languages, './data/languages.json')
+    await writeToJson(languages, './data/languages.json');
 
     const currencies = await this.getCurrencies();
-    await writeToJson(currencies, './data/currencies.json')
+    await writeToJson(currencies, './data/currencies.json');
 
     return { success: true };
   }
 
   async importJson() {
-    const json = await readFileSync('data/data.json').toString();
-    const data = JSON.parse(json);
+    const currencies = await readFromJson('data/currencies.json');
+    const languages = await readFromJson('data/languages.json');
+    const countries = await readFromJson('data/countries.json');
+    const regions = await readFromJson('data/regions.json');
+    const cities = await readFromJson('data/cities.json');
 
-    const countries = await data.map(country => {
-      const {
-        id,
-        name,
-        nativeName,
-        code,
-        coords,
-        continent,
-        subContinent,
-        countryCode,
-        currency,
-        language,
-        regions,
-      } = country;
+    await this.currencyRepository.save([...currencies]);
+    await this.languageRepository.save([...languages]);
+
+    const formattedCountries = countries.map(country => {
+      const { currency, language, ...rest } = country;
+      const getCurrency =
+        currencies.find(item => item.id === currency?.id) || undefined;
+      const getLanguage =
+        languages.find(item => item.id === language?.id) || undefined;
+
+      return {
+        ...rest,
+        language: getLanguage?.id,
+        currency: getCurrency?.id,
+      };
     });
 
-    const currencies = _.uniqBy(_.map(data, 'currency'), 'id')
-    const languages = _.uniqBy(_.map(data, 'language'), 'id')
-    const regions = _.uniqBy(_.map(data, 'regions'), 'id')[0]
+    await this.countryRepository.save([...formattedCountries]);
 
-    const allCities = []
-    regions.map((region) => {
-      const { cities } = region
-      allCities.push(cities[0])
-    })
+    const formattedRegions = regions.map(region => {
+      const { country, ...rest } = region;
+      const getCountry =
+        countries.find(item => item.id === country?.id) || undefined;
 
-    return { allCities };
+      return {
+        ...rest,
+        country: getCountry?.id,
+      };
+    });
+
+    await this.regionRepository.save([...formattedRegions]);
+
+    cities.forEach(city => {
+      const { region, ...rest } = city;
+      const getRegion =
+        regions.find(item => item.id === region?.id) || undefined;
+
+      const data = {
+        ...rest,
+        region: getRegion?.id,
+      };
+
+      this.cityRepository.save(data);
+    });
+
+    return { ok: true };
   }
 }
