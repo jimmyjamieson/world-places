@@ -1,5 +1,6 @@
-import * as _ from 'lodash';
-import { writeFile, readFileSync } from 'fs';
+import npm from 'npm'
+import { spawn } from 'child_process';
+import { createReadStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
 import { getRepository } from 'typeorm';
@@ -83,12 +84,21 @@ export class ImportService {
     return { success: true };
   }
 
+  async clearDatabase() {
+
+    console.log('clear db')
+    await this.countryRepository.query(`TRUNCATE country, language, currency, region, city CASCADE`)
+    console.log('clear db done')
+  }
+
   async importJson() {
+
+    await this.clearDatabase()
+
     const currencies = await readFromJson('data/currencies.json');
     const languages = await readFromJson('data/languages.json');
     const countries = await readFromJson('data/countries.json');
     const regions = await readFromJson('data/regions.json');
-    const cities = await readFromJson('data/cities.json');
 
     await this.currencyRepository.save([...currencies]);
     await this.languageRepository.save([...languages]);
@@ -96,9 +106,9 @@ export class ImportService {
     const formattedCountries = countries.map(country => {
       const { currency, language, ...rest } = country;
       const getCurrency =
-        currencies.find(item => item.id === currency?.id) || undefined;
+        currencies.find(item => item.code === currency?.code) || undefined;
       const getLanguage =
-        languages.find(item => item.id === language?.id) || undefined;
+        languages.find(item => item.code === language?.code) || undefined;
 
       return {
         ...rest,
@@ -112,7 +122,7 @@ export class ImportService {
     const formattedRegions = regions.map(region => {
       const { country, ...rest } = region;
       const getCountry =
-        countries.find(item => item.id === country?.id) || undefined;
+        countries.find(item => item.code === country?.code) || undefined;
 
       return {
         ...rest,
@@ -122,7 +132,15 @@ export class ImportService {
 
     await this.regionRepository.save([...formattedRegions]);
 
-    cities.forEach(city => {
+    await createReadStream('data/cities.json', {
+      flags: 'r',
+      encoding: 'utf-8',
+    }).on('data', data => {
+      const list = JSON.parse(data);
+      console.log('data', list);
+    });
+
+    /*cities.forEach(city => {
       const { region, ...rest } = city;
       const getRegion =
         regions.find(item => item.id === region?.id) || undefined;
@@ -133,7 +151,7 @@ export class ImportService {
       };
 
       this.cityRepository.save(data);
-    });
+    });*/
 
     return { ok: true };
   }

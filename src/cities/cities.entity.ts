@@ -4,8 +4,11 @@ import { LocationEntity } from '../_base/location.entity';
 import { Region } from '../regions/region.entity';
 
 @Entity()
-export class City extends LocationEntity  {
+export class City extends LocationEntity {
   @ApiProperty({ type: () => Region })
-  @ManyToOne(type => Region, region => region.cities)
+  @ManyToOne(
+    type => Region,
+    region => region.cities,
+  )
   region: Region;
 }

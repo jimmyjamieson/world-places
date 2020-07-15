@@ -4,8 +4,7 @@ import { Country } from '../countries/country.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class Currency extends BaseEntity  {
-
+export class Currency extends BaseEntity {
   @ApiProperty()
   @Column({ nullable: true })
   number: string;
@@ -18,7 +17,10 @@ export class Currency extends BaseEntity  {
   @Column({ length: 20, nullable: true })
   symbol: string;
 
-  @ApiProperty({ type: () => [ Country ] })
-  @OneToMany(type => Country, country => country.currency)
+  @ApiProperty({ type: () => [Country] })
+  @OneToMany(
+    type => Country,
+    country => country.currency,
+  )
   countries: Country[];
 }

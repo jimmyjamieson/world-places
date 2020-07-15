@@ -19,6 +19,12 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   const server = await app.listen(4000);
+  if (process.env.process_restarting) {
+    delete process.env.process_restarting;
+    // Give old process one second to shut down before continuing ...
+    setTimeout(server, 1000);
+    return;
+  }
   server.setTimeout(1800000); // 600,000=> 10Min, 1200,000=>20Min, 1800,000=>30Min
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

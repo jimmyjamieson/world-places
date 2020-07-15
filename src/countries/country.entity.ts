@@ -6,7 +6,7 @@ import { Language } from '../languages/languages.entity';
 import { Region } from '../regions/region.entity';
 
 @Entity()
-export class Country extends LocationEntity  {
+export class Country extends LocationEntity {
   @ApiProperty()
   @Column({ length: 255, nullable: true })
   continent: string;
@@ -15,15 +15,27 @@ export class Country extends LocationEntity  {
   @Column({ length: 255, nullable: true })
   subContinent: string;
 
-  @ApiProperty({ type: () => [ Region ] })
-  @OneToMany(type => Region, region => region.country)
+  @ApiProperty({ type: () => [Region] })
+  @OneToMany(
+    type => Region,
+    region => region.country,
+    { cascade: true, onDelete: 'CASCADE' },
+  )
   regions: Region[];
 
   @ApiProperty({ type: () => Currency })
-  @ManyToOne(type => Currency, currency => currency.countries)
+  @ManyToOne(
+    type => Currency,
+    currency => currency.countries,
+    { cascade: true, onDelete: 'CASCADE' },
+  )
   currency: Currency;
 
   @ApiProperty({ type: () => Language })
-  @ManyToOne(type => Language, language => language.countries)
+  @ManyToOne(
+    type => Language,
+    language => language.countries,
+    { cascade: true, onDelete: 'CASCADE' },
+  )
   language: Language;
 }

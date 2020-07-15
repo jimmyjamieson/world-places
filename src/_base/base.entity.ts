@@ -4,7 +4,7 @@ import { Column, PrimaryGeneratedColumn } from 'typeorm';
 export abstract class BaseEntity {
 
   @ApiProperty()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number | string;
 
   @ApiProperty()
