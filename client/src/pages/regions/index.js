@@ -8,27 +8,27 @@ const tableConfig = {
   order: 'name asc',
   columns: [
     {
-      column: 'id',
+      key: 'id',
       type: 'string',
       value: 'id',
     },
     {
-      column: 'code',
+      key: 'code',
       type: 'string',
       value: 'code',
     },
     {
-      column: 'name',
+      key: 'name',
       type: 'string',
       value: 'nativeName',
     },
     {
-      column: 'cities',
+      key: 'cities',
       type: 'array',
       value: 'cities?.length',
     },
     {
-      column: 'coords',
+      key: 'coords',
       type: 'number',
       value: 'coords',
       align: 'right',

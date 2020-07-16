@@ -10,7 +10,7 @@ const TableHeader = memo(({ config = {} }) => {
     <TableHead>
       <TableRow>
         {columns && columns.map(col => (
-          <TableCell align={col.align || 'left'}>{col.column.toUpperCase()}</TableCell>
+          <TableCell align={col.align || 'left'}>{col.key.toUpperCase()}</TableCell>
         ))}
         <TableCell align="right">DELETE</TableCell>
       </TableRow>

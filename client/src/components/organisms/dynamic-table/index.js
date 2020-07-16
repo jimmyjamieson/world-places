@@ -89,7 +89,7 @@ const DynamicTable = memo(
 
     const { data: list } = data;
     const hasData = !isLoading && list && list.length > 0;
-    const { columns = [], name = ''} = config;
+    const { columns = [], name = '' } = config;
 
     console.log('list', list);
 
@@ -104,16 +104,11 @@ const DynamicTable = memo(
               {error && <TableError>{error}</TableError>}
               {hasData
                 ? list.map(item => {
-                    console.log(
-                      'selectedCol',
-                      columns && columns.find(col =>
-                        col.column === item[col.column],
-                      ),
-                    );
                     return (
                       <TableItemRow
                         key={item.id}
                         item={item}
+                        columns={ columns }
                         handleDelete={handleDelete}
                         handleUpdate={handleUpdate}
                         openForm={() => {}}
