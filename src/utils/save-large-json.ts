@@ -8,7 +8,7 @@ const defaultTransform = (key, value) => {
   }
 }
 
-const writeLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1) => {
+const saveLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1) => {
   const stream = createReadStream(path, {
     flags: 'r',
     encoding: 'utf-8',
@@ -39,4 +39,4 @@ const writeLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 
   processingStream.on('finish', () => console.log('All done'));
 }
 
-export default writeLargeJson
+export default saveLargeJson

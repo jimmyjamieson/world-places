@@ -11,7 +11,7 @@ import { Region } from '../regions/region.entity';
 import { City } from '../cities/cities.entity';
 import { Currency } from '../currencies/currencies.entity';
 import readFromJson from '../utils/read-json';
-import writeLargeJson from '../utils/write-large-json';
+import saveLargeJson from '../utils/save-large-json';
 
 @Injectable()
 export class ImportService {
@@ -138,7 +138,7 @@ export class ImportService {
         region: region?.id,
       };
     };
-    writeLargeJson(
+    saveLargeJson(
       'data/cities.json',
       data => this.cityRepository.save(data),
       cityTransform,
