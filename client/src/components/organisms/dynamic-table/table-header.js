@@ -5,12 +5,14 @@ import TableHead from '@material-ui/core/TableHead';
 
 const TableHeader = memo(({ config = {} }) => {
   const { columns } = config;
+  console.log('header-columns', columns)
   return (
     <TableHead>
       <TableRow>
-        {columns.forEach(col => (
+        {columns && columns.map(col => (
           <TableCell align={col.align || 'left'}>{col.column.toUpperCase()}</TableCell>
         ))}
+        <TableCell align="right">DELETE</TableCell>
       </TableRow>
     </TableHead>
   );

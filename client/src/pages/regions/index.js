@@ -2,7 +2,8 @@ import React from 'react';
 import DynamicTable from '../../components/organisms/dynamic-table';
 import { getRegions } from '../../utils/api';
 
-const config = {
+const tableConfig = {
+  name: 'Regions',
   rows: 10,
   order: 'name asc',
   columns: [
@@ -36,7 +37,7 @@ const config = {
 };
 
 const RegionsPage = () => {
-  return <DynamicTable name="Regions" fetchData={getRegions} config={ config } />;
+  return <DynamicTable fetchData={getRegions} config={ tableConfig } />;
 };
 
 export default RegionsPage;

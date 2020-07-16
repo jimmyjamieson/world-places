@@ -7,12 +7,11 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import TableToolbar from './table-toolbar';
 import TableHeader from './table-header';
-import TableRow from './table-row';
+import TableItemRow from './table-item-row';
 import TableError from './table-error';
 
 const DynamicTable = memo(
   ({
-    name,
     deleteItem,
     updateItem,
     addItem,
@@ -36,8 +35,6 @@ const DynamicTable = memo(
         );
         return null;
       }
-
-      console.log('getDataPage', page);
 
       const params = {
         limit: rowsPerPage,
@@ -90,6 +87,12 @@ const DynamicTable = memo(
       await setPage(0);
     };
 
+    const { data: list } = data;
+    const hasData = !isLoading && list && list.length > 0;
+    const { columns = [], name = ''} = config;
+
+    console.log('list', list);
+
     return (
       <Paper>
         <TableToolbar name={name} setSearchQuery={setSearchQuery} />
@@ -99,25 +102,25 @@ const DynamicTable = memo(
             <TableBody>
               {isLoading && <LinearProgress />}
               {error && <TableError>{error}</TableError>}
-              {!isLoading && data && data.length > 0 ? (
-                data.forEach(item => {
-                  if (!item) return null;
-                  return (
-                    <TableRow
-                      key={item.id}
-                      config={config}
-                      item={item}
-                      handleDelete={handleDelete}
-                      handleUpdate={handleUpdate}
-                      openForm={() => {}}
-                    />
-                  );
-                })
-              ) : (
-                <div>
-                  No data. Make sure to re-import data from the json file
-                </div>
-              )}
+              {hasData
+                ? list.map(item => {
+                    console.log(
+                      'selectedCol',
+                      columns && columns.find(col =>
+                        col.column === item[col.column],
+                      ),
+                    );
+                    return (
+                      <TableItemRow
+                        key={item.id}
+                        item={item}
+                        handleDelete={handleDelete}
+                        handleUpdate={handleUpdate}
+                        openForm={() => {}}
+                      />
+                    );
+                  })
+                : 'No data'}
             </TableBody>
           </Table>
         </TableContainer>

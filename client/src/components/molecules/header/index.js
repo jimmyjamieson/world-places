@@ -49,7 +49,7 @@ const Header = ({ open, toggleDrawer }) => {
         <Typography variant="h6" className={classes.title}>
           World Places
         </Typography>
-        <a target="_blank" href="https://github.com/jimmyjamieson/world-places">
+        <a target="_blank" href="https://github.com/jimmyjamieson/world-places" rel="noopener noreferrer">
           <GitHubIcon />
         </a>
       </Toolbar>

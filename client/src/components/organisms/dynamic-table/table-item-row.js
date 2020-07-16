@@ -1,18 +1,16 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import TableError from './table-error';
+import TableRow from '@material-ui/core/TableRow';
 
-const TableRow = memo(({ item, handleDelete, handleUpdate, openForm, config }) => {
-  const { columns } = config
-  if (!item || !config) return <TableError>No item or config</TableError>
-
-  console.log('item', item)
+const TableItemRow = ({ item, handleDelete, handleUpdate, openForm, columns }) => {
+  if (!item) return <TableError>No item or config</TableError>
 
   return (
     <TableRow key={item.id}>
-      {columns.forEach(col => <TableCell align="right">{item[col.value]}</TableCell>)}
+      <TableCell>{item.name}</TableCell>
       <TableCell align="right">
         <IconButton onClick={() => handleDelete(item.id)}>
           <DeleteForever />
@@ -20,6 +18,6 @@ const TableRow = memo(({ item, handleDelete, handleUpdate, openForm, config }) =
       </TableCell>
     </TableRow>
   );
-});
+};
 
-export default TableRow;
+export default TableItemRow;
