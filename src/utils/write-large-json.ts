@@ -2,10 +2,11 @@ import StreamArray from 'stream-json/streamers/StreamArray';
 import { createReadStream } from "fs";
 import { Writable } from "stream";
 
-const defaultTransform = `{
-  ...rest,
-  region: region?.id
-}`
+const defaultTransform = (key, value) => {
+  return {
+    ...value
+  }
+}
 
 const writeLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1) => {
   const stream = createReadStream(path, {
@@ -16,17 +17,13 @@ const writeLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 
 
   const processingStream = new Writable({
     write({key, value}, encoding, callback) {
-      //Save to mongo or do any other async actions
-      const { region, ...rest } = value;
-      const formattedData = defaultTransform
-
+      const formattedData = transform(key, value)
       /**
        * Call function on each row
        */
       saveFunc(formattedData)
 
       setTimeout(() => {
-        console.log(value);
         callback();
       }, timeout);
     },

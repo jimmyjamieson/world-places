@@ -1,5 +1,5 @@
 import StreamArray from 'stream-json/streamers/StreamArray';
-import { Writable } from 'stream'
+import { Writable } from 'stream';
 import { createReadStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
@@ -11,6 +11,7 @@ import { Region } from '../regions/region.entity';
 import { City } from '../cities/cities.entity';
 import { Currency } from '../currencies/currencies.entity';
 import readFromJson from '../utils/read-json';
+import writeLargeJson from '../utils/write-large-json';
 
 @Injectable()
 export class ImportService {
@@ -130,42 +131,18 @@ export class ImportService {
 
     await this.regionRepository.save([...formattedRegions]);
 
-    const self = this
-    const stream = await createReadStream('data/cities.json', {
-      flags: 'r',
-      encoding: 'utf-8',
-    })
-    const jsonStream = StreamArray.withParser();
-
-    const processingStream = new Writable({
-      write({key, value}, encoding, callback) {
-        //Save to mongo or do any other async actions
-        const { region, ...rest } = value;
-        const formattedData = {
-          ...rest,
-          region: region?.id,
-        };
-
-        self.cityRepository.save(formattedData)
-
-        setTimeout(() => {
-          console.log(value);
-          //Next record will be read only current one is fully processed
-          callback();
-        }, 1);
-      },
-      //Don't skip this, as we need to operate with objects, not buffers
-      objectMode: true
-    });
-
-    //Pipe the streams as follows
-    stream.pipe(jsonStream.input);
-    jsonStream.pipe(processingStream);
-
-//So we're waiting for the 'finish' event when everything is done.
-    processingStream.on('finish', () => console.log('All done'));
-
-
-
+    const cityTransform = (key, value) => {
+      const { region, ...rest } = value;
+      return {
+        ...rest,
+        region: region?.id,
+      };
+    };
+    writeLargeJson(
+      'data/cities.json',
+      data => this.cityRepository.save(data),
+      cityTransform,
+      1,
+    );
   }
 }
