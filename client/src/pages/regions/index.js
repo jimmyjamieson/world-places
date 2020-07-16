@@ -20,6 +20,10 @@ const tableConfig = {
       value: 'nativeName',
     },
     {
+      key: 'country',
+      value: 'country.name',
+    },
+    {
       key: 'cities',
       value: 'cities.length',
     },

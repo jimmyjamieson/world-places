@@ -135,7 +135,7 @@ const DynamicTable = memo(
                   tableColumnCount={tableColumnCount}
                   severity="warning"
                 >
-                  Nothing found in {name}
+                  Nothing found yet in {name}
                 </TableError>
               )}
             </TableBody>
