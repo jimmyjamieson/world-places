@@ -9,27 +9,22 @@ const tableConfig = {
   columns: [
     {
       key: 'id',
-      type: 'string',
       value: 'id',
     },
     {
       key: 'code',
-      type: 'string',
       value: 'code',
     },
     {
       key: 'name',
-      type: 'string',
       value: 'nativeName',
     },
     {
       key: 'cities',
-      type: 'array',
       value: 'cities.length',
     },
     {
       key: 'coords',
-      type: 'number',
       value: 'coords',
       align: 'right',
     },

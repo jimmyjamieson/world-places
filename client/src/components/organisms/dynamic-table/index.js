@@ -49,6 +49,7 @@ const DynamicTable = memo(
       const params = {
         limit: rowsPerPage,
         page,
+        sort: 'name,ASC',
         query: {
           alwaysPaginate: true,
           ...searchQuery,
