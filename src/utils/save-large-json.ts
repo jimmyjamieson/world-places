@@ -9,7 +9,7 @@ const defaultTransform = (key, value) => {
 }
 
 const saveLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1) => {
-  const stream = createReadStream(path, {
+  const fileStream = createReadStream(path, {
     flags: 'r',
     encoding: 'utf-8',
   })
@@ -33,7 +33,7 @@ const saveLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1
     objectMode: true
   });
 
-  stream.pipe(jsonStream.input);
+  fileStream.pipe(jsonStream.input);
   jsonStream.pipe(processingStream);
 
   processingStream.on('finish', () => console.log('All done'));
