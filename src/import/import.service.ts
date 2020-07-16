@@ -1,5 +1,6 @@
 import JSONStream from 'JSONStream';
-import devnull from 'dev-null';
+import StreamArray from 'stream-json/streamers/StreamArray';
+import { Writable } from 'stream'
 import es from 'event-stream';
 import { createReadStream, createWriteStream } from 'fs';
 import { Injectable } from '@nestjs/common';
@@ -86,11 +87,9 @@ export class ImportService {
   }
 
   async clearDatabase() {
-    console.log('clear db');
     await this.countryRepository.query(
       `TRUNCATE country, language, currency, region, city CASCADE`,
     );
-    console.log('clear db done');
   }
 
   async importJson() {
@@ -101,15 +100,15 @@ export class ImportService {
     const countries = await readFromJson('data/countries.json');
     const regions = await readFromJson('data/regions.json');
 
-    await this.currencyRepository.save([...currencies.data]);
-    await this.languageRepository.save([...languages.data]);
+    await this.currencyRepository.save([...currencies]);
+    await this.languageRepository.save([...languages]);
 
-    const formattedCountries = countries.data.map(country => {
+    const formattedCountries = countries.map(country => {
       const { currency, language, ...rest } = country;
       const getCurrency =
-        currencies.data.find(item => item.code === currency?.code) || undefined;
+        currencies.find(item => item.code === currency?.code) || undefined;
       const getLanguage =
-        languages.data.find(item => item.code === language?.code) || undefined;
+        languages.find(item => item.code === language?.code) || undefined;
 
       return {
         ...rest,
@@ -120,10 +119,10 @@ export class ImportService {
 
     await this.countryRepository.save([...formattedCountries]);
 
-    const formattedRegions = regions.data.map(region => {
+    const formattedRegions = regions.map(region => {
       const { country, ...rest } = region;
       const getCountry =
-        countries.data.find(item => item.code === country?.code) || undefined;
+        countries.find(item => item.code === country?.code) || undefined;
 
       return {
         ...rest,
@@ -133,26 +132,58 @@ export class ImportService {
 
     await this.regionRepository.save([...formattedRegions]);
 
+    const self = this
     const stream = await createReadStream('data/cities.json', {
       flags: 'r',
       encoding: 'utf-8',
     })
-      .on('data', data => {
-        this.cityRepository.save(data)
-      })
-      .on('end', () => console.log('end'));
+    const jsonStream = StreamArray.withParser();
 
-    stream.pipe(JSONStream.parse('data.*')).pipe(
-      es.map(function(data, cb) {
-        const { region, ...rest } = data;
+    const processingStream = new Writable({
+      write({key, value}, encoding, callback) {
+        //Save to mongo or do any other async actions
+        const { region, ...rest } = value;
         const formattedData = {
           ...rest,
           region: region?.id,
         };
-        cb(null, formattedData);
-        return;
-      }),
-    );
+
+        self.cityRepository.save(formattedData)
+
+        setTimeout(() => {
+          console.log(value);
+          //Next record will be read only current one is fully processed
+          callback();
+        }, 1);
+      },
+      //Don't skip this, as we need to operate with objects, not buffers
+      objectMode: true
+    });
+
+    //Pipe the streams as follows
+    stream.pipe(jsonStream.input);
+    jsonStream.pipe(processingStream);
+
+//So we're waiting for the 'finish' event when everything is done.
+    processingStream.on('finish', () => console.log('All done'));
+
+
+     /* .pipe(JSONStream.parse('data.*'))
+      .pipe(
+        es.map(function(data, cb) {
+          const { region, ...rest } = data;
+          const formattedData = {
+            ...rest,
+            region: region?.id,
+          };
+          cb(null, formattedData);
+          return;
+        }),
+      )
+      .on('data', data => {
+        this.cityRepository.save(data);
+      })
+      .on('end', () => console.log('end'));*/
 
     return { ok: true };
   }
