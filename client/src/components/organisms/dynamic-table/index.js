@@ -103,11 +103,11 @@ const DynamicTable = memo(
               {isLoading && <LinearProgress />}
               {error && <TableError>{error}</TableError>}
               {hasData
-                ? list.map(item => {
+                ? list.map(row => {
                     return (
                       <TableItemRow
-                        key={item.id}
-                        item={item}
+                        key={row.id}
+                        row={row}
                         columns={ columns }
                         handleDelete={handleDelete}
                         handleUpdate={handleUpdate}

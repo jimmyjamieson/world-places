@@ -6,29 +6,23 @@ import TableError from './table-error';
 import TableRow from '@material-ui/core/TableRow';
 
 const TableItemRow = ({
-  item,
+  row,
+  data,
   handleDelete,
   handleUpdate,
   openForm,
   columns,
 }) => {
-  if (!item) return <TableError>No item or config</TableError>;
-
-  const createTableCells = () => {
-    const cells = columns.map(col => {
-      return item[col.key];
-    });
-    cells.map(cell => {
-      console.log(cell);
-      return <TableCell>{cell}</TableCell>;
-    });
-  };
+  if (!row) return <TableError>No item or config</TableError>;
 
   return (
-    <TableRow key={item.id}>
-      {createTableCells()}
+    <TableRow key={row.id}>
+      {columns.map(col => {
+        console.log('col', col, 'row', row)
+        return <TableCell key={col.name}>{row[col.value]}</TableCell>;
+      })}
       <TableCell align="right">
-        <IconButton onClick={() => handleDelete(item.id)}>
+        <IconButton onClick={() => handleDelete(row.id)}>
           <DeleteForever />
         </IconButton>
       </TableCell>
