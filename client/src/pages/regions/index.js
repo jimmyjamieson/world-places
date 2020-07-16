@@ -4,7 +4,7 @@ import { getRegions } from '../../utils/api';
 
 const tableConfig = {
   name: 'Regions',
-  rows: 10,
+  rows: 8,
   order: 'name asc',
   columns: [
     {
@@ -25,7 +25,7 @@ const tableConfig = {
     {
       key: 'cities',
       type: 'array',
-      value: 'cities?.length',
+      value: 'cities.length',
     },
     {
       key: 'coords',

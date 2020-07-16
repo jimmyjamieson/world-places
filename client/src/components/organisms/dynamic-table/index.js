@@ -20,12 +20,22 @@ const DynamicTable = memo(
     formComponent,
     cache = 0,
   }) => {
+    if (!config) {
+      return (
+        <TableContainer>
+          <Table>
+            <TableError>No table config provided</TableError>
+          </Table>
+        </TableContainer>
+      );
+    }
+
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
 
     const getData = () => {
@@ -50,7 +60,7 @@ const DynamicTable = memo(
       fetchData(params).then(res => {
         setCount(res.data.total);
         setData(res.data);
-        setIsLoading(false);
+        setTimeout(() => setIsLoading(false), 1000)
       });
     };
 
@@ -87,35 +97,46 @@ const DynamicTable = memo(
       await setPage(0);
     };
 
-    const { data: list } = data;
-    const hasData = !isLoading && list && list.length > 0;
+    const { data: rows } = data;
+    const shouldRenderRows = !isLoading && rows && rows.length > 0;
     const { columns = [], name = '' } = config;
-
-    console.log('list', list);
+    const tableColumnCount = columns.length + 2;
 
     return (
       <Paper>
         <TableToolbar name={name} setSearchQuery={setSearchQuery} />
+        {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
           <Table>
-            <TableHeader config={config} />
+            <TableHeader tableColumnCount={tableColumnCount} config={config} />
             <TableBody>
-              {isLoading && <LinearProgress />}
-              {error && <TableError>{error}</TableError>}
-              {hasData
-                ? list.map(row => {
-                    return (
-                      <TableItemRow
-                        key={row.id}
-                        row={row}
-                        columns={ columns }
-                        handleDelete={handleDelete}
-                        handleUpdate={handleUpdate}
-                        openForm={() => {}}
-                      />
-                    );
-                  })
-                : 'No data'}
+              {error && (
+                <TableError tableColumnCount={tableColumnCount}>
+                  {error}
+                </TableError>
+              )}
+              {shouldRenderRows ? (
+                rows.map(row => {
+                  return (
+                    <TableItemRow
+                      key={row.id}
+                      row={row}
+                      columns={columns}
+                      tableColumnCount={tableColumnCount}
+                      handleDelete={handleDelete}
+                      handleUpdate={handleUpdate}
+                      openForm={() => {}}
+                    />
+                  );
+                })
+              ) : (
+                <TableError
+                  tableColumnCount={tableColumnCount}
+                  severity="warning"
+                >
+                  Nothing found in {name}
+                </TableError>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

@@ -5,7 +5,6 @@ import TableHead from '@material-ui/core/TableHead';
 
 const TableHeader = memo(({ config = {} }) => {
   const { columns } = config;
-  console.log('header-columns', columns)
   return (
     <TableHead>
       <TableRow>
@@ -13,6 +12,7 @@ const TableHeader = memo(({ config = {} }) => {
           <TableCell align={col.align || 'left'}>{col.key.toUpperCase()}</TableCell>
         ))}
         <TableCell align="right">DELETE</TableCell>
+        <TableCell align="right">EDIT</TableCell>
       </TableRow>
     </TableHead>
   );

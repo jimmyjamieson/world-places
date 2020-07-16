@@ -2,25 +2,31 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
+import Edit from '@material-ui/icons/Edit';
 import TableError from './table-error';
 import TableRow from '@material-ui/core/TableRow';
 
 const TableItemRow = ({
   row,
-  data,
   handleDelete,
-  handleUpdate,
   openForm,
   columns,
 }) => {
-  if (!row) return <TableError>No item or config</TableError>;
+
+  const renderTableCells = () => {
+    return columns.map(col => {
+      return <TableCell key={col.id}>{row[col.value]}</TableCell>;
+    })
+  }
 
   return (
     <TableRow key={row.id}>
-      {columns.map(col => {
-        console.log('col', col, 'row', row)
-        return <TableCell key={col.name}>{row[col.value]}</TableCell>;
-      })}
+      { renderTableCells() }
+      <TableCell align="right">
+        <IconButton onClick={() => openForm('edit', row.id)}>
+          <Edit />
+        </IconButton>
+      </TableCell>
       <TableCell align="right">
         <IconButton onClick={() => handleDelete(row.id)}>
           <DeleteForever />
