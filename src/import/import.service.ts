@@ -1,8 +1,6 @@
-import JSONStream from 'JSONStream';
 import StreamArray from 'stream-json/streamers/StreamArray';
 import { Writable } from 'stream'
-import es from 'event-stream';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream } from 'fs';
 import { Injectable } from '@nestjs/common';
 import { CountriesService } from '../countries/countries.service';
 import { getRepository } from 'typeorm';
@@ -168,23 +166,6 @@ export class ImportService {
     processingStream.on('finish', () => console.log('All done'));
 
 
-     /* .pipe(JSONStream.parse('data.*'))
-      .pipe(
-        es.map(function(data, cb) {
-          const { region, ...rest } = data;
-          const formattedData = {
-            ...rest,
-            region: region?.id,
-          };
-          cb(null, formattedData);
-          return;
-        }),
-      )
-      .on('data', data => {
-        this.cityRepository.save(data);
-      })
-      .on('end', () => console.log('end'));*/
 
-    return { ok: true };
   }
 }
