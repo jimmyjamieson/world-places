@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ContinentsList from '../../components/organisms/continents-list';
-import ContinentsForm from '../../components/organisms/continents-form';
 import { getCountries } from '../../utils/api';
 import Container from '@material-ui/core/Container';
 import AddFab from '../../components/molecules/add-fab';

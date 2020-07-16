@@ -5,25 +5,10 @@ const api = axios.create({
   timeout: 1000000,
 });
 
-// Continents
-
-export const getContinents = () => {
-  return api('continents?join=countries');
-};
-
-export const saveContinent = (input = {}) => {
-  return api.post('continents', input)
-}
-
-export const updateContinent = (id, input = {}) => {
-  return api.put(`continents/${id}`, input)
-}
-
-export const deleteContinent = (id) => {
-  return api.delete(`continents/${id}`)
-}
-
-// Countries
+/**
+ * Countries
+ * @returns {AxiosPromise}
+ */
 
 export const getCountries = () => {
   return api('countries?join=relation');
@@ -31,6 +16,10 @@ export const getCountries = () => {
 
 export const saveCountry = (input = {}) => {
   return api.post('countries', input)
+}
+
+export const updateCountry = (input = {}) => {
+  return api.patch(`countries/${input.id}`, input)
 }
 
 export const deleteCountry = (id) => {

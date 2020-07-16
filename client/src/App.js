@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import HomePage from './pages/home';
-import ContinentsPage from './pages/continents';
 import CountriesPage from './pages/countries';
 import RegionsPage from './pages/regions';
 import CitiesPage from './pages/cities';
@@ -40,9 +39,6 @@ function App() {
           <Switch>
             <Route exact path="/">
               <HomePage />
-            </Route>
-            <Route path="/continents">
-              <ContinentsPage />
             </Route>
             <Route path="/countries">
               <CountriesPage />

@@ -4,7 +4,7 @@ import FormModal from '../../molecules/form-modal';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import handleApiError from '../../../utils/handle-api-error';
-import SelectContinents from '../../fields/select-continents';
+import SelectContinents from '../../fields/select-countries';
 
 const CountriesForm = ({ onSuccess, open, close }) => {
   const [fields, setField] = useState({});

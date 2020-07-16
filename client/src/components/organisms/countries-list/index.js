@@ -62,7 +62,7 @@ const CountriesList = ({ list, onDeleteSuccess }) => {
               <TableCell component="th">CODE</TableCell>
               <TableCell component="th">NAME</TableCell>
               <TableCell component="th">NATIVE</TableCell>
-              <TableCell component="th">CONTINENT</TableCell>
+              <TableCell component="th">REGIONS</TableCell>
               <TableCell component="th" align="right">
                 COORDS
               </TableCell>
@@ -77,7 +77,7 @@ const CountriesList = ({ list, onDeleteSuccess }) => {
                   <TableCell>{item.code}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.nativeName}</TableCell>
-                  <TableCell>{item?.continent?.name}</TableCell>
+                  <TableCell>{item?.regions?.length}</TableCell>
                   <TableCell align="right">{item.coords}</TableCell>
                   <TableCell align="right">
                     <IconButton onClick={() => handleDelete(item.id)}>

@@ -55,9 +55,6 @@ const Navigation = ({ open, handleDrawerClose }) => {
       <Button component={NavLink} to="/">
         Home
       </Button>
-      <Button component={NavLink} to="/continents" color="inherit">
-        Continents
-      </Button>
       <Button component={NavLink} to="/countries" color="inherit">
         Countries
       </Button>

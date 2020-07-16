@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getContinents } from '../../../utils/api';
+import { getCountries } from '../../../utils/api';
 
-const SelectContinents = ({ onChange, name }) => {
+const SelectCountries = ({ onChange, name }) => {
   const [ data, setData ] = useState([])
 
   const fetchData = async() => {
-    const data = await getContinents()
+    const data = await getCountries()
     return data.data
   }
 
@@ -17,8 +17,6 @@ const SelectContinents = ({ onChange, name }) => {
     })
   }, [])
 
-  console.log('data', data)
-
   return (
     <Autocomplete
       id="combo-box-demo"
@@ -26,7 +24,7 @@ const SelectContinents = ({ onChange, name }) => {
       onChange={(event, newValue) => {
         onChange({
           target: {
-            name: name || 'continent',
+            name: name || 'country',
             value: newValue.id
           }
         });
@@ -47,4 +45,4 @@ const SelectContinents = ({ onChange, name }) => {
   );
 };
 
-export default SelectContinents;
+export default SelectCountries;
