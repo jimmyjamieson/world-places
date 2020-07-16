@@ -36,6 +36,7 @@ const saveLargeJson = (path, saveFunc, transform = defaultTransform, timeout = 1
   fileStream.pipe(jsonStream.input);
   jsonStream.pipe(processingStream);
 
+  processingStream.on('error', (error) => console.log(`There was an error ${error}`))
   processingStream.on('finish', () => console.log('All done'));
 }
 

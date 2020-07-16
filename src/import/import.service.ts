@@ -17,12 +17,19 @@ import saveLargeJson from '../utils/save-large-json';
 export class ImportService {
   constructor(public readonly countryService: CountriesService) {}
 
+  /**
+   * Set our repositories to get and save data
+   */
+
   countryRepository = getRepository(Country);
   languageRepository = getRepository(Language);
   currencyRepository = getRepository(Currency);
   regionRepository = getRepository(Region);
   cityRepository = getRepository(City);
 
+  /**
+   * Create our queries for each JSON output
+   */
   async getAll() {
     return this.countryRepository
       .createQueryBuilder('country')
@@ -63,6 +70,10 @@ export class ImportService {
     return this.currencyRepository.createQueryBuilder('currency').getMany();
   }
 
+  /**
+   * Export database data to JSON files
+   */
+
   async exportJson() {
     const all = await this.getAll();
     await writeToJson(all, './data/all.json');
@@ -85,11 +96,18 @@ export class ImportService {
     return { success: true };
   }
 
+  /**
+   * We need to empty the database when we re-import JSON
+   */
   async clearDatabase() {
     await this.countryRepository.query(
       `TRUNCATE country, language, currency, region, city CASCADE`,
     );
   }
+
+  /**
+   * Import JSON files to database
+   */
 
   async importJson() {
     await this.clearDatabase();
@@ -131,6 +149,12 @@ export class ImportService {
 
     await this.regionRepository.save([...formattedRegions]);
 
+
+    /**
+     * Set our transform for streamable JSON data
+     * @param key
+     * @param value
+     */
     const cityTransform = (key, value) => {
       const { region, ...rest } = value;
       return {
@@ -138,6 +162,9 @@ export class ImportService {
         region: region?.id,
       };
     };
+    /**
+     * Save our JSON data into the database
+     */
     saveLargeJson(
       'data/cities.json',
       data => this.cityRepository.save(data),
