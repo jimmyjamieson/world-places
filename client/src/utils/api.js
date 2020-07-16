@@ -10,8 +10,8 @@ const api = axios.create({
  * @returns {AxiosPromise}
  */
 
-export const getCountries = () => {
-  return api('countries?join=relation');
+export const getCountries = (params) => {
+  return api('countries', params);
 };
 
 export const saveCountry = (input = {}) => {
@@ -25,3 +25,12 @@ export const updateCountry = (input = {}) => {
 export const deleteCountry = (id) => {
   return api.delete(`countries/${id}`)
 }
+
+/**
+ * Regions
+ */
+
+export const getRegions = (params) => {
+  console.log('params', params)
+  return api('regions', { params });
+};

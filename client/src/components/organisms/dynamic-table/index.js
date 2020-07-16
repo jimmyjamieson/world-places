@@ -1,78 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableToolbar from './table-toolbar';
 import TableHeader from './table-header';
+import TableRow from './table-row';
+import TableError from './table-error';
 
-const defaultConfig = {
-  rows: 10,
-  order: 'name asc',
-  columns: [
-    {
-      column: 'id',
-      name: 'ID',
-      type: 'string',
-      value: 'id',
-    },
-    {
-      column: 'code',
-      name: 'CODE',
-      type: 'string',
-      value: 'code',
-    },
-    {
-      column: 'name',
-      name: 'NAME',
-      type: 'string',
-      value: 'nativeName',
-    },
-    {
-      column: 'regions',
-      name: 'REGIONS',
-      type: 'array',
-      value: 'regions?.length',
-    },
-    {
-      column: 'coords',
-      name: 'COORDS',
-      type: 'number',
-      value: 'coords',
-    },
-  ],
-};
-
-const DynamicTable = ({
+const DynamicTable = memo(({
+  name,
   deleteItem,
   updateItem,
   addItem,
   onAddSuccess,
   onDeleteSuccess,
   onUpdateSuccess,
-  config = defaultConfig,
+  config,
   fetchData,
   formComponent,
 }) => {
-  const [ isLoading, setIsLoading ] = useState(false)
-  const [ data, setData ] = useState([])
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [error, setError] = useState(null);
 
   const getData = () => {
-    setIsLoading(true)
-    fetchData().then(res => {
-      setData(res.data)
-      setIsLoading(false)
+    if (!fetchData) {
+      setError(
+        'No fetch data function exists, please add a fetch data function',
+      );
+      return null;
+    }
+
+    const params = {
+      limit: rowsPerPage,
+      page,
+      query: searchQuery,
+    };
+
+    setIsLoading(true);
+    fetchData(params).then(res => {
+      // console.log('res', res.data);
+      setData(res.data);
+      setIsLoading(false);
     });
-  }
+  };
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
 
   const handleDelete = async id => {
     try {
@@ -97,36 +78,39 @@ const DynamicTable = ({
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    getData()
   };
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    getData()
   };
 
   return (
     <Paper>
-      <TableToolbar />
+      <TableToolbar name={name} setSearchQuery={setSearchQuery} />
       <TableContainer>
         <Table>
           <TableHeader config={config} />
           <TableBody>
-            { isLoading && '...Loading'}
-            {data && data.length > 0 ? (
-              data.map(item => (
-                <TableRow
-                  config={config}
-                  item={item}
-                  handleDelete={handleDelete}
-                  handleUpdate={handleUpdate}
-                  openForm={() => {}}
-                />
-              ))
+            {isLoading && <LinearProgress />}
+            {error && <TableError>{error}</TableError>}
+            {!isLoading && data && data.length > 0 ? (
+              data.forEach(item => {
+                if (!item) return null;
+                return (
+                  <TableRow
+                    key={item.id}
+                    config={config}
+                    item={item}
+                    handleDelete={handleDelete}
+                    handleUpdate={handleUpdate}
+                    openForm={() => {}}
+                  />
+                );
+              })
             ) : (
-              <TableRow>
-                <TableCell colSpan="7">
-                  No data. Make sure to re-import data from the json file
-                </TableCell>
-              </TableRow>
+              <div>No data. Make sure to re-import data from the json file</div>
             )}
           </TableBody>
         </Table>
@@ -142,6 +126,6 @@ const DynamicTable = ({
       />
     </Paper>
   );
-};
+});
 
 export default DynamicTable;

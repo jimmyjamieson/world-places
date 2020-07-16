@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 
-const TableHeader = (config) => {
+const TableHeader = memo(({ config = {} }) => {
+  const { columns } = config;
   return (
     <TableHead>
       <TableRow>
-        <TableCell component="th">ID</TableCell>
-        <TableCell component="th">CODE</TableCell>
-        <TableCell component="th">NAME</TableCell>
-        <TableCell component="th">NATIVE</TableCell>
-        <TableCell component="th">CONTINENT</TableCell>
-        <TableCell component="th" align="right">
-          COORDS
-        </TableCell>
-        <TableCell align="right">DELETE</TableCell>
+        {columns.forEach(col => (
+          <TableCell align={col.align || 'left'}>{col.column.toUpperCase()}</TableCell>
+        ))}
       </TableRow>
     </TableHead>
   );
-};
+});
 
-export default TableHeader
+export default TableHeader;

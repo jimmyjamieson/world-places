@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -12,16 +12,16 @@ const useStyles = makeStyles({
   },
 });
 
-const TableToolbar = () => {
+const TableToolbar = memo(({ name = 'Listing', setSearchQuery }) => {
   const classes = useStyles();
   return(
     <Toolbar variant="regular" className={classes.toolbar}>
       <Typography variant="h6" id="tableTitle" component="div">
-        Countries
+        { name.toUpperCase() }
       </Typography>
-      <TextField label="Search" />
+      <TextField label="Search" onInput={ setSearchQuery } />
     </Toolbar>
   )
-}
+})
 
 export default TableToolbar
