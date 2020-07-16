@@ -15,16 +15,13 @@ const DynamicTable = memo(({
   deleteItem,
   updateItem,
   addItem,
-  onAddSuccess,
-  onDeleteSuccess,
-  onUpdateSuccess,
   config,
   fetchData,
   formComponent,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [error, setError] = useState(null);
@@ -40,7 +37,8 @@ const DynamicTable = memo(({
     const params = {
       limit: rowsPerPage,
       page,
-      query: searchQuery,
+      query: searchQuery ? searchQuery : null,
+      cache: 1,
     };
 
     setIsLoading(true);
@@ -58,31 +56,32 @@ const DynamicTable = memo(({
   const handleDelete = async id => {
     try {
       await deleteItem(id);
-      onDeleteSuccess();
+      getData()
     } catch (e) {}
   };
 
   const handleUpdate = async input => {
     try {
       await updateItem(input);
-      onUpdateSuccess();
+      getData()
     } catch (e) {}
   };
 
   const handleAdd = async input => {
     try {
       await addItem(input);
-      onAddSuccess();
+      getData()
     } catch (e) {}
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangePage = async(event, newPage) => {
+    console.log(newPage)
+    await setPage(newPage);
     getData()
   };
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleChangeRowsPerPage = async(event) => {
+    await setRowsPerPage(+event.target.value);
+    await setPage(0);
     getData()
   };
 
