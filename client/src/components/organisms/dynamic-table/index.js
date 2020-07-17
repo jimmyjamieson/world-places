@@ -11,14 +11,7 @@ import TableItemRow from './table-item-row';
 import TableError from './table-error';
 
 const DynamicTable = memo(
-  ({
-    deleteItem,
-    updateItem,
-    addItem,
-    config,
-    fetchData,
-    formComponent,
-  }) => {
+  ({ deleteItem, updateItem, addItem, config, fetchData, formComponent }) => {
     if (!config) {
       return (
         <TableContainer>
@@ -38,7 +31,7 @@ const DynamicTable = memo(
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
 
-    console.log(searchQuery)
+    console.log(searchQuery);
 
     const getData = () => {
       if (!fetchData) {
@@ -54,7 +47,7 @@ const DynamicTable = memo(
         sort: order,
         s: searchQuery,
         query: {
-          alwaysPaginate: true
+          alwaysPaginate: true,
         },
         cache: config.cache,
       };
@@ -71,10 +64,10 @@ const DynamicTable = memo(
       getData();
     }, [page, searchQuery]);
 
-    const handleSearchQuery = async(query) => {
-      setSearchQuery(query)
-      setPage(1)
-    }
+    const handleSearchQuery = async query => {
+      setSearchQuery(query);
+      setPage(1);
+    };
 
     const handleDelete = async id => {
       try {
@@ -116,7 +109,12 @@ const DynamicTable = memo(
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
           <Table>
-            <TableHeader tableColumnCount={tableColumnCount} config={config} />
+            <TableHeader
+              tableColumnCount={tableColumnCount}
+              order={order}
+              setOrder={setOrder}
+              config={config}
+            />
             <TableBody>
               {error && (
                 <TableError tableColumnCount={tableColumnCount}>
