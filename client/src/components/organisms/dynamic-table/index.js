@@ -34,6 +34,7 @@ const DynamicTable = memo(
     const [data, setData] = useState([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
+    const [order, setOrder] = useState(config.order || 'name, ASC');
     const [searchQuery, setSearchQuery] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
@@ -49,7 +50,7 @@ const DynamicTable = memo(
       const params = {
         limit: rowsPerPage,
         page,
-        sort: 'name,ASC',
+        sort: order,
         query: {
           alwaysPaginate: true,
           ...searchQuery,
@@ -61,7 +62,7 @@ const DynamicTable = memo(
       fetchData(params).then(res => {
         setCount(res.data.total);
         setData(res.data);
-        setIsLoading(false)
+        setIsLoading(false);
       });
     };
 
@@ -116,28 +117,29 @@ const DynamicTable = memo(
                   {error}
                 </TableError>
               )}
-              {shouldRenderRows ? (
-                rows.map(row => {
-                  return (
-                    <TableItemRow
-                      key={row.id}
-                      row={row}
-                      columns={columns}
+              {shouldRenderRows
+                ? rows.map(row => {
+                    return (
+                      <TableItemRow
+                        key={row.id}
+                        row={row}
+                        columns={columns}
+                        tableColumnCount={tableColumnCount}
+                        handleDelete={handleDelete}
+                        handleUpdate={handleUpdate}
+                        openForm={() => {}}
+                      />
+                    );
+                  })
+                : !isLoading &&
+                  fetchData && (
+                    <TableError
                       tableColumnCount={tableColumnCount}
-                      handleDelete={handleDelete}
-                      handleUpdate={handleUpdate}
-                      openForm={() => {}}
-                    />
-                  );
-                })
-              ) : !isLoading && fetchData && (
-                <TableError
-                  tableColumnCount={tableColumnCount}
-                  severity="warning"
-                >
-                  Nothing found yet in {name}
-                </TableError>
-              )}
+                      severity="warning"
+                    >
+                      Nothing found yet in {name}
+                    </TableError>
+                  )}
             </TableBody>
           </Table>
         </TableContainer>

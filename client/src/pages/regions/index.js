@@ -6,7 +6,7 @@ import { getRegions } from '../../utils/api';
 const tableConfig = {
   name: 'Regions',
   rows: 10,
-  order: 'name asc',
+  order: 'name,ASC',
   columns: [
     {
       key: 'id',
