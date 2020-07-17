@@ -7,32 +7,35 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   innerTableCellSelected: {
-    color: theme.palette.primary.main
-  }
+    color: theme.palette.primary.main,
+  },
 }));
 
-const TableHeaderColumn = memo(({ align, children, order, setOrder, columnKey }) => {
-  console.log('order', order)
-  const classes = useStyles();
-  const name = order.split(',')[0]
-  const direction = order.split(',')[1]
-  const isActiveOrder = name === columnKey
+const TableHeaderColumn = memo(
+  ({ align, children, order, setOrder, columnKey }) => {
+    const classes = useStyles();
+    const name = order.split(',')[0];
+    const direction = order.split(',')[1];
+    const isActiveOrder = name === columnKey;
 
-  function handleSetOrder() {
+    function handleSetOrder() {
+      const dir = direction === 'ASC' ? 'DESC' : 'ASC';
+      const order = `${columnKey},${dir}`;
 
-    const dir = direction === 'ASC' ? 'DESC' : 'ASC'
-    const order = `${columnKey},${dir}`
+      setOrder(order);
+    }
 
-    setOrder(order)
-  }
-
-  return (
-    <TableCell align={align} onClick={handleSetOrder}>
-      <Button className={clsx(isActiveOrder && classes.innerTableCellSelected)}>
-        {children} { isActiveOrder && <TableHeaderSortIcon direction={ direction } />}
-      </Button>
-    </TableCell>
-  );
-});
+    return (
+      <TableCell align={align} onClick={handleSetOrder}>
+        <Button
+          className={clsx(isActiveOrder && classes.innerTableCellSelected)}
+        >
+          {children}{' '}
+          {isActiveOrder && <TableHeaderSortIcon direction={direction} />}
+        </Button>
+      </TableCell>
+    );
+  },
+);
 
 export default TableHeaderColumn;

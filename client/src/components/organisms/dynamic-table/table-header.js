@@ -11,7 +11,6 @@ const TableHeader = memo(({ config = {}, order, setOrder }) => {
       <TableRow>
         {columns &&
           columns.map(col => {
-            console.log('col', col)
             return (
               <TableHeaderColumn
                 columnKey={col.key}

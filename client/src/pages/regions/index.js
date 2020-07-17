@@ -19,7 +19,7 @@ const tableConfig = {
     },
     {
       key: 'name',
-      value: 'name'
+      value: 'name',
     },
     {
       key: 'coords',
@@ -30,11 +30,11 @@ const tableConfig = {
 };
 
 const RegionsPage = () => {
-  return(
+  return (
     <Container>
-      <DynamicTable fetchData={getRegions} config={ tableConfig } />
+      <DynamicTable fetchData={getRegions} config={tableConfig} />
     </Container>
-  )
+  );
 };
 
 export default RegionsPage;

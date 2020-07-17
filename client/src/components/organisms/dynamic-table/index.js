@@ -31,8 +31,6 @@ const DynamicTable = memo(
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
 
-    console.log(searchQuery);
-
     const getData = () => {
       if (!fetchData) {
         setError(
@@ -65,8 +63,8 @@ const DynamicTable = memo(
     }, [page, searchQuery, order]);
 
     const handleSortOrder = async data => {
-      setOrder(data)
-    }
+      setOrder(data);
+    };
 
     const handleSearchQuery = async query => {
       setSearchQuery(query);

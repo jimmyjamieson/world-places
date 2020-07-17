@@ -6,11 +6,9 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 const useStyles = makeStyles({
   iconWrapper: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  icon: {
-
-  }
+  icon: {},
 });
 
 const TableHeaderSortIcon = memo(({ direction }) => {
@@ -18,17 +16,13 @@ const TableHeaderSortIcon = memo(({ direction }) => {
 
   function showIconDirection() {
     if (direction === 'ASC') {
-      return <ArrowDropDownIcon className={classes.icon} fontSize="small" />
+      return <ArrowDropDownIcon className={classes.icon} fontSize="small" />;
     } else {
-      return <ArrowDropUpIcon className={classes.icon} fontSize="small" />
+      return <ArrowDropUpIcon className={classes.icon} fontSize="small" />;
     }
   }
 
-  return (
-    <div className={classes.iconWrapper}>
-      { showIconDirection() }
-    </div>
-  )
+  return <div className={classes.iconWrapper}>{showIconDirection()}</div>;
 });
 
 export default TableHeaderSortIcon;

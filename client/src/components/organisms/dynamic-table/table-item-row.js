@@ -5,22 +5,16 @@ import DeleteForever from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
 
-const TableItemRow = memo(({
-  row,
-  handleDelete,
-  openForm,
-  columns,
-}) => {
-
+const TableItemRow = memo(({ row, handleDelete, openForm, columns }) => {
   const renderTableCells = () => {
     return columns.map(col => {
       return <TableCell key={col.id}>{row[col.value]}</TableCell>;
-    })
-  }
+    });
+  };
 
   return (
     <TableRow key={row.id}>
-      { renderTableCells() }
+      {renderTableCells()}
       <TableCell align="right">
         <IconButton onClick={() => openForm('edit', row.id)}>
           <Edit fontSize="small" />
