@@ -6,16 +6,16 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
-const FormModal = ({ open, children, name, close }) => {
+const FormModal = ({ open, children, name, onClose }) => {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} fullWidth>
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6">{name}</Typography>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={close}
+            onClick={onClose}
             aria-label="close"
           >
             <CloseIcon />

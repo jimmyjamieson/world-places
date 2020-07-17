@@ -3,12 +3,15 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getCountries } from '../../../utils/api';
 
-const SelectCountries = ({ onChange, name }) => {
+const SelectCountries = ({ onChange, name, ...rest }) => {
   const [ data, setData ] = useState([])
+  const [ isLoading, setIsLoading ] = useState(false)
 
   const fetchData = async() => {
+    setIsLoading(true)
     const data = await getCountries()
-    return data.data
+    setIsLoading(false)
+    return data?.data
   }
 
   useEffect(() => {
@@ -19,7 +22,6 @@ const SelectCountries = ({ onChange, name }) => {
 
   return (
     <Autocomplete
-      id="combo-box-demo"
       options={data}
       onChange={(event, newValue) => {
         onChange({
@@ -33,12 +35,8 @@ const SelectCountries = ({ onChange, name }) => {
       renderInput={params => (
         <TextField
           {...params}
-          type="text"
-          name="continent"
-          label="Continent"
-          variant="outlined"
-          fullWidth
-          required
+          { ...rest }
+          label={ isLoading ? `Loading ${name} data...` : name }
         />
       )}
     />
