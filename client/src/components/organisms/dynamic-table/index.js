@@ -18,7 +18,6 @@ const DynamicTable = memo(
     config,
     fetchData,
     formComponent,
-    cache = 0,
   }) => {
     if (!config) {
       return (
@@ -55,7 +54,7 @@ const DynamicTable = memo(
           alwaysPaginate: true,
           ...searchQuery,
         },
-        cache,
+        cache: config.cache,
       };
 
       setIsLoading(true);

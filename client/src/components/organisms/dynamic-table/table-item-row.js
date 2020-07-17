@@ -3,7 +3,6 @@ import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
-import TableError from './table-error';
 import TableRow from '@material-ui/core/TableRow';
 
 const TableItemRow = memo(({

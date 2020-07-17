@@ -31,6 +31,10 @@ export class Country extends LocationEntity {
   )
   currency: Currency;
 
+  @ApiProperty()
+  @Column({ nullable: true })
+  currencyId: string;
+
   @ApiProperty({ type: () => Language })
   @ManyToOne(
     type => Language,
@@ -38,4 +42,8 @@ export class Country extends LocationEntity {
     { cascade: true, onDelete: 'CASCADE' },
   )
   language: Language;
+
+  @ApiProperty()
+  @Column({ nullable: true })
+  languageId: string;
 }

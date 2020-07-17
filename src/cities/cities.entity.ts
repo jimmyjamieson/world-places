@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { LocationEntity } from '../_base/location.entity';
 import { Region } from '../regions/region.entity';
@@ -11,4 +11,8 @@ export class City extends LocationEntity {
     region => region.cities,
   )
   region: Region;
+
+  @ApiProperty()
+  @Column({ nullable: true })
+  regionId: string;
 }

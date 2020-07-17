@@ -7,6 +7,7 @@ const tableConfig = {
   name: 'Regions',
   rows: 10,
   order: 'name,ASC',
+  cache: 1,
   columns: [
     {
       key: 'id',
@@ -18,15 +19,22 @@ const tableConfig = {
     },
     {
       key: 'name',
-      value: 'nativeName',
+      get value() {
+        return this.key
+      }
     },
     {
       key: 'country',
-      value: 'country.name',
+      accessor: 'country.name',
+      get value() {
+        return this.accessor
+      }
     },
     {
       key: 'cities',
-      value: 'cities.length',
+      get value() {
+        return this.key.length
+      }
     },
     {
       key: 'coords',
@@ -39,7 +47,7 @@ const tableConfig = {
 const RegionsPage = () => {
   return(
     <Container>
-      <DynamicTable fetchData={getRegions} config={ tableConfig } />;
+      <DynamicTable fetchData={getRegions} config={ tableConfig } />
     </Container>
   )
 };

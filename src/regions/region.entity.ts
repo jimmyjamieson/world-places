@@ -17,6 +17,10 @@ export class Region extends LocationEntity {
   @Column({ length: 50, nullable: true })
   countryCode: string;
 
+  @ApiProperty()
+  @Column({ nullable: true })
+  countryId: string;
+
   @ApiProperty({ type: () => [City] })
   @OneToMany(
     type => City,
