@@ -23,6 +23,10 @@ const tableConfig = {
       value: 'name',
     },
     {
+      key: 'Country Code',
+      value: 'countryCode',
+    },
+    {
       key: 'coords',
       value: 'coords',
       align: 'right',

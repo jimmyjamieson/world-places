@@ -1,42 +1,41 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormModal from '../../molecules/form-modal';
+import validations from '../../../utils/form-validation';
 
-const RegionForm = ({ mode = 'add', name = 'Dialog', handleAdd, handleUpdate }) => {
-  const { handleSubmit, register, errors } = useForm();
+const RegionForm = ({
+  mode = 'add',
+  name = 'Dialog',
+  handleAdd,
+  handleUpdate,
+}) => {
+  const { handleSubmit, control, errors, register } = useForm();
   const onSubmit = values => console.log(values);
 
   return (
-    <FormModal mode={ mode } name={name} open={true}>
+    <FormModal mode={mode} name={name} open={true}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <TextField
-            name="email"
-            label="email"
+          <Controller
+            as={TextField}
+            name="name"
+            label="name"
             variant="outlined"
-            ref={register({
+            control={ control }
+            error={errors.name}
+            helperText={errors.name && errors.name.message}
+            rules={{
               required: 'Required',
               pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'invalid email address',
+                value: new RegExp(validations.email),
+                message: 'Not an email',
               },
-            })}
+            }}
           />
-          {errors.email && errors.email.message}
-
-          <TextField
-            name="username"
-            label="email"
-            variant="outlined"
-            ref={register({
-              validate: value => value !== 'admin' || 'Nice try!',
-            })}
-          />
-          {errors.username && errors.username.message}
         </DialogContent>
         <DialogActions>
           <Button type="submit" color="primary">
