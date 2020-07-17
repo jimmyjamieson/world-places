@@ -13,6 +13,7 @@ import SelectCountries from '../../fields/select-countries';
 const RegionForm = ({
   mode = 'add',
   name = 'Dialog',
+  open = false,
   handleAdd,
   handleUpdate,
 }) => {
@@ -20,7 +21,7 @@ const RegionForm = ({
   const onSubmit = values => console.log(values);
 
   return (
-    <FormModal mode={mode} name={name} open={true}>
+    <FormModal mode={mode} name={name} open={open}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Box p={1}>

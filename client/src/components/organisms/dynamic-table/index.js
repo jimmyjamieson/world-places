@@ -9,7 +9,6 @@ import TableToolbar from './table-toolbar';
 import TableHeader from './table-header';
 import TableItemRow from './table-item-row';
 import TableError from './table-error';
-import RegionForm from '../region-form';
 
 const DynamicTable = memo(
   ({ deleteItem, updateItem, addItem, config, fetchData, formComponent }) => {
@@ -31,6 +30,8 @@ const DynamicTable = memo(
     const [searchQuery, setSearchQuery] = useState({});
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
+
+    const Form = formComponent
 
     const getData = () => {
       if (!fetchData) {
@@ -108,7 +109,7 @@ const DynamicTable = memo(
 
     return (
       <Paper>
-        <RegionForm />
+        <Form open={true} name={name} mode="add" />
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
