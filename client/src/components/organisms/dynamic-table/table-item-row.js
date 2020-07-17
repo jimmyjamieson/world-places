@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
@@ -6,7 +6,7 @@ import Edit from '@material-ui/icons/Edit';
 import TableError from './table-error';
 import TableRow from '@material-ui/core/TableRow';
 
-const TableItemRow = ({
+const TableItemRow = memo(({
   row,
   handleDelete,
   openForm,
@@ -15,6 +15,7 @@ const TableItemRow = ({
 
   const renderTableCells = () => {
     return columns.map(col => {
+      console.log(row[col.value])
       return <TableCell key={col.id}>{row[col.value]}</TableCell>;
     })
   }
@@ -34,6 +35,6 @@ const TableItemRow = ({
       </TableCell>
     </TableRow>
   );
-};
+});
 
 export default TableItemRow;

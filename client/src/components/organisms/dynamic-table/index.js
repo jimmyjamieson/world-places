@@ -99,7 +99,7 @@ const DynamicTable = memo(
     };
 
     const { data: rows } = data;
-    const shouldRenderRows = !isLoading && rows && rows.length > 0;
+    const shouldRenderRows = rows && rows.length > 0;
     const { columns = [], name = '' } = config;
     const tableColumnCount = columns.length + 2;
 
@@ -130,7 +130,7 @@ const DynamicTable = memo(
                     />
                   );
                 })
-              ) : (
+              ) : !isLoading && fetchData && (
                 <TableError
                   tableColumnCount={tableColumnCount}
                   severity="warning"
