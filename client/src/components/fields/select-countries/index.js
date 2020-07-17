@@ -24,12 +24,7 @@ const SelectCountries = ({ onChange, name, ...rest }) => {
     <Autocomplete
       options={data}
       onChange={(event, newValue) => {
-        onChange({
-          target: {
-            name: name || 'country',
-            value: newValue.id
-          }
-        });
+        onChange(newValue);
       }}
       getOptionLabel={option => option.name}
       renderInput={params => (
