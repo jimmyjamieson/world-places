@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { saveCountry } from '../../../utils/api';
 import FormModal from '../../molecules/form-modal';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import handleApiError from '../../../utils/handle-api-error';
 import SelectContinents from '../../fields/select-countries';
 

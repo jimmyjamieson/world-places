@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import DynamicTable from '../../components/organisms/dynamic-table';
 import { getRegions } from '../../utils/api';
+import RegionForm from '../../components/organisms/region-form';
 
 const tableConfig = {
   name: 'Regions',
@@ -32,7 +33,7 @@ const tableConfig = {
 const RegionsPage = () => {
   return (
     <Container>
-      <DynamicTable fetchData={getRegions} config={tableConfig} />
+      <DynamicTable fetchData={getRegions} config={tableConfig} formComponent={RegionForm} />
     </Container>
   );
 };
