@@ -15,12 +15,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TableHeaderColumn = memo(({ align, children, order, setOrder, columnKey }) => {
+  console.log('order', order)
   const classes = useStyles();
   const name = order.split(',')[0]
   const direction = order.split(',')[1]
   const isActiveOrder = name === columnKey
+
+  function handleSetOrder() {
+
+    const dir = direction === 'ASC' ? 'DESC' : 'ASC'
+    const order = `${columnKey},${dir}`
+
+    setOrder(order)
+  }
+
   return (
-    <TableCell align={align} onClick={setOrder}>
+    <TableCell align={align} onClick={handleSetOrder}>
       <div className={clsx(classes.innerTableCell, isActiveOrder && classes.innerTableCellSelected)}>
         {children} { isActiveOrder && <TableHeaderSortIcon direction={ direction } />}
       </div>

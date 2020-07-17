@@ -62,7 +62,7 @@ const DynamicTable = memo(
 
     useEffect(() => {
       getData();
-    }, [page, searchQuery]);
+    }, [page, searchQuery, order]);
 
     const handleSearchQuery = async query => {
       setSearchQuery(query);
