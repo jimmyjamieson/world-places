@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
 const TableHeaderColumn = memo(
   ({ align, children, order, setOrder, columnKey }) => {
     const classes = useStyles();
-    const name = order.split(',')[0];
-    const direction = order.split(',')[1];
+    const name = order?.split(',')[0];
+    const direction = order?.split(',')[1];
     const isActiveOrder = name === columnKey;
 
     function handleSetOrder() {
