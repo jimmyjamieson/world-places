@@ -37,7 +37,14 @@ const tableConfig = {
 const RegionsPage = () => {
   return (
     <Container>
-      <DynamicTable fetchData={getRegions} config={tableConfig} formComponent={RegionForm} />
+      <DynamicTable
+        config={tableConfig}
+        fetchData={getRegions}
+        formComponent={RegionForm}
+        createData={{}}
+        updateData={{}}
+        deleteData={{}}
+      />
     </Container>
   );
 };

@@ -9,9 +9,17 @@ import TableToolbar from './table-toolbar';
 import TableHeader from './table-header';
 import TableItemRow from './table-item-row';
 import TableError from './table-error';
+import AddFab from '../../molecules/add-fab';
 
 const DynamicTable = memo(
-  ({ deleteItem, updateItem, addItem, config, fetchData, formComponent }) => {
+  ({
+    fetchData,
+    deleteData,
+    createData,
+    updateData,
+    config,
+    formComponent,
+  }) => {
     if (!config) {
       return (
         <TableContainer>
@@ -30,8 +38,12 @@ const DynamicTable = memo(
     const [searchQuery, setSearchQuery] = useState({});
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
+    const [form, setForm] = useState({
+      open: false,
+      id: null,
+    });
 
-    const Form = formComponent
+    const Form = formComponent;
 
     const getData = () => {
       if (!fetchData) {
@@ -75,21 +87,23 @@ const DynamicTable = memo(
 
     const handleDelete = async id => {
       try {
-        await deleteItem(id);
+        await deleteData(id);
         await getData();
       } catch (e) {}
     };
 
     const handleUpdate = async input => {
       try {
-        await updateItem(input);
+        await updateData(input);
+        handleCloseForm()
         await getData();
       } catch (e) {}
     };
 
-    const handleAdd = async input => {
+    const handleCreate = async input => {
       try {
-        await addItem(input);
+        await createData(input);
+        handleCloseForm()
         await getData();
       } catch (e) {}
     };
@@ -97,11 +111,23 @@ const DynamicTable = memo(
     const handleChangePage = async (event, newPage) => {
       await setPage(newPage);
     };
+
     const handleChangeRowsPerPage = async event => {
       await setRowsPerPage(+event.target.value);
       await setPage(0);
     };
 
+    const handleOpenForm = id => {
+      setForm({ open: true, id });
+    };
+
+    const handleCloseForm = () => {
+      setForm({ open: false, id: null });
+    };
+
+    /**
+     * Common variables
+     */
     const { data: rows } = data;
     const shouldRenderRows = rows && rows.length > 0;
     const { columns = [], name = '' } = config;
@@ -109,7 +135,14 @@ const DynamicTable = memo(
 
     return (
       <Paper>
-        <Form open={true} name={name} mode="add" />
+        <AddFab onClick={handleOpenForm} />
+        <Form
+          {...form}
+          name={name}
+          handleCreate={handleCreate}
+          handleDelete={handleDelete}
+          onClose={handleCloseForm}
+        />
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>

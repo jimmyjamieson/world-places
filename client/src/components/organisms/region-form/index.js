@@ -13,15 +13,20 @@ import SelectCountries from '../../fields/select-countries';
 const RegionForm = ({
   mode = 'add',
   name = 'Dialog',
+  id,
   open = false,
+  onClose,
   handleAdd,
   handleUpdate,
 }) => {
-  const { handleSubmit, control, errors, register } = useForm();
+  const { handleSubmit, control, errors } = useForm();
+  const isEditing = !id
+  const formName = isEditing ? `Editing: ${name}` : `Add: ${name}`
+
   const onSubmit = values => console.log(values);
 
   return (
-    <FormModal mode={mode} name={name} open={open}>
+    <FormModal mode={mode} name={formName} open={open} onClose={onClose}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Box p={1}>
