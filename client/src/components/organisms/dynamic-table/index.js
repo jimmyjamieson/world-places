@@ -64,6 +64,10 @@ const DynamicTable = memo(
       getData();
     }, [page, searchQuery, order]);
 
+    const handleSortOrder = async data => {
+      setOrder(data)
+    }
+
     const handleSearchQuery = async query => {
       setSearchQuery(query);
       setPage(1);
@@ -112,7 +116,7 @@ const DynamicTable = memo(
             <TableHeader
               tableColumnCount={tableColumnCount}
               order={order}
-              setOrder={setOrder}
+              setOrder={handleSortOrder}
               config={config}
             />
             <TableBody>
