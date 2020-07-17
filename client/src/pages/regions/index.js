@@ -1,10 +1,11 @@
 import React from 'react';
+import Container from '@material-ui/core/Container';
 import DynamicTable from '../../components/organisms/dynamic-table';
 import { getRegions } from '../../utils/api';
 
 const tableConfig = {
   name: 'Regions',
-  rows: 8,
+  rows: 10,
   order: 'name asc',
   columns: [
     {
@@ -36,7 +37,11 @@ const tableConfig = {
 };
 
 const RegionsPage = () => {
-  return <DynamicTable fetchData={getRegions} config={ tableConfig } />;
+  return(
+    <Container>
+      <DynamicTable fetchData={getRegions} config={ tableConfig } />;
+    </Container>
+  )
 };
 
 export default RegionsPage;

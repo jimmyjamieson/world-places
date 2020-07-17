@@ -25,12 +25,12 @@ const TableItemRow = memo(({
       { renderTableCells() }
       <TableCell align="right">
         <IconButton onClick={() => openForm('edit', row.id)}>
-          <Edit />
+          <Edit fontSize="small" />
         </IconButton>
       </TableCell>
       <TableCell align="right">
         <IconButton onClick={() => handleDelete(row.id)}>
-          <DeleteForever />
+          <DeleteForever fontSize="small" />
         </IconButton>
       </TableCell>
     </TableRow>

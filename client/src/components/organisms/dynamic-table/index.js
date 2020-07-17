@@ -61,7 +61,7 @@ const DynamicTable = memo(
       fetchData(params).then(res => {
         setCount(res.data.total);
         setData(res.data);
-        setTimeout(() => setIsLoading(false), 1000)
+        setIsLoading(false)
       });
     };
 
