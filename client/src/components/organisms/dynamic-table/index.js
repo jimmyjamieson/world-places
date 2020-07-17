@@ -153,7 +153,7 @@ const DynamicTable = memo(
         </TableContainer>
         <TablePagination
           component="div"
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[8, 15, 25, 100, 500, 1000]}
           count={count}
           rowsPerPage={rowsPerPage}
           page={page}

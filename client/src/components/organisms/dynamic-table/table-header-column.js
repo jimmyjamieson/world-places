@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableHeaderSortIcon from './table-header-sort-icon';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
-  innerTableCell: {
-    display: 'flex',
-    alignItems: 'center'
-  },
   innerTableCellSelected: {
     color: theme.palette.primary.main
   }
@@ -31,9 +28,9 @@ const TableHeaderColumn = memo(({ align, children, order, setOrder, columnKey })
 
   return (
     <TableCell align={align} onClick={handleSetOrder}>
-      <div className={clsx(classes.innerTableCell, isActiveOrder && classes.innerTableCellSelected)}>
+      <Button className={clsx(isActiveOrder && classes.innerTableCellSelected)}>
         {children} { isActiveOrder && <TableHeaderSortIcon direction={ direction } />}
-      </div>
+      </Button>
     </TableCell>
   );
 });
