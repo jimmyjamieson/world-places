@@ -19,22 +19,7 @@ const tableConfig = {
     },
     {
       key: 'name',
-      get value() {
-        return this.key
-      }
-    },
-    {
-      key: 'country',
-      accessor: 'country.name',
-      get value() {
-        return this.accessor
-      }
-    },
-    {
-      key: 'cities',
-      get value() {
-        return this.key.length
-      }
+      value: 'name'
     },
     {
       key: 'coords',

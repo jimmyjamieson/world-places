@@ -14,7 +14,6 @@ const TableItemRow = memo(({
 
   const renderTableCells = () => {
     return columns.map(col => {
-      console.log(row[col.value])
       return <TableCell key={col.id}>{row[col.value]}</TableCell>;
     })
   }

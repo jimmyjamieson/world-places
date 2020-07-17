@@ -34,9 +34,11 @@ const DynamicTable = memo(
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
     const [order, setOrder] = useState(config.order || 'name, ASC');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState({});
     const [rowsPerPage, setRowsPerPage] = useState(config.rows || 10);
     const [error, setError] = useState(null);
+
+    console.log(searchQuery)
 
     const getData = () => {
       if (!fetchData) {
@@ -50,9 +52,9 @@ const DynamicTable = memo(
         limit: rowsPerPage,
         page,
         sort: order,
+        s: searchQuery,
         query: {
-          alwaysPaginate: true,
-          ...searchQuery,
+          alwaysPaginate: true
         },
         cache: config.cache,
       };
@@ -67,7 +69,7 @@ const DynamicTable = memo(
 
     useEffect(() => {
       getData();
-    }, [page]);
+    }, [page, searchQuery]);
 
     const handleDelete = async id => {
       try {

@@ -16,14 +16,15 @@ const TableToolbar = memo(({ name = 'Listing', setSearchQuery }) => {
   const classes = useStyles();
 
   const transformSearchQuery = event => {
-    console.log('event', event)
-    const value = event?.target?.value;
+    const target = event?.target;
 
-    const params = {
-      value,
+    const transformSearch = {
+      name: {
+          '$starts': target?.value
+      }
     };
 
-    setSearchQuery(params);
+    setSearchQuery(transformSearch);
   };
 
   return (
@@ -31,7 +32,7 @@ const TableToolbar = memo(({ name = 'Listing', setSearchQuery }) => {
       <Typography variant="h6" id="tableTitle" component="div">
         {name.toUpperCase()}
       </Typography>
-      <TextField label="Search" onInput={transformSearchQuery} />
+      <TextField label="Search" onChange={transformSearchQuery} />
     </Toolbar>
   );
 });
