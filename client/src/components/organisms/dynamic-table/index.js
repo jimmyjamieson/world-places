@@ -71,6 +71,11 @@ const DynamicTable = memo(
       getData();
     }, [page, searchQuery]);
 
+    const handleSearchQuery = async(query) => {
+      setSearchQuery(query)
+      setPage(1)
+    }
+
     const handleDelete = async id => {
       try {
         await deleteItem(id);
@@ -107,7 +112,7 @@ const DynamicTable = memo(
 
     return (
       <Paper>
-        <TableToolbar name={name} setSearchQuery={setSearchQuery} />
+        <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
           <Table>
