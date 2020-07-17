@@ -20,8 +20,8 @@ const TableToolbar = memo(({ name = 'Listing', setSearchQuery }) => {
 
     const transformSearch = {
       name: {
-          '$starts': target?.value
-      }
+        $contL: target?.value,
+      },
     };
 
     setSearchQuery(transformSearch);
