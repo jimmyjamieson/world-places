@@ -3,7 +3,7 @@ import { saveCountry } from '../../../utils/api';
 import FormModal from '../../molecules/form-modal';
 import TextField from '@material-ui/core/TextField';
 import handleApiError from '../../../utils/handle-api-error';
-import SelectContinents from '../../fields/select-countries';
+import SelectContinents from '../../fields/auto-complete-countries';
 
 const CountriesForm = ({ onSuccess, open, close }) => {
   const [fields, setField] = useState({});

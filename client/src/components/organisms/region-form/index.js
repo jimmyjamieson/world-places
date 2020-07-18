@@ -7,7 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import FormModal from '../../molecules/form-modal';
 import validations from '../../../utils/form-validation';
 import Box from '@material-ui/core/Box';
-import SelectCountries from '../../fields/select-countries';
+import AutoCompleteCountries from '../../fields/auto-complete-countries';
+import Field from '../../fields/field';
 
 const RegionForm = memo(
   ({
@@ -69,14 +70,12 @@ const RegionForm = memo(
             )}
             <Box p={1}>
               <Controller
-                as={TextField}
+                as={Field}
                 name="name"
                 label="name"
-                variant="outlined"
-                fullWidth
                 control={control}
                 error={!!errors.name}
-                defaultValue={formData?.name}
+                defaultValueProp={formData?.name}
                 key={formData?.name}
                 helperText={
                   errors.name
@@ -90,14 +89,12 @@ const RegionForm = memo(
             </Box>
             <Box p={1}>
               <Controller
-                as={TextField}
+                as={Field}
                 name="nativeName"
                 label="nativeName"
-                variant="outlined"
-                fullWidth
                 control={control}
                 error={!!errors.nativeName}
-                defaultValue={formData?.nativeName}
+                defaultValueProp={formData?.nativeName}
                 key={formData?.nativeName}
                 helperText={
                   errors.nativeName
@@ -111,17 +108,15 @@ const RegionForm = memo(
             </Box>
             <Box p={1}>
               <Controller
-                as={TextField}
+                as={Field}
                 name="code"
                 label="code"
-                variant="outlined"
-                fullWidth
                 control={control}
                 error={!!errors.code}
                 helperText={
                   errors.code ? errors.code.message : 'Region code in format AB'
                 }
-                defaultValue={formData?.code}
+                defaultValueProp={formData?.code}
                 key={formData?.code}
                 rules={{
                   required: 'Required',
@@ -131,11 +126,10 @@ const RegionForm = memo(
             <Box p={1}>
               {console.log('formData.country', formData?.country)}
               <Controller
-                as={SelectCountries}
+                as={Field}
+                type="country"
                 name="country"
                 label="country"
-                variant="outlined"
-                fullWidth
                 control={control}
                 error={!!errors.country}
                 helperText={

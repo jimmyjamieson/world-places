@@ -1,25 +1,23 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import MdAutocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getCountries } from '../../../utils/api';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const SelectCountries = ({
+const AutoComplete = ({
+  fetchData,
+  layoutProps,
   onChange,
   name,
   label,
-  variant,
-  fullWidth,
   error,
-  defaultValueProp,
-  key,
   helperText,
   rules,
+  key,
+  defaultValueProp,
+  ...rest
 }) => {
   const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
-
-  console.log('SelectCountriesDefaultValue', name, defaultValueProp);
 
   useEffect(() => {
     let mounted = true;
@@ -30,7 +28,7 @@ const SelectCountries = ({
 
     (async () => {
       try {
-        const getData = await getCountries();
+        const getData = await fetchData();
         const data = await getData?.data;
         if (mounted) {
           setOptions(data);
@@ -43,10 +41,10 @@ const SelectCountries = ({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [fetchData, isLoading]);
 
   return (
-    <Autocomplete
+    <MdAutocomplete
       options={options}
       loading={isLoading}
       defaultValue={defaultValueProp}
@@ -55,16 +53,17 @@ const SelectCountries = ({
       onChange={(event, newValue) => {
         onChange(newValue);
       }}
+      { ...rest }
       renderInput={params => (
         <TextField
-          {...params}
           name={name}
           label={label}
-          variant={variant}
-          fullWidth={fullWidth}
           error={error}
           helperText={helperText}
           rules={rules}
+          {...params}
+          {...layoutProps}
+          { ...rest }
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -82,4 +81,4 @@ const SelectCountries = ({
   );
 };
 
-export default SelectCountries;
+export default AutoComplete;
