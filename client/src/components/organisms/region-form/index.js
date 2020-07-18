@@ -3,7 +3,6 @@ import { useForm, Controller } from 'react-hook-form';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import FormModal from '../../molecules/form-modal';
 import validations from '../../../utils/form-validation';
 import Box from '@material-ui/core/Box';
@@ -46,7 +45,6 @@ const RegionForm = memo(
     }, []);
 
     const onSubmit = async values => {
-      console.log('saveUpdateValues', values);
       if (isEditing) {
         await handleUpdate(values);
       } else {
