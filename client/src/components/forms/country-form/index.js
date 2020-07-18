@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { createCountry, getCountry, getRegion, updateCountry, updateRegion } from '../../../utils/api';
+import { createCountry, getCountry, updateCountry } from '../../../utils/api';
 import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
@@ -38,7 +38,7 @@ const config = {
       label: 'Currency',
       type: 'currencySelect',
       helperText: 'Select the currency of this country',
-      validation: null
+      validation: null,
     },
     {
       name: 'coords',

@@ -7,7 +7,7 @@ import {
 import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
-  name: 'Language',
+  name: 'Currency',
   fields: [
     {
       name: 'name',

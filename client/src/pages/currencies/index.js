@@ -1,13 +1,12 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import DynamicTable from '../../components/organisms/dynamic-table';
-import { deleteCurrency, deleteLanguage, getCurrencies, getLanguages } from '../../utils/api';
-import LanguageForm from '../../components/forms/language-form';
+import { deleteCurrency, getCurrencies } from '../../utils/api';
 import CurrencyForm from '../../components/forms/currency-form';
 
 const tableConfig = {
-  name: 'Languages',
-  altName: 'Language',
+  name: 'Currencies',
+  altName: 'Currency',
   rows: 8,
   order: 'name,ASC',
   cache: 1,
@@ -41,7 +40,7 @@ const tableConfig = {
       key: 'decimals',
       name: 'Decimals',
       value: 'decimals',
-    }
+    },
   ],
 };
 
