@@ -22,6 +22,11 @@ const tableConfig = {
       value: 'name',
     },
     {
+      key: 'nativeName',
+      name: 'Native',
+      value: 'nativeName',
+    },
+    {
       key: 'coords',
       name: 'COORDS',
       value: 'coords',

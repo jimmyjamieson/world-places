@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { getCountry, getRegion, updateCountry, updateRegion } from '../../../utils/api';
+import { createCountry, getCountry, getRegion, updateCountry, updateRegion } from '../../../utils/api';
 import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
@@ -40,6 +40,13 @@ const config = {
       helperText: 'Select the currency of this country',
       validation: null
     },
+    {
+      name: 'coords',
+      label: 'Coords',
+      type: 'text',
+      helperText: 'Must be in the format 0.000,0.000',
+      validation: 'coords',
+    },
   ],
 };
 
@@ -48,6 +55,7 @@ const CountryForm = memo(({ open, close, id, onSuccess }) => {
     <DyanmicForm
       id={id}
       fetchDataItem={getCountry}
+      createDataItem={createCountry}
       updateDataItem={updateCountry}
       onSuccess={onSuccess}
       open={open}

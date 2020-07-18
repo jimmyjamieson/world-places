@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { getRegion, updateRegion } from '../../../utils/api';
+import { createRegion, getRegion, updateRegion } from '../../../utils/api';
 import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
@@ -48,6 +48,7 @@ const RegionForm = memo(({ open, close, id, onSuccess }) => {
     <DyanmicForm
       id={id}
       fetchDataItem={getRegion}
+      createDataItem={createRegion}
       updateDataItem={updateRegion}
       onSuccess={onSuccess}
       open={open}

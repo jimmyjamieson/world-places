@@ -88,7 +88,7 @@ const DyanmicForm = ({
               rules={{
                 required: 'Required',
                 pattern: {
-                  value: new RegExp(validations[field?.validation?.pattern]),
+                  value: new RegExp(validations[field?.validation]),
                   message: `Not a valid ${field.name}`,
                 },
               }}
