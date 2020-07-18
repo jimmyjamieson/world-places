@@ -28,11 +28,23 @@ const RegionForm = memo(
       : `Add a ${name}`;
 
     useEffect(() => {
+      let mounted = true;
+
       (async () => {
-        const data = await handleGetItem(id);
-        setFormData(data?.data);
+        try {
+          const data = await handleGetItem(id);
+          if(mounted) {
+            setFormData(data?.data);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       })();
-    }, [isEditing]);
+
+      return () => {
+        mounted = false
+      };
+    }, []);
 
     const onSubmit = async values => {
       console.log('saveUpdateValues', values);
@@ -49,7 +61,12 @@ const RegionForm = memo(
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             {isEditing && (
-              <input name="id" type="hidden" ref={register({ required })} defaultValue={formData?.id} />
+              <input
+                name="id"
+                type="hidden"
+                ref={register({ required })}
+                defaultValue={formData?.id}
+              />
             )}
             <Box p={1}>
               <Controller
@@ -113,7 +130,7 @@ const RegionForm = memo(
               />
             </Box>
             <Box p={1}>
-              { console.log('formData.country', formData?.country) }
+              {console.log('formData.country', formData?.country)}
               <Controller
                 as={SelectCountries}
                 name="country"

@@ -16,27 +16,33 @@ const SelectCountries = ({
   helperText,
   rules,
 }) => {
-
   console.log('SelectCountriesDefaultValue', name, defaultValue);
 
   const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
 
   useEffect(() => {
-    let active = true;
+    let mounted = true;
 
     if (!isLoading) {
       return undefined;
     }
 
     (async () => {
-      const getData = await getCountries();
-      const data = await getData?.data;
-
-      if (active) {
-        setOptions(data);
+      try {
+        const getData = await getCountries();
+        const data = await getData?.data;
+        if (mounted) {
+          setOptions(data);
+        }
+      } catch (e) {
+        console.error(e);
       }
     })();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
