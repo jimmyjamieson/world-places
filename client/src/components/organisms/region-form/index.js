@@ -49,11 +49,10 @@ const RegionForm = memo(
       console.log('saveUpdateValues', values);
       if (isEditing) {
         await handleUpdate(values);
-        return handleClose();
       } else {
         await handleCreate(values);
-        return reset()
       }
+      return handleClose();
     };
 
     return (

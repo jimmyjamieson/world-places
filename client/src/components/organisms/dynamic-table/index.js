@@ -87,10 +87,13 @@ const DynamicTable = memo(
     };
 
     const handleDelete = async id => {
-      try {
-        await deleteData(id);
-        await getData();
-      } catch (e) {}
+      const confirmed = window.confirm('Are you sure you want to delete?');
+      if (confirmed) {
+        try {
+          await deleteData(id);
+          await getData();
+        } catch (e) {}
+      }
     };
 
     const handleUpdate = async input => {
@@ -111,7 +114,7 @@ const DynamicTable = memo(
       try {
         return fetchDataItem(id);
       } catch (e) {
-        console.log('failed')
+        console.log('failed');
       }
     };
 
@@ -143,14 +146,16 @@ const DynamicTable = memo(
     return (
       <Paper>
         <AddFab onClick={() => handleOpenForm()} />
-        { form.open && <Form
-          {...form}
-          name={altName}
-          handleCreate={handleCreate}
-          handleUpdate={handleUpdate}
-          handleGetItem={handleGetItem}
-          handleClose={handleCloseForm}
-        />}
+        {form.open && (
+          <Form
+            {...form}
+            name={altName}
+            handleCreate={handleCreate}
+            handleUpdate={handleUpdate}
+            handleGetItem={handleGetItem}
+            handleClose={handleCloseForm}
+          />
+        )}
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
