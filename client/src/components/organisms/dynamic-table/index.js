@@ -14,6 +14,7 @@ import AddFab from '../../molecules/add-fab';
 const DynamicTable = memo(
   ({
     fetchData,
+    fetchDataItem,
     deleteData,
     createData,
     updateData,
@@ -95,7 +96,7 @@ const DynamicTable = memo(
     const handleUpdate = async input => {
       try {
         await updateData(input);
-        handleCloseForm()
+        handleCloseForm();
         await getData();
       } catch (e) {}
     };
@@ -103,8 +104,14 @@ const DynamicTable = memo(
     const handleCreate = async input => {
       try {
         await createData(input);
-        handleCloseForm()
+        handleCloseForm();
         await getData();
+      } catch (e) {}
+    };
+
+    const handleGetItem = async id => {
+      try {
+        await fetchDataItem(id);
       } catch (e) {}
     };
 
@@ -130,7 +137,7 @@ const DynamicTable = memo(
      */
     const { data: rows } = data;
     const shouldRenderRows = rows && rows.length > 0;
-    const { columns = [], name = '' } = config;
+    const { columns = [], name = '', altName = '' } = config;
     const tableColumnCount = columns.length + 2;
 
     return (
@@ -138,9 +145,11 @@ const DynamicTable = memo(
         <AddFab onClick={handleOpenForm} />
         <Form
           {...form}
-          name={name}
+          name={altName}
           handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
           handleDelete={handleDelete}
+          handleGetItem={handleGetItem}
           onClose={handleCloseForm}
         />
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
@@ -168,7 +177,7 @@ const DynamicTable = memo(
                         columns={columns}
                         tableColumnCount={tableColumnCount}
                         handleDelete={handleDelete}
-                        handleUpdate={handleUpdate}
+                        handleOpenForm={handleOpenForm}
                         openForm={() => {}}
                       />
                     );

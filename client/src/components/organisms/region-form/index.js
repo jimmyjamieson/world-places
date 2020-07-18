@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,19 +11,34 @@ import Box from '@material-ui/core/Box';
 import SelectCountries from '../../fields/select-countries';
 
 const RegionForm = ({
-  mode = 'add',
-  name = 'Dialog',
+  mode,
+  name,
   id,
-  open = false,
+  open,
   onClose,
-  handleAdd,
+  handleCreate,
   handleUpdate,
+  handleDelete,
+  handleGetItem,
 }) => {
   const { handleSubmit, control, errors } = useForm();
-  const isEditing = !id
-  const formName = isEditing ? `Editing: ${name}` : `Add: ${name}`
+  const [ data, setData ] = useState()
+  const isEditing = !id;
+  const formName = isEditing ? `Edit a ${name}` : `Add a ${name}`;
+
+  const getData = () => {
+    handleGetItem(id).then(res => {
+      setData(res);
+    });
+  };
+
+  useEffect(() => {
+    id && getData()
+  }, [id]);
 
   const onSubmit = values => console.log(values);
+
+  console.log('data', data)
 
   return (
     <FormModal mode={mode} name={formName} open={open} onClose={onClose}>
@@ -40,7 +55,7 @@ const RegionForm = ({
               error={errors.name}
               helperText={errors.name && errors.name.message}
               rules={{
-                required: 'Required'
+                required: 'Required',
               }}
             />
           </Box>
@@ -55,7 +70,7 @@ const RegionForm = ({
               error={errors.nativeName}
               helperText={errors.nativeName && errors.nativeName.message}
               rules={{
-                required: 'Required'
+                required: 'Required',
               }}
             />
           </Box>
@@ -70,7 +85,7 @@ const RegionForm = ({
               error={errors.code}
               helperText={errors.code && errors.code.message}
               rules={{
-                required: 'Required'
+                required: 'Required',
               }}
             />
           </Box>

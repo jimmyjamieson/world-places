@@ -8,6 +8,13 @@ import { RegionsService } from './regions.service';
   model: {
     type: Region
   },
+  params: {
+    id: {
+      type: 'uuid',
+      primary: true,
+      field: 'id',
+    },
+  },
   query: {
     join: {
       country: {

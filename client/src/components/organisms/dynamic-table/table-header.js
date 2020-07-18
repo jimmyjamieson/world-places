@@ -22,8 +22,8 @@ const TableHeader = memo(({ config = {}, order, setOrder }) => {
               </TableHeaderColumn>
             );
           })}
-        <TableCell align="right">DELETE</TableCell>
         <TableCell align="right">EDIT</TableCell>
+        <TableCell align="right">DELETE</TableCell>
       </TableRow>
     </TableHead>
   );

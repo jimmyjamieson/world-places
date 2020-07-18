@@ -1,11 +1,12 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import DynamicTable from '../../components/organisms/dynamic-table';
-import { getRegions } from '../../utils/api';
+import { createRegion, deleteRegion, getRegion, getRegions, updateRegion } from '../../utils/api';
 import RegionForm from '../../components/organisms/region-form';
 
 const tableConfig = {
   name: 'Regions',
+  altName: 'Region',
   rows: 8,
   order: 'name,ASC',
   cache: 1,
@@ -39,11 +40,12 @@ const RegionsPage = () => {
     <Container>
       <DynamicTable
         config={tableConfig}
-        fetchData={getRegions}
         formComponent={RegionForm}
-        createData={{}}
-        updateData={{}}
-        deleteData={{}}
+        fetchData={getRegions}
+        fetchDataItem={getRegion}
+        createData={createRegion}
+        updateData={updateRegion}
+        deleteData={deleteRegion}
       />
     </Container>
   );
