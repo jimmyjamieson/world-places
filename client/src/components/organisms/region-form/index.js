@@ -24,7 +24,7 @@ const RegionForm = memo(
     const { handleSubmit, control, errors } = useForm();
     const [formData, setFormData] = useState();
     const isEditing = !!id;
-    const formName = isEditing ? `Edit a ${name} : ${id}` : `Add a ${name}`;
+    const formName = isEditing ? `Edit ${name} ${formData?.name}` : `Add a ${name}`;
 
     useEffect(() => {
       const getFormData = async() => {
@@ -68,6 +68,8 @@ const RegionForm = memo(
                 fullWidth
                 control={control}
                 error={errors.nativeName}
+                defaultValue={formData?.nativeName}
+                key={formData?.nativeName}
                 helperText={errors.nativeName && errors.nativeName.message}
                 rules={{
                   required: 'Required',
@@ -84,6 +86,8 @@ const RegionForm = memo(
                 control={control}
                 error={errors.code}
                 helperText={errors.code && errors.code.message}
+                defaultValue={formData?.code}
+                key={formData?.code}
                 rules={{
                   required: 'Required',
                 }}
@@ -99,6 +103,8 @@ const RegionForm = memo(
                 control={control}
                 error={errors.country}
                 helperText={errors.country && errors.country.message}
+                defaultValue={formData?.country}
+                key={formData?.country}
                 rules={{
                   required: 'Required',
                 }}
@@ -114,6 +120,8 @@ const RegionForm = memo(
                 control={control}
                 error={errors.coords}
                 helperText={errors.coords && errors.coords.message}
+                defaultValue={formData?.coords}
+                key={formData?.coords}
                 rules={{
                   required: 'Required',
                   pattern: {
