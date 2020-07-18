@@ -1,18 +1,9 @@
-import React, { memo, useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import FormModal from '../../molecules/form-modal';
-import validations from '../../../utils/form-validation';
-import Box from '@material-ui/core/Box';
-import Field from '../../fields/field';
-import DyanmicForm from '../dynamic-form';
+import React, { memo } from 'react';
 import { getRegion, updateRegion } from '../../../utils/api';
+import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
-  name: 'Regions',
-  altName: 'Region',
+  name: 'Region',
   fields: [
     {
       name: 'name',

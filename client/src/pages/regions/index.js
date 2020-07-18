@@ -2,7 +2,7 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import DynamicTable from '../../components/organisms/dynamic-table';
 import { createRegion, deleteRegion, getRegion, getRegions, updateRegion } from '../../utils/api';
-import RegionForm from '../../components/organisms/region-form';
+import RegionForm from '../../components/forms/region-form';
 
 const tableConfig = {
   name: 'Regions',
