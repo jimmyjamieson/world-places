@@ -38,11 +38,19 @@ export const getRegion = id => {
 };
 
 export const createRegion = (input = {}) => {
-  return api.post('regions', input);
+  const params = {
+    ...input,
+    countryCode: input?.country?.code
+  }
+  return api.post('regions', params);
 };
 
 export const updateRegion = (input = {}) => {
-  return api.patch(`regions/${input.id}`, input);
+  const params = {
+    ...input,
+    countryCode: input?.country?.code
+  }
+  return api.patch(`regions/${input.id}`, params);
 };
 
 export const deleteRegion = id => {
