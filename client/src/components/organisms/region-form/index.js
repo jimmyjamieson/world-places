@@ -24,10 +24,11 @@ const RegionForm = ({
   const { handleSubmit, control, errors } = useForm();
   const [ data, setData ] = useState()
   const isEditing = !id;
-  const formName = isEditing ? `Edit a ${name}` : `Add a ${name}`;
+  const formName = isEditing ? `Edit a ${name} : ${id}` : `Add a ${name}`;
 
   const getData = () => {
     handleGetItem(id).then(res => {
+      console.log('getData', res)
       setData(res);
     });
   };

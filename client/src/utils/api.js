@@ -7,7 +7,6 @@ const api = axios.create({
 
 /**
  * Countries
- * @returns {AxiosPromise}
  */
 
 export const getCountries = params => {

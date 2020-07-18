@@ -112,7 +112,9 @@ const DynamicTable = memo(
     const handleGetItem = async id => {
       try {
         await fetchDataItem(id);
-      } catch (e) {}
+      } catch (e) {
+        throw new Error(e)
+      }
     };
 
     const handleChangePage = async (event, newPage) => {
