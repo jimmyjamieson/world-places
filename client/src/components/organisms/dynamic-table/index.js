@@ -96,26 +96,9 @@ const DynamicTable = memo(
       }
     };
 
-    const handleUpdate = async input => {
-      try {
-        await updateData(input);
-        await getData();
-      } catch (e) {}
-    };
-
-    const handleCreate = async input => {
-      try {
-        await createData(input);
-        await getData();
-      } catch (e) {}
-    };
-
-    const handleGetItem = id => {
-      try {
-        return fetchDataItem(id);
-      } catch (e) {
-        console.log('failed');
-      }
+    const handleFormSuccess = () => {
+      getData();
+      handleCloseForm()
     };
 
     const handleChangePage = async (event, newPage) => {
@@ -149,11 +132,8 @@ const DynamicTable = memo(
         {form.open && (
           <Form
             {...form}
-            name={altName}
-            handleCreate={handleCreate}
-            handleUpdate={handleUpdate}
-            handleGetItem={handleGetItem}
-            handleClose={handleCloseForm}
+            onSuccess={handleFormSuccess}
+            close={handleCloseForm}
           />
         )}
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />

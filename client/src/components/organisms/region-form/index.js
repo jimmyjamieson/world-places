@@ -7,177 +7,63 @@ import FormModal from '../../molecules/form-modal';
 import validations from '../../../utils/form-validation';
 import Box from '@material-ui/core/Box';
 import Field from '../../fields/field';
+import DyanmicForm from '../dynamic-form';
+import { getRegion, updateRegion } from '../../../utils/api';
 
-const RegionForm = memo(
-  ({
-    name,
-    id,
-    open,
-    handleClose,
-    handleCreate,
-    handleUpdate,
-    handleGetItem,
-  }) => {
-    const { handleSubmit, control, errors, register, required } = useForm();
-    const [formData, setFormData] = useState();
-    const isEditing = !!id;
-    const formName = isEditing
-      ? `Editing ${name} ${formData?.name}`
-      : `Add a ${name}`;
+const config = {
+  name: 'Regions',
+  altName: 'Region',
+  fields: [
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      helperText: 'The plain text name of the region',
+      validation: null,
+    },
+    {
+      name: 'nativeName',
+      label: 'Native name',
+      type: 'text',
+      helperText: 'The native name including special characters',
+      validation: null,
+    },
+    {
+      name: 'code',
+      label: 'Code',
+      type: 'text',
+      helperText: 'Region code in format AB',
+      validation: null,
+    },
+    {
+      name: 'country',
+      label: 'Country',
+      type: 'countrySelect',
+      helperText: 'Select a country this region belongs to',
+      validation: null,
+    },
+    {
+      name: 'coords',
+      label: 'Coords',
+      type: 'text',
+      helperText: 'Must be in the format 0.000,0.000',
+      validation: 'coords',
+    },
+  ],
+};
 
-    useEffect(() => {
-      let mounted = true;
-
-      (async () => {
-        try {
-          const data = await handleGetItem(id);
-          if(mounted) {
-            setFormData(data?.data);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      })();
-
-      return () => {
-        mounted = false
-      };
-    }, []);
-
-    const onSubmit = async values => {
-      if (isEditing) {
-        await handleUpdate(values);
-      } else {
-        await handleCreate(values);
-      }
-      return handleClose();
-    };
-
-    return (
-      <FormModal name={formName} open={open} onClose={handleClose}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
-            {isEditing && (
-              <input
-                name="id"
-                type="hidden"
-                ref={register({ required })}
-                defaultValue={formData?.id}
-              />
-            )}
-            <Box p={1}>
-              <Controller
-                as={Field}
-                name="name"
-                label="name"
-                control={control}
-                error={!!errors.name}
-                defaultValue={formData?.name}
-                defaultValueProp={formData?.name}
-                key={formData?.name}
-                helperText={
-                  errors.name
-                    ? errors.name.message
-                    : 'The plain text name of the region'
-                }
-                rules={{
-                  required: 'Required',
-                }}
-              />
-            </Box>
-            <Box p={1}>
-              <Controller
-                as={Field}
-                name="nativeName"
-                label="nativeName"
-                control={control}
-                error={!!errors.nativeName}
-                defaultValue={formData?.nativeName}
-                defaultValueProp={formData?.nativeName}
-                key={formData?.nativeName}
-                helperText={
-                  errors.nativeName
-                    ? errors.nativeName.message
-                    : 'The native name including speacial characters'
-                }
-                rules={{
-                  required: 'Required',
-                }}
-              />
-            </Box>
-            <Box p={1}>
-              <Controller
-                as={Field}
-                name="code"
-                label="code"
-                control={control}
-                error={!!errors.code}
-                helperText={
-                  errors.code ? errors.code.message : 'Region code in format AB'
-                }
-                defaultValue={formData?.code}
-                defaultValueProp={formData?.code}
-                key={formData?.code}
-                rules={{
-                  required: 'Required',
-                }}
-              />
-            </Box>
-            <Box p={1}>
-              <Controller
-                as={Field}
-                type="countrySelect"
-                name="country"
-                label="country"
-                control={control}
-                error={!!errors.country}
-                helperText={
-                  errors.country
-                    ? errors.country.message
-                    : 'Select a country this region belongs to'
-                }
-                defaultValue={formData?.country}
-                defaultValueProp={formData?.country}
-                key={formData?.country}
-                rules={{
-                  required: 'Required',
-                }}
-              />
-            </Box>
-            <Box p={1}>
-              <Controller
-                as={Field}
-                name="coords"
-                label="coords"
-                control={control}
-                error={!!errors.coords}
-                helperText={
-                  errors.coords
-                    ? errors.coords.message
-                    : 'Must be in the format 0.000,0.000'
-                }
-                defaultValue={formData?.coords}
-                defaultValueProp={formData?.coords}
-                key={formData?.coords}
-                rules={{
-                  required: 'Required',
-                  pattern: {
-                    value: new RegExp(validations.coords),
-                    message: 'Not a valid coords',
-                  },
-                }}
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button type="submit" color="primary">
-              {isEditing ? 'Save' : 'Create'}
-            </Button>
-          </DialogActions>
-        </form>
-      </FormModal>
-    );
-  },
-);
+const RegionForm = memo(({ open, close, id, onSuccess }) => {
+  return (
+    <DyanmicForm
+      id={id}
+      fetchDataItem={getRegion}
+      updateDataItem={updateRegion}
+      onSuccess={onSuccess}
+      open={open}
+      close={close}
+      config={config}
+    />
+  );
+});
 
 export default RegionForm;
