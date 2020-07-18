@@ -8,9 +8,9 @@ const AutoComplete = ({
   onChange,
   layoutProps,
   defaultValueProp,
+  defaultValue,
   ...rest
 }) => {
-  console.log('AutoCompletedefaultValue', defaultValueProp);
   const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
 
@@ -49,6 +49,7 @@ const AutoComplete = ({
       }}
       renderInput={params => (
         <TextField
+          defaultValue={defaultValue}
           {...params}
           {...layoutProps}
           {...rest}

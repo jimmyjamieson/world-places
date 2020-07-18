@@ -7,8 +7,7 @@ const layoutProps = {
   fullWidth: true,
 };
 
-const Field = ({ type, key, defaultValueProp, ...rest }) => {
-  console.log('props', rest.name, defaultValueProp);
+const Field = ({ type, key, ...rest }) => {
 
   function renderFieldType() {
     switch (type) {
@@ -17,7 +16,6 @@ const Field = ({ type, key, defaultValueProp, ...rest }) => {
           <AutoCompleteCountries
             layoutProps={layoutProps}
             {...rest}
-            defaultValueProp={defaultValueProp}
           />
         );
       default:
@@ -25,7 +23,6 @@ const Field = ({ type, key, defaultValueProp, ...rest }) => {
           <TextField
             {...layoutProps}
             {...rest}
-            defaultValue={defaultValueProp}
           />
         );
     }
