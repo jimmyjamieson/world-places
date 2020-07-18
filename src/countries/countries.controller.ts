@@ -8,8 +8,15 @@ import { CountriesService } from './countries.service';
   model: {
     type: Country
   },
+  params: {
+    id: {
+      type: 'uuid',
+      primary: true,
+      field: 'id',
+    },
+  },
   query: {
-    join: {
+    /*join: {
       currency: {
         eager: true,
       },
@@ -22,7 +29,7 @@ import { CountriesService } from './countries.service';
       'regions.cities': {
         eager: true
       }
-    },
+    },*/
   },
 })
 

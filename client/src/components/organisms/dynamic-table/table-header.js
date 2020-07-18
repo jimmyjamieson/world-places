@@ -13,12 +13,13 @@ const TableHeader = memo(({ config = {}, order, setOrder }) => {
           columns.map(col => {
             return (
               <TableHeaderColumn
+                key={col.key}
                 columnKey={col.key}
                 align={col.align || 'left'}
                 order={order}
                 setOrder={setOrder}
               >
-                {col.key.toUpperCase()}
+                {col.name.toUpperCase()}
               </TableHeaderColumn>
             );
           })}

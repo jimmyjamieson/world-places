@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormModal from '../../molecules/form-modal';
 import validations from '../../../utils/form-validation';
-import Form from '../../molecules/form';
 import Box from '@material-ui/core/Box';
 import SelectCountries from '../../fields/select-countries';
 
@@ -24,14 +23,17 @@ const RegionForm = memo(
     const { handleSubmit, control, errors } = useForm();
     const [formData, setFormData] = useState();
     const isEditing = !!id;
-    const formName = isEditing ? `Edit ${name} ${formData?.name}` : `Add a ${name}`;
+    const formName = isEditing
+      ? `Edit ${name} ${formData?.name}`
+      : `Add a ${name}`;
 
-    useEffect(() => {
-      const getFormData = async() => {
-        const data = await handleGetItem(id);
-        setFormData(data?.data);
-      }
-      id && getFormData()
+    isEditing && useEffect(() => {
+      (async () => {
+        if (id) {
+          const data = await handleGetItem(id);
+          setFormData(data?.data);
+        }
+      })();
     }, [id]);
 
     const onSubmit = values => console.log(values);
@@ -40,7 +42,7 @@ const RegionForm = memo(
 
     return (
       <FormModal mode={mode} name={formName} open={open} onClose={onClose}>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Box p={1}>
               <Controller
@@ -50,10 +52,14 @@ const RegionForm = memo(
                 variant="outlined"
                 fullWidth
                 control={control}
-                error={errors.name}
+                error={!!errors.name}
                 defaultValue={formData?.name}
                 key={formData?.name}
-                helperText={errors.name && errors.name.message}
+                helperText={
+                  errors.name
+                    ? errors.name.message
+                    : 'The plain text name of the region'
+                }
                 rules={{
                   required: 'Required',
                 }}
@@ -67,10 +73,14 @@ const RegionForm = memo(
                 variant="outlined"
                 fullWidth
                 control={control}
-                error={errors.nativeName}
+                error={!!errors.nativeName}
                 defaultValue={formData?.nativeName}
                 key={formData?.nativeName}
-                helperText={errors.nativeName && errors.nativeName.message}
+                helperText={
+                  errors.nativeName
+                    ? errors.nativeName.message
+                    : 'The native name including speacial characters'
+                }
                 rules={{
                   required: 'Required',
                 }}
@@ -84,8 +94,10 @@ const RegionForm = memo(
                 variant="outlined"
                 fullWidth
                 control={control}
-                error={errors.code}
-                helperText={errors.code && errors.code.message}
+                error={!!errors.code}
+                helperText={
+                  errors.code ? errors.code.message : 'Region code in format AB'
+                }
                 defaultValue={formData?.code}
                 key={formData?.code}
                 rules={{
@@ -101,8 +113,12 @@ const RegionForm = memo(
                 variant="outlined"
                 fullWidth
                 control={control}
-                error={errors.country}
-                helperText={errors.country && errors.country.message}
+                error={!!errors.country}
+                helperText={
+                  errors.country
+                    ? errors.country.message
+                    : 'Select a country this regions belongs to'
+                }
                 defaultValue={[formData?.country]}
                 key={formData?.country}
                 rules={{
@@ -118,8 +134,12 @@ const RegionForm = memo(
                 variant="outlined"
                 fullWidth
                 control={control}
-                error={errors.coords}
-                helperText={errors.coords && errors.coords.message}
+                error={!!errors.coords}
+                helperText={
+                  errors.coords
+                    ? errors.coords.message
+                    : 'Must be in the format 0.000,0.000'
+                }
                 defaultValue={formData?.coords}
                 key={formData?.coords}
                 rules={{
@@ -137,7 +157,7 @@ const RegionForm = memo(
               {isEditing ? 'Save' : 'Create'}
             </Button>
           </DialogActions>
-        </Form>
+        </form>
       </FormModal>
     );
   },

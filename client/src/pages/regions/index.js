@@ -13,22 +13,27 @@ const tableConfig = {
   columns: [
     {
       key: 'id',
+      name: 'ID',
       value: 'id',
     },
     {
       key: 'code',
+      name: 'CODE',
       value: 'code',
     },
     {
       key: 'name',
+      name: 'NAME',
       value: 'name',
     },
     {
-      key: 'Country Code',
+      key: 'countryCode',
+      name: 'COUNTRY CODE',
       value: 'countryCode',
     },
     {
       key: 'coords',
+      name: 'COORDS',
       value: 'coords',
       align: 'right',
     },

@@ -173,7 +173,7 @@ const DynamicTable = memo(
                 ? rows.map(row => {
                     return (
                       <TableItemRow
-                        key={row.id}
+                        key={row.id + row.code}
                         row={row}
                         columns={columns}
                         tableColumnCount={tableColumnCount}

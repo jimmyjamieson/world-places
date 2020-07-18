@@ -34,7 +34,6 @@ const SelectCountries = ({ onChange, name, ...rest }) => {
         onChange(newValue);
       }}
       getOptionLabel={option => option.name}
-      getOptionSelected={(option, value) => option.name === value.id}
       renderInput={params => (
         <TextField
           {...params}
