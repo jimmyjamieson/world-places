@@ -33,11 +33,8 @@ export const getRegions = params => {
   return api('regions', { params });
 };
 
-export const getRegion = async id => {
-  console.log('getRegion', id)
-  const data = await api(`regions/${id}`)
-  console.log('axios', data)
-  return data
+export const getRegion = id => {
+  return api(`regions/${id}`)
 };
 
 export const createRegion = (input = {}) => {
