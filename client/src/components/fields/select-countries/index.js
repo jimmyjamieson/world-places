@@ -16,8 +16,10 @@ const SelectCountries = ({
   helperText,
   rules,
 }) => {
-  const [options, setOptions] = useState([]);
 
+  console.log('SelectCountriesDefaultValue', name, defaultValue);
+
+  const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
 
   useEffect(() => {
@@ -41,19 +43,20 @@ const SelectCountries = ({
     <Autocomplete
       options={options}
       loading={isLoading}
+      defaultValue={defaultValue}
+      getOptionLabel={option => option.name}
+      key={key}
       onChange={(event, newValue) => {
         onChange(newValue);
       }}
-      getOptionLabel={option => option.name}
       renderInput={params => (
         <TextField
           {...params}
+          name={name}
           label={label}
           variant={variant}
           fullWidth={fullWidth}
           error={error}
-          defaultValue={defaultValue}
-          key={key}
           helperText={helperText}
           rules={rules}
           InputProps={{

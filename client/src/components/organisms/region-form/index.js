@@ -35,7 +35,7 @@ const RegionForm = memo(
     }, [isEditing]);
 
     const onSubmit = async values => {
-      console.log(values);
+      console.log('saveUpdateValues', values);
       if (isEditing) {
         await handleUpdate(values);
       } else {
@@ -43,8 +43,6 @@ const RegionForm = memo(
       }
       return handleClose();
     };
-
-    console.log('formData', formData);
 
     return (
       <FormModal mode={mode} name={formName} open={open} onClose={handleClose}>
@@ -115,6 +113,7 @@ const RegionForm = memo(
               />
             </Box>
             <Box p={1}>
+              { console.log('formData.country', formData?.country) }
               <Controller
                 as={SelectCountries}
                 name="country"
@@ -129,7 +128,7 @@ const RegionForm = memo(
                     : 'Select a country this region belongs to'
                 }
                 defaultValue={formData?.country}
-                key={formData?.country}
+                key={formData?.country?.id}
                 rules={{
                   required: 'Required',
                 }}
