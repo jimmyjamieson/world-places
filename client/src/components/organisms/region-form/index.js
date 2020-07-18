@@ -103,7 +103,7 @@ const RegionForm = memo(
                 control={control}
                 error={errors.country}
                 helperText={errors.country && errors.country.message}
-                defaultValue={formData?.country}
+                defaultValue={[formData?.country]}
                 key={formData?.country}
                 rules={{
                   required: 'Required',

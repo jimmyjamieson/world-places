@@ -2,36 +2,55 @@ import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getCountries } from '../../../utils/api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const SelectCountries = ({ onChange, name, ...rest }) => {
-  const [ data, setData ] = useState([])
-  const [ isLoading, setIsLoading ] = useState(false)
+  const [options, setOptions] = useState([]);
 
-  const fetchData = async() => {
-    setIsLoading(true)
-    const data = await getCountries()
-    setIsLoading(false)
-    return data?.data
-  }
+  const isLoading = options.length === 0;
 
   useEffect(() => {
-    fetchData().then((data) => {
-      setData(data)
-    })
-  }, [])
+    let active = true;
+
+    if (!isLoading) {
+      return undefined;
+    }
+
+    (async () => {
+      const getData = await getCountries();
+      const data = await getData?.data;
+
+      if (active) {
+        setOptions(data);
+      }
+    })();
+  }, []);
 
   return (
     <Autocomplete
-      options={data}
+      options={options}
+      loading={isLoading}
       onChange={(event, newValue) => {
         onChange(newValue);
       }}
       getOptionLabel={option => option.name}
+      getOptionSelected={(option, value) => option.name === value.id}
       renderInput={params => (
         <TextField
           {...params}
-          { ...rest }
-          label={ isLoading ? `Loading ${name} data...` : name }
+          {...rest}
+          label={name}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {isLoading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            ),
+          }}
         />
       )}
     />
