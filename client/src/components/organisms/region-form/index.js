@@ -27,9 +27,9 @@ const RegionForm = memo(
       ? `Edit ${name} ${formData?.name}`
       : `Add a ${name}`;
 
-    isEditing && useEffect(() => {
+    useEffect(() => {
       (async () => {
-        if (id) {
+        if (isEditing) {
           const data = await handleGetItem(id);
           setFormData(data?.data);
         }
@@ -117,9 +117,9 @@ const RegionForm = memo(
                 helperText={
                   errors.country
                     ? errors.country.message
-                    : 'Select a country this regions belongs to'
+                    : 'Select a country this region belongs to'
                 }
-                defaultValue={[formData?.country]}
+                defaultValue={formData?.country}
                 key={formData?.country}
                 rules={{
                   required: 'Required',
