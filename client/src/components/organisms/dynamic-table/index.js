@@ -113,7 +113,7 @@ const DynamicTable = memo(
       try {
         await fetchDataItem(id);
       } catch (e) {
-        throw new Error(e)
+        console.log('failed')
       }
     };
 
@@ -144,7 +144,7 @@ const DynamicTable = memo(
 
     return (
       <Paper>
-        <AddFab onClick={handleOpenForm} />
+        <AddFab onClick={() => handleOpenForm()} />
         <Form
           {...form}
           name={altName}

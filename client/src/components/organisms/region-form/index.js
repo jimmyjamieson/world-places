@@ -22,14 +22,16 @@ const RegionForm = ({
   handleGetItem,
 }) => {
   const { handleSubmit, control, errors } = useForm();
-  const [ data, setData ] = useState()
-  const isEditing = !id;
+  const [ formData, setFormData ] = useState()
+  const isEditing = !!id;
   const formName = isEditing ? `Edit a ${name} : ${id}` : `Add a ${name}`;
+
+  console.log('id', id)
 
   const getData = () => {
     handleGetItem(id).then(res => {
       console.log('getData', res)
-      setData(res);
+      setFormData(res);
     });
   };
 
@@ -39,7 +41,7 @@ const RegionForm = ({
 
   const onSubmit = values => console.log(values);
 
-  console.log('data', data)
+  console.log('formData', formData)
 
   return (
     <FormModal mode={mode} name={formName} open={open} onClose={onClose}>
