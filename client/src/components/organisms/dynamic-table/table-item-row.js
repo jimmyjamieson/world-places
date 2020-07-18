@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 const TableItemRow = memo(({ row, handleDelete, handleOpenForm, columns }) => {
   const renderTableCells = () => {
     return columns.map(col => {
-      return <TableCell key={col.id}>{row[col.value]}</TableCell>;
+      return <TableCell align={col.align || 'left'} key={col.id}>{row[col.value]}</TableCell>;
     });
   };
 

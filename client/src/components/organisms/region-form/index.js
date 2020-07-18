@@ -15,12 +15,12 @@ const RegionForm = memo(
     name,
     id,
     open,
-     handleClose,
+    handleClose,
     handleCreate,
     handleUpdate,
     handleGetItem,
   }) => {
-    const { handleSubmit, control, errors } = useForm();
+    const { handleSubmit, control, errors, register, required } = useForm();
     const [formData, setFormData] = useState();
     const isEditing = !!id;
     const formName = isEditing
@@ -37,12 +37,12 @@ const RegionForm = memo(
     const onSubmit = async values => {
       console.log(values);
       if (isEditing) {
-        await handleUpdate(values)
+        await handleUpdate(values);
       } else {
-        await handleCreate(values)
+        await handleCreate(values);
       }
-      return handleClose()
-    }
+      return handleClose();
+    };
 
     console.log('formData', formData);
 
@@ -50,30 +50,9 @@ const RegionForm = memo(
       <FormModal mode={mode} name={formName} open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
-            <Box p={1}>
-              <Controller
-                as={TextField}
-                name="id"
-                label="id"
-                variant="outlined"
-                fullWidth
-                control={control}
-                error={!!errors.id}
-                defaultValue={formData?.id}
-                key={formData?.id}
-                InputProps={{
-                  readOnly: true,
-                }}
-                helperText={
-                  errors.name
-                    ? errors.name.message
-                    : `UUID of the ${name}`
-                }
-                rules={{
-                  required: 'Required',
-                }}
-              />
-            </Box>
+            {isEditing && (
+              <input name="id" type="hidden" ref={register({ required })} defaultValue={formData?.id} />
+            )}
             <Box p={1}>
               <Controller
                 as={TextField}

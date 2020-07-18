@@ -12,11 +12,6 @@ const tableConfig = {
   cache: 1,
   columns: [
     {
-      key: 'id',
-      name: 'ID',
-      value: 'id',
-    },
-    {
       key: 'code',
       name: 'CODE',
       value: 'code',
