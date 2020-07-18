@@ -96,7 +96,6 @@ const DynamicTable = memo(
     const handleUpdate = async input => {
       try {
         await updateData(input);
-        handleCloseForm();
         await getData();
       } catch (e) {}
     };
@@ -104,7 +103,6 @@ const DynamicTable = memo(
     const handleCreate = async input => {
       try {
         await createData(input);
-        handleCloseForm();
         await getData();
       } catch (e) {}
     };

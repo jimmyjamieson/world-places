@@ -11,7 +11,6 @@ import SelectCountries from '../../fields/select-countries';
 
 const RegionForm = memo(
   ({
-    mode,
     name,
     id,
     open,
@@ -20,7 +19,7 @@ const RegionForm = memo(
     handleUpdate,
     handleGetItem,
   }) => {
-    const { handleSubmit, control, errors, register, required } = useForm();
+    const { handleSubmit, control, errors, register, required, reset } = useForm();
     const [formData, setFormData] = useState();
     const isEditing = !!id;
     const formName = isEditing
@@ -50,14 +49,15 @@ const RegionForm = memo(
       console.log('saveUpdateValues', values);
       if (isEditing) {
         await handleUpdate(values);
+        return handleClose();
       } else {
         await handleCreate(values);
+        return reset()
       }
-      return handleClose();
     };
 
     return (
-      <FormModal mode={mode} name={formName} open={open} onClose={handleClose}>
+      <FormModal name={formName} open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             {isEditing && (
@@ -144,8 +144,8 @@ const RegionForm = memo(
                     ? errors.country.message
                     : 'Select a country this region belongs to'
                 }
-                defaultValue={formData?.country}
-                key={formData?.country?.id}
+                defaultValueProp={formData?.country}
+                key={formData?.country}
                 rules={{
                   required: 'Required',
                 }}

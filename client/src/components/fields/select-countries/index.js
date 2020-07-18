@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getCountries } from '../../../utils/api';
@@ -11,15 +11,15 @@ const SelectCountries = ({
   variant,
   fullWidth,
   error,
-  defaultValue,
+  defaultValueProp,
   key,
   helperText,
   rules,
 }) => {
-  console.log('SelectCountriesDefaultValue', name, defaultValue);
-
   const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
+
+  console.log('SelectCountriesDefaultValue', name, defaultValueProp);
 
   useEffect(() => {
     let mounted = true;
@@ -49,8 +49,8 @@ const SelectCountries = ({
     <Autocomplete
       options={options}
       loading={isLoading}
-      defaultValue={defaultValue}
-      getOptionLabel={option => option.name}
+      defaultValue={defaultValueProp}
+      getOptionLabel={option => option.name || ''}
       key={key}
       onChange={(event, newValue) => {
         onChange(newValue);
