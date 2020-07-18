@@ -14,10 +14,7 @@ import AddFab from '../../molecules/add-fab';
 const DynamicTable = memo(
   ({
     fetchData,
-    fetchDataItem,
     deleteData,
-    createData,
-    updateData,
     config,
     formComponent,
   }) => {

@@ -16,20 +16,20 @@ import { CountriesService } from './countries.service';
     },
   },
   query: {
-    /*join: {
+    join: {
       currency: {
         eager: true,
       },
       language: {
         eager: true
       },
-      regions: {
+     /* regions: {
         eager: true
       },
       'regions.cities': {
         eager: true
-      }
-    },*/
+      }*/
+    },
   },
 })
 

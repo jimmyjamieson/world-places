@@ -7,7 +7,14 @@ import { CurrenciesService } from './currencies.service';
 @Crud({
   model: {
     type: Currency
-  }
+  },
+  params: {
+    id: {
+      type: 'uuid',
+      primary: true,
+      field: 'id',
+    },
+  },
 })
 
 @ApiTags('Currencies')

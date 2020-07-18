@@ -42,9 +42,6 @@ const RegionsPage = () => {
         config={tableConfig}
         formComponent={RegionForm}
         fetchData={getRegions}
-        fetchDataItem={getRegion}
-        createData={createRegion}
-        updateData={updateRegion}
         deleteData={deleteRegion}
       />
     </Container>

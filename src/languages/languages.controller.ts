@@ -7,7 +7,14 @@ import { LanguagesService } from './languages.service';
 @Crud({
   model: {
     type: Language
-  }
+  },
+  params: {
+    id: {
+      type: 'uuid',
+      primary: true,
+      field: 'id',
+    },
+  },
 })
 
 @ApiTags('Languages')

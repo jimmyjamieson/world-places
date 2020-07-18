@@ -8,6 +8,13 @@ import { CitiesService } from './cities.service';
   model: {
     type: City
   },
+  params: {
+    id: {
+      type: 'uuid',
+      primary: true,
+      field: 'id',
+    },
+  },
   query: {
     join: {
       region: {
