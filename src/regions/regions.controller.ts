@@ -16,14 +16,11 @@ import { RegionsService } from './regions.service';
     },
   },
   query: {
-    /*join: {
+    join: {
       country: {
         eager: true,
       },
-      cities: {
-        eager: true,
-      },
-    },*/
+    },
   },
 })
 

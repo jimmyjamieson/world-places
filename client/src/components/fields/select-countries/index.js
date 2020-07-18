@@ -4,7 +4,18 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getCountries } from '../../../utils/api';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const SelectCountries = ({ onChange, name, ...rest }) => {
+const SelectCountries = ({
+  onChange,
+  name,
+  label,
+  variant,
+  fullWidth,
+  error,
+  defaultValue,
+  key,
+  helperText,
+  rules,
+}) => {
   const [options, setOptions] = useState([]);
 
   const isLoading = options.length === 0;
@@ -37,8 +48,14 @@ const SelectCountries = ({ onChange, name, ...rest }) => {
       renderInput={params => (
         <TextField
           {...params}
-          {...rest}
-          label={name}
+          label={label}
+          variant={variant}
+          fullWidth={fullWidth}
+          error={error}
+          defaultValue={defaultValue}
+          key={key}
+          helperText={helperText}
+          rules={rules}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

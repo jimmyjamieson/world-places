@@ -15,7 +15,7 @@ const RegionForm = memo(
     name,
     id,
     open,
-    onClose,
+     handleClose,
     handleCreate,
     handleUpdate,
     handleGetItem,
@@ -24,26 +24,56 @@ const RegionForm = memo(
     const [formData, setFormData] = useState();
     const isEditing = !!id;
     const formName = isEditing
-      ? `Edit ${name} ${formData?.name}`
+      ? `Editing ${name} ${formData?.name}`
       : `Add a ${name}`;
 
     useEffect(() => {
       (async () => {
-        if (isEditing) {
-          const data = await handleGetItem(id);
-          setFormData(data?.data);
-        }
+        const data = await handleGetItem(id);
+        setFormData(data?.data);
       })();
-    }, [id]);
+    }, [isEditing]);
 
-    const onSubmit = values => console.log(values);
+    const onSubmit = async values => {
+      console.log(values);
+      if (isEditing) {
+        await handleUpdate(values)
+      } else {
+        await handleCreate(values)
+      }
+      return handleClose()
+    }
 
     console.log('formData', formData);
 
     return (
-      <FormModal mode={mode} name={formName} open={open} onClose={onClose}>
+      <FormModal mode={mode} name={formName} open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
+            <Box p={1}>
+              <Controller
+                as={TextField}
+                name="id"
+                label="id"
+                variant="outlined"
+                fullWidth
+                control={control}
+                error={!!errors.id}
+                defaultValue={formData?.id}
+                key={formData?.id}
+                InputProps={{
+                  readOnly: true,
+                }}
+                helperText={
+                  errors.name
+                    ? errors.name.message
+                    : `UUID of the ${name}`
+                }
+                rules={{
+                  required: 'Required',
+                }}
+              />
+            </Box>
             <Box p={1}>
               <Controller
                 as={TextField}

@@ -151,7 +151,7 @@ const DynamicTable = memo(
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
           handleGetItem={handleGetItem}
-          onClose={handleCloseForm}
+          handleClose={handleCloseForm}
         />}
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
