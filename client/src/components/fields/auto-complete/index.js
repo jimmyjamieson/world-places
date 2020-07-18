@@ -5,17 +5,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const AutoComplete = ({
   fetchData,
-  layoutProps,
   onChange,
-  name,
-  label,
-  error,
-  helperText,
-  rules,
-  key,
+  layoutProps,
   defaultValueProp,
   ...rest
 }) => {
+  console.log('AutoCompletedefaultValue', defaultValueProp);
   const [options, setOptions] = useState([]);
   const isLoading = options.length === 0;
 
@@ -48,22 +43,15 @@ const AutoComplete = ({
       options={options}
       loading={isLoading}
       defaultValue={defaultValueProp}
-      getOptionLabel={option => option.name || ''}
-      key={key}
+      getOptionLabel={option => option?.name}
       onChange={(event, newValue) => {
         onChange(newValue);
       }}
-      { ...rest }
       renderInput={params => (
         <TextField
-          name={name}
-          label={label}
-          error={error}
-          helperText={helperText}
-          rules={rules}
           {...params}
           {...layoutProps}
-          { ...rest }
+          {...rest}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

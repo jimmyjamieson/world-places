@@ -1,5 +1,4 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
 import TextField from '@material-ui/core/TextField';
 import AutoCompleteCountries from '../auto-complete-countries';
 
@@ -8,54 +7,31 @@ const layoutProps = {
   fullWidth: true,
 };
 
-const Field = ({
-  onChange,
-  name,
-  label,
-  error,
-  helperText,
-  rules,
-  key,
-  type,
-  defaultValueProp,
-  ...rest
-}) => {
-  function renderFieldType(type) {
+const Field = ({ type, key, defaultValueProp, ...rest }) => {
+  console.log('props', rest.name, defaultValueProp);
+
+  function renderFieldType() {
     switch (type) {
-      case 'country':
+      case 'countrySelect':
         return (
           <AutoCompleteCountries
             layoutProps={layoutProps}
-            name={name}
-            label={label}
-            error={error}
-            helperText={helperText}
-            rules={rules}
-            key={key}
-            defaultValue={defaultValueProp}
-            onChange={onChange}
             {...rest}
+            defaultValueProp={defaultValueProp}
           />
         );
       default:
         return (
           <TextField
             {...layoutProps}
-            name={name}
-            label={label}
-            error={error}
-            helperText={helperText}
-            rules={rules}
-            key={key}
-            defaultValue={defaultValueProp}
-            onChange={onChange}
             {...rest}
+            defaultValue={defaultValueProp}
           />
         );
     }
   }
 
-  return renderFieldType(type);
+  return renderFieldType();
 };
 
 export default Field;
