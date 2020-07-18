@@ -109,9 +109,9 @@ const DynamicTable = memo(
       } catch (e) {}
     };
 
-    const handleGetItem = async id => {
+    const handleGetItem = id => {
       try {
-        await fetchDataItem(id);
+        return fetchDataItem(id);
       } catch (e) {
         console.log('failed')
       }
@@ -145,15 +145,14 @@ const DynamicTable = memo(
     return (
       <Paper>
         <AddFab onClick={() => handleOpenForm()} />
-        <Form
+        { form.open && <Form
           {...form}
           name={altName}
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
-          handleDelete={handleDelete}
           handleGetItem={handleGetItem}
           onClose={handleCloseForm}
-        />
+        />}
         <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
