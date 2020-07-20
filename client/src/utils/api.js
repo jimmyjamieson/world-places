@@ -133,3 +133,15 @@ export const updateCurrency = (input = {}) => {
 export const deleteCurrency = id => {
   return api.delete(`currencies/${id}`);
 };
+
+/**
+ Import/Export
+ */
+
+export const importData = () => {
+  return api('import');
+};
+
+export const exportData = () => {
+  return api('import/export');
+};
