@@ -4,11 +4,13 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
 import TableRow from '@material-ui/core/TableRow';
+import get from 'lodash/get'
 
 const TableItemRow = memo(({ row, handleDelete, handleOpenForm, columns }) => {
   const renderTableCells = () => {
     return columns.map(col => {
-      return <TableCell align={col.align || 'left'} key={col.id}>{row[col.value]}</TableCell>;
+      const item = get(row, col.value)
+      return <TableCell align={col.align || 'left'} key={col.id}>{item}</TableCell>;
     });
   };
 

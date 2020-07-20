@@ -22,9 +22,9 @@ const tableConfig = {
       value: 'name',
     },
     {
-      key: 'countryCode',
-      name: 'COUNTRY CODE',
-      value: 'countryCode',
+      key: 'country',
+      name: 'COUNTRY',
+      value: 'country.name'
     },
     {
       key: 'coords',

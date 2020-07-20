@@ -43,7 +43,7 @@ const HomePage = () => {
               </ListItem>
               <Divider />
               <ListItem>
-                On localhost:3000 - Click the import button to populate the database and make any fixes, additions or changes.
+                On localhost:4000 - Click the IMPORT button to populate the database and make any fixes, additions or changes.
               </ListItem>
               <Divider />
               <ListItem>
