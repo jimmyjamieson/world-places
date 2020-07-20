@@ -12,7 +12,6 @@ import { CitiesModule } from './cities/cities.module';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { LanguagesModule } from './languages/languages.module';
 import { ImportCsvModule } from './import/import.module';
-import { ExportModule } from './export/export.module';
 
 @Module({
   imports: [
@@ -41,8 +40,7 @@ import { ExportModule } from './export/export.module';
     CitiesModule,
     CurrenciesModule,
     LanguagesModule,
-    ImportCsvModule,
-    ExportModule,
+    ImportCsvModule
     /*GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
     }),*/
