@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
+  toolbar: {
+    textAlign: 'right'
+  }
 }));
 
 const Navigation = ({ open, handleDrawerClose }) => {
@@ -46,7 +49,7 @@ const Navigation = ({ open, handleDrawerClose }) => {
       }}
       open={open}
     >
-      <Toolbar>
+      <Toolbar className={classes.toolbar}>
         <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>
@@ -69,10 +72,6 @@ const Navigation = ({ open, handleDrawerClose }) => {
       </Button>
       <Button component={NavLink} to="/currencies" color="inherit">
         Currencies
-      </Button>
-      <Divider />
-      <Button component={NavLink} to="/currencies" color="inherit">
-        Download
       </Button>
     </Drawer>
   );

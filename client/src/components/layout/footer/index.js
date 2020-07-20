@@ -3,8 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
-import ImportButton from '../../organisms/import-button';
-import ExportButton from '../../organisms/export-button';
+import ImportExportButtons from '../../organisms/import-export-buttons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,8 +42,7 @@ const Footer = ({ open }) => {
       }}
     >
       <Box display="flex" alignItems="center">
-        <ImportButton className={classes.buttons} />
-        <ExportButton className={classes.buttons} />
+        <ImportExportButtons className={classes.buttons} />
       </Box>
     </BottomNavigation>
   );

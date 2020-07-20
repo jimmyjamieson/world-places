@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -8,14 +8,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-const ImportButton = ({ className }) => {
+const ImportButton = ({ className, dataExists }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   function handleImportData() {
     setDialogOpen(true);
     importData();
     setTimeout(() => {
-      setDialogOpen(false)
+      setDialogOpen(false);
     }, 180000);
   }
 
@@ -26,6 +26,7 @@ const ImportButton = ({ className }) => {
         variant="contained"
         color="secondary"
         className={className}
+        disabled={dataExists}
         endIcon={<ArrowDownward>Import</ArrowDownward>}
       >
         Import
@@ -33,8 +34,13 @@ const ImportButton = ({ className }) => {
       <Dialog open={dialogOpen}>
         <DialogTitle>Importing Data</DialogTitle>
         <DialogContent>
-        <DialogContentText>Deleting your local database, and re-importing the JSON. This will take a few mins</DialogContentText>
-          <div style={{textAlign: 'center'}}><CircularProgress /></div>
+          <DialogContentText>
+            Deleting your local database, and re-importing the JSON. This will
+            take a few mins
+          </DialogContentText>
+          <div style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
         </DialogContent>
       </Dialog>
     </Fragment>

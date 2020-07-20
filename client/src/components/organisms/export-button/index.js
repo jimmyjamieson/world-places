@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { exportData } from '../../../utils/api';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-const ImportButton = ({ className }) => {
+const ExportButton = ({ className, dataExists }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   function handleExportData() {
@@ -26,7 +26,8 @@ const ImportButton = ({ className }) => {
         variant="contained"
         color="primary"
         className={className}
-        endIcon={<ArrowDownward>Export</ArrowDownward>}
+        disabled={!dataExists}
+        endIcon={<ArrowUpward>Export</ArrowUpward>}
       >
         Export
       </Button>
@@ -41,4 +42,4 @@ const ImportButton = ({ className }) => {
   );
 };
 
-export default ImportButton;
+export default ExportButton;

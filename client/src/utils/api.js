@@ -145,3 +145,16 @@ export const importData = () => {
 export const exportData = () => {
   return api('import/export');
 };
+
+export const checkDataExists = async() => {
+  const params = {
+    limit: 1,
+    page: 0,
+    query: {
+      alwaysPaginate: true,
+    },
+    cache: 0,
+  };
+  const res = await getCities(params)
+  return res?.data?.data?.length > 0
+}
