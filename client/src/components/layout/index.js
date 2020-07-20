@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
       <Content>
         { children }
       </Content>
-      <Footer />
+      <Footer open={open} />
     </div>
   )
 
