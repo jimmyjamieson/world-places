@@ -22,9 +22,14 @@ const tableConfig = {
       value: 'name',
     },
     {
-      key: 'nativeName',
-      name: 'Native',
-      value: 'nativeName',
+      key: 'region',
+      name: 'Region',
+      value: 'region.name',
+    },
+    {
+      key: 'country',
+      name: 'Country',
+      value: 'region.country.name',
     },
     {
       key: 'coords',
