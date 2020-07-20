@@ -5,8 +5,8 @@ import { deleteCity, getCities } from '../../utils/api';
 import CityForm from '../../components/forms/city-form';
 
 const tableConfig = {
-  name: 'Countries',
-  altName: 'Country',
+  name: 'Cities',
+  altName: 'City',
   rows: 8,
   order: 'name,ASC',
   cache: 1,

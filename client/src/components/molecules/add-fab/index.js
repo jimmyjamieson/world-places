@@ -7,7 +7,8 @@ const useStyles = makeStyles(theme => ({
   fab: {
     position: 'absolute',
     bottom: '2rem',
-    right: '2rem'
+    right: '2rem',
+    zIndex: '9999'
   },
 }));
 
