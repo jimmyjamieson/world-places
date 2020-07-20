@@ -32,7 +32,7 @@ Browse the data, search, make changes
 Once finished, click the export button and everything will be exported to /data
 ```
 ```text
-Please do a commit and pull request to everyone else get's access to correct country information.
+Please do a commit and pull request so everyone else get's access to correct country information.
 ```
 ## Support
 
