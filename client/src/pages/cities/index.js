@@ -22,12 +22,12 @@ const tableConfig = {
       value: 'name',
     },
     {
-      key: 'region',
+      key: 'region.name',
       name: 'Region',
       value: 'region.name',
     },
     {
-      key: 'country',
+      key: 'region.country.name',
       name: 'Country',
       value: 'region.country.name',
     },

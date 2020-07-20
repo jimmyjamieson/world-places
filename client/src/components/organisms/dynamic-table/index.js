@@ -55,12 +55,16 @@ const DynamicTable = memo(
         limit: rowsPerPage,
         page,
         sort: order,
-        s: searchQuery,
+        s: {
+          ...searchQuery
+        },
         query: {
           alwaysPaginate: true,
         },
         cache: config.cache,
       };
+
+      console.log('params', params)
 
       setIsLoading(true);
       fetchData(params).then(res => {
