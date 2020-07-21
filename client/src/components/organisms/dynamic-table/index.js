@@ -12,12 +12,7 @@ import TableError from './table-error';
 import AddFab from '../../molecules/add-fab';
 
 const DynamicTable = memo(
-  ({
-    fetchData,
-    deleteData,
-    config,
-    formComponent,
-  }) => {
+  ({ countryId, location, fetchData, deleteData, config, formComponent }) => {
     if (!config) {
       return (
         <TableContainer>
@@ -42,6 +37,7 @@ const DynamicTable = memo(
     });
 
     const Form = formComponent;
+    const pathname = location?.pathname
 
     const getData = () => {
       if (!fetchData) {
@@ -51,20 +47,25 @@ const DynamicTable = memo(
         return null;
       }
 
+      const countryIdSearch = countryId && {
+        'country.id': {
+          $eq: countryId,
+        },
+      };
+
       const params = {
         limit: rowsPerPage,
         page,
         sort: order,
         s: {
-          ...searchQuery
+          ...countryIdSearch,
+          ...searchQuery,
         },
         query: {
           alwaysPaginate: true,
         },
         cache: config.cache,
       };
-
-      console.log('params', params)
 
       setIsLoading(true);
       fetchData(params).then(res => {
@@ -76,7 +77,7 @@ const DynamicTable = memo(
 
     useEffect(() => {
       getData();
-    }, [page, searchQuery, order]);
+    }, [countryId, location, page, searchQuery, order]);
 
     const handleSortOrder = async data => {
       setOrder(data);
@@ -99,7 +100,7 @@ const DynamicTable = memo(
 
     const handleFormSuccess = () => {
       getData();
-      handleCloseForm()
+      handleCloseForm();
     };
 
     const handleChangePage = async (event, newPage) => {
@@ -124,8 +125,12 @@ const DynamicTable = memo(
      */
     const { data: rows } = data;
     const shouldRenderRows = rows && rows.length > 0;
-    const { columns = [], name = '', altName = '' } = config;
+    const { columns = [], name = '' } = config;
     const tableColumnCount = columns.length + 2;
+
+    // Bit hacky to get sub path name
+    const subPath = pathname?.split('/')[2]
+    const tableName = subPath ? `${name} within ${subPath}` : name
 
     return (
       <Paper>
@@ -137,7 +142,7 @@ const DynamicTable = memo(
             close={handleCloseForm}
           />
         )}
-        <TableToolbar name={name} setSearchQuery={handleSearchQuery} />
+        <TableToolbar name={tableName} setSearchQuery={handleSearchQuery} />
         {isLoading && <LinearProgress style={{ width: '100%' }} />}
         <TableContainer>
           <Table>
@@ -163,7 +168,7 @@ const DynamicTable = memo(
                         tableColumnCount={tableColumnCount}
                         handleDelete={handleDelete}
                         handleOpenForm={handleOpenForm}
-                        openForm={() => {}}
+                        location={location}
                       />
                     );
                   })

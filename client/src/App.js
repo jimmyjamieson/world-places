@@ -13,24 +13,13 @@ function App() {
     <Router>
       <Layout>
         <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route path="/countries">
-            <CountriesPage />
-          </Route>
-          <Route path="/regions">
-            <RegionsPage />
-          </Route>
-          <Route path="/cities">
-            <CitiesPage />
-          </Route>
-          <Route path="/languages">
-            <LanguagesPage />
-          </Route>
-          <Route path="/currencies">
-            <CurrenciesPage />
-          </Route>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/countries" component={CountriesPage} />
+          <Route exact path="/regions" component={RegionsPage} />
+          <Route exact path="/regions/country/:id" component={RegionsPage} />
+          <Route path="/cities" component={CitiesPage} />
+          <Route path="/languages" component={LanguagesPage} />
+          <Route path="/currencies" component={CurrenciesPage} />
         </Switch>
       </Layout>
     </Router>

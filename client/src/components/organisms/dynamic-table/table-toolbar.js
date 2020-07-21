@@ -16,23 +16,23 @@ const TableToolbar = memo(({ name = 'Listing', setSearchQuery }) => {
   const classes = useStyles();
 
   const transformSearchQuery = event => {
-    const target = event?.target;
+    const value = event?.target?.value;
 
     const transformSearch = {
       $or: [
         {
           name: {
-            $contL: target?.value,
+            $contL: value,
           },
         },
         {
           nativeName: {
-            $contL: target?.value,
+            $contL: value,
           },
         },
         {
           code: {
-            $contL: target?.value,
+            $contL: value,
           },
         },
       ],
