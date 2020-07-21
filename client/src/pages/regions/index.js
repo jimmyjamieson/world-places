@@ -42,7 +42,7 @@ const RegionsPage = ({ match, location }) => {
   return (
     <Container>
       <DynamicTable
-        countryId={params?.id}
+        id={params?.id}
         location={location}
         config={tableConfig}
         formComponent={RegionForm}

@@ -1,9 +1,5 @@
 import React, { memo } from 'react';
-import {
-  createCity, createLanguage,
-  getCity, getLanuage,
-  updateCity, updateLanguage,
-} from '../../../utils/api';
+import { createLanguage, getLanuage, updateLanguage } from '../../../utils/api';
 import DyanmicForm from '../../organisms/dynamic-form';
 
 const config = {
@@ -35,7 +31,7 @@ const config = {
       label: 'ISO3 Code',
       type: 'text',
       helperText: 'ISO 639-2 code',
-      validation: null
+      validation: null,
     },
   ],
 };

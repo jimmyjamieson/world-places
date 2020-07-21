@@ -17,9 +17,11 @@ function App() {
           <Route exact path="/countries" component={CountriesPage} />
           <Route exact path="/regions" component={RegionsPage} />
           <Route exact path="/regions/country/:id" component={RegionsPage} />
-          <Route path="/cities" component={CitiesPage} />
-          <Route path="/languages" component={LanguagesPage} />
-          <Route path="/currencies" component={CurrenciesPage} />
+          <Route exact path="/cities" component={CitiesPage} />
+          <Route exact path="/cities/country/:id" component={CitiesPage} />
+          <Route exact path="/cities/region/:id" component={CitiesPage} />
+          <Route exact path="/languages" component={LanguagesPage} />
+          <Route exact path="/currencies" component={CurrenciesPage} />
         </Switch>
       </Layout>
     </Router>

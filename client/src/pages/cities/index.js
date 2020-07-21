@@ -25,11 +25,15 @@ const tableConfig = {
       key: 'region.name',
       name: 'Region',
       value: 'region.name',
+      link: 'region',
+      linkId: 'region.id',
     },
     {
       key: 'region.country.name',
       name: 'Country',
       value: 'region.country.name',
+      link: 'country',
+      linkId: 'region.countryId',
     },
     {
       key: 'coords',
@@ -40,10 +44,13 @@ const tableConfig = {
   ],
 };
 
-const CitiesPage = () => {
+const CitiesPage = ({ match, location }) => {
+  const { params = {} } = match;
   return (
     <Container>
       <DynamicTable
+        id={params?.id}
+        location={location}
         config={tableConfig}
         formComponent={CityForm}
         fetchData={getCities}

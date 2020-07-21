@@ -19,18 +19,22 @@ const HomePage = () => {
         <CardActionArea>
           <CardMedia image={logo} />
           <CardContent>
-            <Typography variant="h2">
-              Welcome to World Places
-            </Typography>
+            <Typography variant="h2">Welcome to World Places</Typography>
             <Typography variant="body1" paragraph>
-              A Open Source and human edited resource
-              of all countries, region/states, cities/towns across the world.
+              A Open Source and human edited resource of all countries,
+              region/states, cities/towns across the world.
             </Typography>
-            <Typography variant="h3">
-              Get started
-            </Typography>
+            <Typography variant="h3">Get started</Typography>
             <Typography paragraph>
-              To get started. Make sure you have <a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a> and <a href="https://nodejs.org/" target="_blank">Nodejs</a>  installed.
+              To get started. Make sure you have{' '}
+              <a href="https://docs.docker.com/get-docker/" target="_blank" rel="noopener noreferrer">
+                Docker
+              </a>{' '}
+              and{' '}
+              <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">
+                Nodejs
+              </a>{' '}
+              installed.
             </Typography>
             <List>
               <Divider />
@@ -39,24 +43,30 @@ const HomePage = () => {
               </ListItem>
               <Divider />
               <ListItem>
-                Run "docker-compose up -d" - This give you a db for creating and managing data.
+                Run "docker-compose up -d" - This give you a db for creating and
+                managing data.
               </ListItem>
               <Divider />
               <ListItem>
-                On localhost:4000 - Click the IMPORT button to populate the database and make any fixes, additions or changes.
+                On localhost:4000 - Click the IMPORT button to populate the
+                database and make any fixes, additions or changes.
               </ListItem>
               <Divider />
               <ListItem>
-                Once you're done click EXPORT and create a pull request. Your updates will be merged with the main branch for others.
+                Once you're done click EXPORT and create a pull request. Your
+                updates will be merged with the main branch for others.
               </ListItem>
               <Divider />
               <ListItem>
-                You can access your modified data as JSON from the data folder. Or once merged, raw from the directory on  <a
-                href="https://github.com/jimmyjamieson/world-places/tree/master/data"
-                target="_blank"
-              >
-                GitHub
-              </a>
+                You can access your modified data as JSON from the data folder.
+                Or once merged, raw from the directory on{' '}
+                <a
+                  href="https://github.com/jimmyjamieson/world-places/tree/master/data"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
               </ListItem>
               <Divider />
             </List>
@@ -68,6 +78,7 @@ const HomePage = () => {
               color="primary"
               target="_blank"
               href="https://github.com/jimmyjamieson/world-places"
+              rel="noopener noreferrer"
             >
               GitHub
             </Button>
@@ -76,6 +87,7 @@ const HomePage = () => {
               color="secondary"
               target="_blank"
               href="http://localhost:4000/api"
+              rel="noopener noreferrer"
             >
               API
             </Button>
@@ -84,6 +96,7 @@ const HomePage = () => {
               color="secondary"
               target="_blank"
               href="http://localhost:4000/docs"
+              rel="noopener noreferrer"
             >
               DOCS
             </Button>

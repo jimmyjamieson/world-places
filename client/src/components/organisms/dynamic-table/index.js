@@ -12,7 +12,7 @@ import TableError from './table-error';
 import AddFab from '../../molecules/add-fab';
 
 const DynamicTable = memo(
-  ({ countryId, location, fetchData, deleteData, config, formComponent }) => {
+  ({ id, location, fetchData, deleteData, config, formComponent }) => {
     if (!config) {
       return (
         <TableContainer>
@@ -38,6 +38,7 @@ const DynamicTable = memo(
 
     const Form = formComponent;
     const pathname = location?.pathname
+    const subPath = pathname?.split('/')[2]
 
     const getData = () => {
       if (!fetchData) {
@@ -47,9 +48,11 @@ const DynamicTable = memo(
         return null;
       }
 
-      const countryIdSearch = countryId && {
-        'country.id': {
-          $eq: countryId,
+      // get()
+      const columnId = `${subPath}.id`
+      const IdSearch = id && {
+        [columnId] : {
+          $eq: id,
         },
       };
 
@@ -58,7 +61,7 @@ const DynamicTable = memo(
         page,
         sort: order,
         s: {
-          ...countryIdSearch,
+          ...IdSearch,
           ...searchQuery,
         },
         query: {
@@ -77,7 +80,7 @@ const DynamicTable = memo(
 
     useEffect(() => {
       getData();
-    }, [countryId, location, page, searchQuery, order]);
+    }, [id, location, page, searchQuery, order]);
 
     const handleSortOrder = async data => {
       setOrder(data);
@@ -129,7 +132,6 @@ const DynamicTable = memo(
     const tableColumnCount = columns.length + 2;
 
     // Bit hacky to get sub path name
-    const subPath = pathname?.split('/')[2]
     const tableName = subPath ? `${name} within ${subPath}` : name
 
     return (
