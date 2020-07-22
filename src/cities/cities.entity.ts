@@ -9,6 +9,7 @@ export class City extends LocationEntity {
   @ManyToOne(
     type => Region,
     region => region.cities,
+    { cascade: true, onDelete: 'CASCADE' },
   )
   region: Region;
 

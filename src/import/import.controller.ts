@@ -16,6 +16,11 @@ export class ImportController {
     return this.importService.importJson()
   }
 
+  @Get('reset')
+  async clearDatabase(): Promise<any> {
+    return this.importService.clearDatabase()
+  }
+
   @Get('export')
   async exportJson(): Promise<any> {
     return this.importService.exportJson()
