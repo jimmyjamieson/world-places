@@ -23,12 +23,12 @@ import { CountriesService } from './countries.service';
       language: {
         eager: true
       },
-     /* regions: {
+     regions: {
         eager: true
       },
       'regions.cities': {
         eager: true
-      }*/
+      }
     },
   },
 })
