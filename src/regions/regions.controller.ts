@@ -20,6 +20,9 @@ import { RegionsService } from './regions.service';
       country: {
         eager: true,
       },
+      cities: {
+        eager: true
+      }
     },
   },
 })

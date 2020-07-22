@@ -29,6 +29,12 @@ const tableConfig = {
       linkId: 'country.id',
     },
     {
+      key: 'cities.length',
+      name: 'Cities',
+      value: 'cities.length',
+      align: 'right',
+    },
+    {
       key: 'coords',
       name: 'COORDS',
       value: 'coords',
