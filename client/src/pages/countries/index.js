@@ -22,9 +22,14 @@ const tableConfig = {
       value: 'name',
     },
     {
-      key: 'nativeName',
-      name: 'Native',
-      value: 'nativeName',
+      key: 'language.name',
+      name: 'Lanugage',
+      value: 'language.name',
+    },
+    {
+      key: 'currency.name',
+      name: 'Currency',
+      value: 'currency.name',
     },
     {
       key: 'coords',
