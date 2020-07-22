@@ -14,6 +14,10 @@ export class City extends LocationEntity {
   region: Region;
 
   @ApiProperty()
+  @Column({ length: 50, nullable: true })
+  countryCode: string;
+
+  @ApiProperty()
   @Column({ nullable: true })
   regionId: string;
 }

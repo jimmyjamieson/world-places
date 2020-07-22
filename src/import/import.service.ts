@@ -33,9 +33,9 @@ export class ImportService {
   async getAll() {
     return this.countryRepository
       .createQueryBuilder('country')
-      .leftJoinAndSelect('country.currency', 'currency')
-      .leftJoinAndSelect('country.language', 'language')
-      .leftJoinAndSelect('country.regions', 'region')
+      .innerJoinAndSelect('country.currency', 'currency')
+      .innerJoinAndSelect('country.language', 'language')
+      .innerJoinAndSelect('country.regions', 'region')
       .innerJoinAndSelect('region.cities', 'city')
       .getMany();
   }

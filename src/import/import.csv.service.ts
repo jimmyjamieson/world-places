@@ -117,6 +117,7 @@ export class ImportCsvService {
         } = data;
 
         const currency = currencies.find(item => item.code.includes(currencyCode));
+
         const language = languages.find(
           item => item.code.includes(languageCode),
         );
@@ -134,8 +135,8 @@ export class ImportCsvService {
           domain: domain && domain.trim(),
           continent: region && region.trim(),
           subContinent: subRegion && subRegion.trim(),
-          currency: currency?.id,
-          language: language?.id,
+          currency: currency,
+          language: language,
           coords: `${lat && lat.trim()},${lng && lng.trim()}`,
         };
         // @ts-ignore
@@ -161,8 +162,8 @@ export class ImportCsvService {
           name: name.trim(),
           nativeName: name.trim(),
           code: regionCode.trim(),
-          countryCode: country?.code,
-          country: country?.id,
+          countryCode: country_code,
+          country: country,
         };
         // @ts-ignore
         this.entityManager.save(Region, obj);
@@ -188,7 +189,8 @@ export class ImportCsvService {
         const obj = {
           name: name.trim(),
           nativeName: name.trim(),
-          region: region?.id,
+          region: region,
+          countryCode: country_code,
           coords: `${latitude.trim()},${longitude.trim()}`,
         };
         // @ts-ignore
