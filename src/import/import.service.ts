@@ -103,58 +103,84 @@ export class ImportService {
     await this.countryRepository.query(
       `TRUNCATE country, language, currency, region, city CASCADE`,
     );
+    return { success: true, message: 'Database cleared' }
   }
 
   /**
    * Import JSON files to database
    */
 
-  async importJson() {
-    await this.clearDatabase();
+  importCurrencies() {
+    console.log('Importing currencies')
+    const currencyTransform = (key, value) => {
+      return {
+        ...value
+      }
+    }
+    return saveLargeJson(
+      'data/currencies.json',
+      data => this.currencyRepository.save(data),
+      currencyTransform,
+      1,
+      () => this.importLanguages()
+    );
+  }
 
-    const currencies = await readFromJson('data/currencies.json');
-    const languages = await readFromJson('data/languages.json');
-    const countries = await readFromJson('data/countries.json');
-    const regions = await readFromJson('data/regions.json');
+  importLanguages() {
+    console.log('Importing languages')
+    const languageTransform = (key, value) => {
+      return {
+        ...value
+      }
+    }
+    return saveLargeJson(
+      'data/languages.json',
+      data => this.languageRepository.save(data),
+      languageTransform,
+      1,
+      () => this.importCountries()
+    );
+  }
 
-    await this.currencyRepository.save([...currencies]);
-    await this.languageRepository.save([...languages]);
-
-    const formattedCountries = countries.map(country => {
-      const { currency, language, ...rest } = country;
-      const getCurrency =
-        currencies.find(item => item.code === currency?.code) || undefined;
-      const getLanguage =
-        languages.find(item => item.code === language?.code) || undefined;
-
+  importCountries() {
+    console.log('Importing countries')
+    const countryTransform = (key, value) => {
+      const { language, currency, ...rest } = value
       return {
         ...rest,
-        language: getLanguage?.id,
-        currency: getCurrency?.id,
-      };
-    });
+        language: language?.id,
+        currency: currency?.id
+      }
+    }
+    return saveLargeJson(
+      'data/countries.json',
+      data => this.countryRepository.save(data),
+      countryTransform,
+      1,
+      () => this.importRegions()
+    );
+  }
 
-    await this.countryRepository.save([...formattedCountries]);
-
-    const formattedRegions = regions.map(region => {
-      const { country, ...rest } = region;
-      const getCountry =
-        countries.find(item => item.code === country?.code) || undefined;
-
+  importRegions() {
+    console.log('Importing regions')
+    const regionTransform = (key, value) => {
+      const { country, ...rest } = value
       return {
         ...rest,
-        country: getCountry?.id,
-      };
-    });
+        country: country?.id
+      }
+    }
+    return saveLargeJson(
+      'data/regions.json',
+      data => this.regionRepository.save(data),
+      regionTransform,
+      1,
+      () => this.importCities()
+    );
+  }
 
-    await this.regionRepository.save([...formattedRegions]);
-
-
-    /**
-     * Set our transform for streamable JSON data
-     * @param key
-     * @param value
-     */
+  importCities() {
+    console.log('Importing cities')
     const cityTransform = (key, value) => {
       const { region, ...rest } = value;
       return {
@@ -162,14 +188,18 @@ export class ImportService {
         region: region?.id,
       };
     };
-    /**
-     * Save our JSON data into the database
-     */
-    saveLargeJson(
+    return saveLargeJson(
       'data/cities.json',
       data => this.cityRepository.save(data),
       cityTransform,
       1,
     );
   }
+
+  async importJson() {
+    await this.clearDatabase();
+    await this.importCurrencies()
+    return { success: true, message: 'Importing will happen in the background' }
+  }
+
 }

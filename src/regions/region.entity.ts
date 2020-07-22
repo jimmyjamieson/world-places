@@ -25,7 +25,6 @@ export class Region extends LocationEntity {
   @OneToMany(
     type => City,
     city => city.region,
-    { cascade: true, onDelete: 'CASCADE' },
   )
   cities: City[];
 }
