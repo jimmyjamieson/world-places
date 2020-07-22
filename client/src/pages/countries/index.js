@@ -32,6 +32,11 @@ const tableConfig = {
       value: 'currency.name',
     },
     {
+      key: 'regions.length',
+      name: 'Regions',
+      value: 'regions.length',
+    },
+    {
       key: 'coords',
       name: 'COORDS',
       value: 'coords',
