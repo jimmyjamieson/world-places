@@ -93,7 +93,7 @@ export class ImportService {
     const currencies = await this.getCurrencies();
     await writeToJson(currencies, './data/currencies.json');
 
-    return { success: true };
+    return { success: true, message: 'Exporting will happen in the background' }
   }
 
   /**
